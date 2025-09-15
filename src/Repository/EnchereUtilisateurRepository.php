@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\EnchèreUtulisateur;
+use App\Entity\EnchereUtilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<EnchèreUtulisateur>
+ * @extends ServiceEntityRepository<EnchereUtilisateur>
  *
- * @method EnchèreUtulisateur|null find($id, $lockMode = null, $lockVersion = null)
- * @method EnchèreUtulisateur|null findOneBy(array $criteria, array $orderBy = null)
- * @method EnchèreUtulisateur[]    findAll()
- * @method EnchèreUtulisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method EnchereUtilisateur|null find($id, $lockMode = null, $lockVersion = null)
+ * @method EnchereUtilisateur|null findOneBy(array $criteria, array $orderBy = null)
+ * @method EnchereUtilisateur[]    findAll()
+ * @method EnchereUtilisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EnchèreUtulisateurRepository extends ServiceEntityRepository
+class EnchereUtilisateurRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EnchèreUtulisateur::class);
+        parent::__construct($registry, EnchereUtilisateur::class);
     }
 
 //    /**
-//     * @return EnchèreUtulisateur[] Returns an array of EnchèreUtulisateur objects
+//     * @return EnchereUtilisateur[] Returns an array of EnchereUtilisateur objects
 //     */
 //    public function findByExampleField($value): array
 //    {

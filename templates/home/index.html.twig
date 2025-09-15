@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | Enchères{% endblock %}
+
+{% block body %}
+  <div class="hero mb-4">
+    <h1 class="display-5 mb-2">Bienvenue sur la plateforme d’enchères</h1>
+    <p class="mb-0">Gère tes événements, lots, utilisateurs et enchères en quelques clics.</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Événements</h5>
+          <p class="card-text">Crée et organise des événements d’enchères.</p>
+          <a href="{{ path('app_evenement_enchere_index') }}" class="btn btn-dark w-100">Voir les événements</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Lots</h5>
+          <p class="card-text">Ajoute des lots et rattache-les à un événement.</p>
+          <a href="{{ path('app_lot_index') }}" class="btn btn-dark w-100">Voir les lots</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Utilisateurs</h5>
+          <p class="card-text">Gère les participants et informations de base.</p>
+          <a href="{{ path('app_utilisateur_index') }}" class="btn btn-dark w-100">Voir les utilisateurs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Enchères</h5>
+          <p class="card-text">Consulte et enregistre les enchères par lot et par utilisateur.</p>
+          <a href="{{ path('app_enchere_utilisateur_index') }}" class="btn btn-dark w-100">Voir les enchères</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

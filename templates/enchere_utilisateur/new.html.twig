@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EnchereUtilisateur{% endblock %}
+
+{% block body %}
+    <h1>Create new EnchereUtilisateur</h1>
+
+    {{ include('enchere_utilisateur/_form.html.twig') }}
+
+    <a href="{{ path('app_enchere_utilisateur_index') }}">back to list</a>
+{% endblock %}

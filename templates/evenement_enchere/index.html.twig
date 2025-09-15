@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EvenementEnchere index{% endblock %}
+
+{% block body %}
+    <h1>EvenementEnchere index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>EvenementEnchere</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for evenement_enchere in evenement_encheres %}
+            <tr>
+                <td>{{ evenement_enchere.id }}</td>
+                <td>{{ evenement_enchere.EvenementEnchere }}</td>
+                <td>
+                    <a href="{{ path('app_evenement_enchere_show', {'id': evenement_enchere.id}) }}">show</a>
+                    <a href="{{ path('app_evenement_enchere_edit', {'id': evenement_enchere.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_evenement_enchere_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EnchereUtilisateur{% endblock %}
+
+{% block body %}
+    <h1>EnchereUtilisateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ enchere_utilisateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ enchere_utilisateur.montant }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_enchere_utilisateur_index') }}">back to list</a>
+
+    <a href="{{ path('app_enchere_utilisateur_edit', {'id': enchere_utilisateur.id}) }}">edit</a>
+
+    {{ include('enchere_utilisateur/_delete_form.html.twig') }}
+{% endblock %}

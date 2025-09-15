@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EnchereUtilisateur index{% endblock %}
+
+{% block body %}
+    <h1>EnchereUtilisateur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Montant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for enchere_utilisateur in enchere_utilisateurs %}
+            <tr>
+                <td>{{ enchere_utilisateur.id }}</td>
+                <td>{{ enchere_utilisateur.montant }}</td>
+                <td>
+                    <a href="{{ path('app_enchere_utilisateur_show', {'id': enchere_utilisateur.id}) }}">show</a>
+                    <a href="{{ path('app_enchere_utilisateur_edit', {'id': enchere_utilisateur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_enchere_utilisateur_new') }}">Create new</a>
+{% endblock %}
