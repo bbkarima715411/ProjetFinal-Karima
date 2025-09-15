@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\LotRepository;
+use App\Entity\EvenementEnchere;
+use App\Entity\EnchereUtilisateur;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LotRepository::class)]
@@ -24,6 +28,18 @@ class Lot
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Facture = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lots')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?EvenementEnchere $evenementEnchere = null;
+
+    #[ORM\OneToMany(mappedBy: 'lot', targetEntity: EnchereUtilisateur::class, orphanRemoval: true)]
+    private Collection $encheresUtilisateur;
+    
+    public function __construct()
+    {
+        $this->encheresUtilisateur = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +85,47 @@ class Lot
     public function getFacture(): ?string
     {
         return $this->Facture;
+    }
+
+    public function getEvenementEnchere(): ?EvenementEnchere
+    {
+        return $this->evenementEnchere;
+    }
+
+    public function setEvenementEnchere(?EvenementEnchere $evenementEnchere): self
+    {
+        $this->evenementEnchere = $evenementEnchere;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EnchereUtilisateur>
+     */
+    public function getEncheresUtilisateur(): Collection
+    {
+        return $this->encheresUtilisateur;
+    }
+
+    public function addEncheresUtilisateur(EnchereUtilisateur $encheresUtilisateur): self
+    {
+        if (!$this->encheresUtilisateur->contains($encheresUtilisateur)) {
+            $this->encheresUtilisateur[] = $encheresUtilisateur;
+            $encheresUtilisateur->setLot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEncheresUtilisateur(EnchereUtilisateur $encheresUtilisateur): self
+    {
+        if ($this->encheresUtilisateur->removeElement($encheresUtilisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($encheresUtilisateur->getLot() === $this) {
+                $encheresUtilisateur->setLot(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setFacture(?string $Facture): static
