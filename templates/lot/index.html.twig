@@ -153,9 +153,8 @@ pour "{{ app.request.query.get('q') }}"
                         <article class="group bg-white rounded-xl border border-stone-200 overflow-hidden hover:shadow-md transition-shadow">
                             <div class="relative">
                                 <a href="{{ path('app_lot_show', {id: lot.id}) }}" class="block">
-                                    <img src="{{ lot.imageUrl|default(asset('images/demo/placeholder.jpg')) }}"
-                                         class="w-full aspect-[4/3] object-cover" 
-                                         alt="{{ lot.titre|default('Photo du lot') }}">
+                                    <img src="{{ lot.imageFilename ? asset('uploads/' ~ lot.imageFilename) : asset('images/placeholder.jpg') }}"
+                                         alt="" class="w-full h-48 object-cover rounded-lg" loading="lazy">
                                 </a>
                                 {% if lot.estVendu %}
                                     <div class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
