@@ -15,9 +15,8 @@
         {# Galerie d'images #}
         <div class="order-1 lg:order-2 bg-white rounded-2xl border border-stone-200 overflow-hidden">
             <div class="relative">
-                <img src="{{ lot.imageUrl|default(asset('images/demo/placeholder.jpg')) }}"
-                     class="w-full h-[28rem] object-cover" 
-                     alt="{{ lot.titre|default('Photo du lot') }}">
+                <img src="{{ lot.imageFilename ? asset('uploads/' ~ lot.imageFilename) : asset('images/placeholder.jpg') }}"
+                     alt="" class="w-full h-[28rem] object-cover rounded-xl border border-stone-200">
                 {% if lot.estVendu %}
                     <div class="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                         Vendu
@@ -26,12 +25,13 @@
             </div>
             
             {# Miniatures supplémentaires (exemple) #}
+            {% set miniatures = ['images/vase.png','images/chaise.png','images/horloge.png'] %}
             <div class="grid grid-cols-4 gap-2 p-2 bg-stone-50">
-                {% for i in 1..3 %}
+                {% for src in miniatures %}
                     <button class="aspect-square overflow-hidden rounded border border-stone-200 hover:border-amber-500">
-                        <img src="{{ asset('images/demo/placeholder.jpg') }}" 
+                        <img src="{{ asset(src) }}" 
                              class="w-full h-full object-cover" 
-                             alt="Vue supplémentaire {{ i }}">
+                             alt="Vue supplémentaire {{ loop.index }}">
                     </button>
                 {% endfor %}
                 <button class="aspect-square border-2 border-dashed border-stone-300 rounded flex items-center justify-center text-stone-400 hover:border-amber-300 hover:text-amber-400">
@@ -197,11 +197,12 @@
     {# Lots similaires #}
     <div class="mt-12">
         <h3 class="text-xl font-semibold text-stone-900 mb-6">Lots similaires</h3>
+        {% set similars = ['images/commo.png','images/table9.png','images/tableau.png','images/Brache.png'] %}
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {% for i in 1..4 %}
                 <article class="bg-white rounded-xl border border-stone-200 overflow-hidden hover:shadow-md transition-shadow">
                     <a href="#" class="block">
-                        <img src="{{ asset('images/demo/placeholder.jpg') }}" 
+                        <img src="{{ asset(similars[(loop.index0) % (similars|length)]) }}" 
                              class="w-full aspect-[4/3] object-cover" 
                              alt="Lot similaire {{ i }}">
                     </a>

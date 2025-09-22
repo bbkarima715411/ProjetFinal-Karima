@@ -35,6 +35,9 @@ class Lot
 
     #[ORM\OneToMany(mappedBy: 'lot', targetEntity: EnchereUtilisateur::class, orphanRemoval: true)]
     private Collection $encheresUtilisateur;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFilename = null;
     
     public function __construct()
     {
@@ -131,6 +134,18 @@ class Lot
     public function setFacture(?string $Facture): static
     {
         $this->Facture = $Facture;
+
+        return $this;
+    }
+
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(?string $imageFilename): static
+    {
+        $this->imageFilename = $imageFilename;
 
         return $this;
     }
