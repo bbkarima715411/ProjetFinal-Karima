@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/lot')]
 class LotController extends AbstractController
@@ -23,15 +26,38 @@ class LotController extends AbstractController
     }
 
     #[Route('/new', name: 'app_lot_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $lot = new Lot();
         $form = $this->createForm(LotType::class, $lot);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile|null $file */
+            $file = $form->get('imageFile')->getData();
+
+            if ($file instanceof UploadedFile) {
+                $original = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safe = $slugger->slug($original);
+                $ext = $file->guessExtension() ?: 'bin';
+                $newName = sprintf('%s-%s.%s', $safe, uniqid('', true), $ext);
+
+                try {
+                    $file->move($this->getParameter('upload_dir'), $newName);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Upload impossible : ' . $e->getMessage());
+                    // Optionally, you could redirect back to form here
+                }
+
+                if (method_exists($lot, 'setImageFilename')) {
+                    $lot->setImageFilename($newName);
+                }
+            }
+
             $entityManager->persist($lot);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Lot enregistré ✔');
 
             return $this->redirectToRoute('app_lot_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -79,3 +105,4 @@ class LotController extends AbstractController
         return $this->redirectToRoute('app_lot_index', [], Response::HTTP_SEE_OTHER);
     }
 }
+

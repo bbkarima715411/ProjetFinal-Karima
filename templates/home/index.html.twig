@@ -11,19 +11,19 @@
     {# Mosaïque d'images : centre large + 4 petites #}
     <section class="mb-10">
         <div class="grid grid-cols-7 gap-3 items-stretch">
-            <img src="{{ asset('images/demo/commode.jpg') }}" 
+            <img src="{{ asset('images/demo/commo.png') }}" 
                  class="col-span-1 aspect-[3/4] object-cover rounded-xl" 
                  alt="Commode ancienne">
-            <img src="{{ asset('images/demo/guéridon.jpg') }}" 
+            <img src="{{ asset('images/demo/Brache.png') }}" 
                  class="col-span-1 aspect-[3/4] object-cover rounded-xl" 
                  alt="Guéridon d'époque">
-            <img src="{{ asset('images/demo/chaise.jpg') }}"   
+            <img src="{{ asset('images/demo/chaise.png') }}"   
                  class="col-span-3 aspect-[3/4] object-cover rounded-2xl" 
                  alt="Chaise de style Louis XV">
-            <img src="{{ asset('images/demo/vase.jpg') }}"     
+            <img src="{{ asset('images/demo/vase.png') }}"     
                  class="col-span-1 aspect-[3/4] object-cover rounded-xl" 
                  alt="Vase en porcelaine">
-            <img src="{{ asset('images/demo/table.jpg') }}"    
+            <img src="{{ asset('images/demo/table9.png') }}"    
                  class="col-span-1 aspect-[3/4] object-cover rounded-xl" 
                  alt="Table ancienne">
         </div>
@@ -50,7 +50,7 @@
         {% for lot in lots|default([]) %}
             <article class="bg-white rounded-xl border border-stone-200 overflow-hidden hover:shadow-md transition-all duration-300">
                 <a href="{{ path('app_lot_show', {id: lot.id}) }}" class="block">
-                    <img src="{{ lot.imageUrl|default(asset('images/demo/placeholder.jpg')) }}"
+                    <img src="{{ lot.imageFilename ? asset('uploads/' ~ lot.imageFilename) : asset('images/demo/placeholder.jpg') }}"
                          class="w-full aspect-[4/3] object-cover" 
                          alt="{{ lot.titre|default('Photo du lot') }}">
                 </a>
@@ -94,3 +94,4 @@
         {% endfor %}
     </div>
 {% endblock %}
+
