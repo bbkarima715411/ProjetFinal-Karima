@@ -15,9 +15,19 @@ class EvenementEnchereFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
+        $titles = [
+            'Vente aux enchères - Bijoux anciens',
+            'Collection d\'art moderne',
+            'Mobilier d\'époque'
+        ];
+
         for ($i = 0; $i < 3; $i++) {
             $event = new EvenementEnchere();
-            $event->setEvenementEnchere($faker->randomFloat(2, 100, 10000));
+            $event->setTitre($titles[$i])
+                ->setDebutAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 week', '+1 week')))
+                ->setFinAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('+1 week', '+3 weeks')))
+                ->setStatut($faker->randomElement(['programmé', 'ouvert', 'clos']));
+            
             $manager->persist($event);
 
             $this->addReference(self::REF_PREFIX.$i, $event);
