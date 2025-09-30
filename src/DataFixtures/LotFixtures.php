@@ -18,12 +18,30 @@ class LotFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
+        $categories = [
+            'Sièges & Fauteuils',
+            'Tables & Bureaux', 
+            'Armoires & Commodes',
+            'Peintures anciennes',
+            'Gravures & Dessins',
+            'Affiches anciennes',
+            'Bijoux anciens',
+            'Montres de collection',
+            'Objets précieux',
+            'Monnaies & Médailles',
+            'Objets asiatiques',
+            'Objets africains',
+            'Objets amérindiens'
+        ];
+
         for ($i = 0; $i < self::COUNT; $i++) {
             $lot = new Lot();
             $lot->setLot(ucfirst($faker->unique()->word()))
-                ->setCategorie($faker->randomElement(['art', 'electronique', 'maison', 'mode', 'collection']))
+                ->setCategorie($faker->randomElement($categories))
                 ->setPaiement($faker->randomFloat(2, 20, 300))
-                ->setFacture($faker->uuid());
+                ->setFacture($faker->uuid())
+                ->setPrixDepart($faker->randomFloat(2, 50, 500))
+                ->setIncrementMin($faker->randomFloat(2, 1, 10));
 
             // Associer à un événement aléatoire via les références de EvenementEnchereFixtures
             $eventIndex = $faker->numberBetween(0, 2);
