@@ -59,4 +59,4 @@ class EvenementEnchereRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
+

@@ -1,20 +1,36 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello AccueilController!{% endblock %}
+{% block title %}Accueil - Enchères{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<section class="card" style="position:relative;">
+  <video autoplay muted loop playsinline style="width:100%; display:block;">
+    <source src="{{ asset('videos/intro.mp4') }}" type="video/mp4">
+    Votre navigateur ne supporte pas la vidéo HTML5.
+  </video>
+  <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+    <a href="{{ path('app_lot_index') }}" class="btn" style="font-size:1.1rem; background:#fff;">Voir les objets en enchère</a>
+  </div>
+</section>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/ProjetFinal-Karima/src/Controller/AccueilController.php'|file_link(0) }}">src/Controller/AccueilController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/ProjetFinal-Karima/templates/accueil/index.html.twig'|file_link(0) }}">templates/accueil/index.html.twig</a></code></li>
-    </ul>
-</div>
+<section style="margin-top:1rem;">
+  <h2>Enchères à venir</h2>
+  {% if evenementsAVenir %}
+    <div class="marquee card" style="overflow:hidden; white-space:nowrap;">
+      <div style="display:inline-block; padding-left:100%; animation:slide 25s linear infinite;">
+        {% for ev in evenementsAVenir %}
+          <span style="margin:0 1.25rem;">
+            ⏳ <strong>{{ ev.titre ?? 'Événement' }}</strong>
+          </span>
+        {% endfor %}
+      </div>
+    </div>
+    <style>
+      @keyframes slide { from {transform:translateX(0);} to {transform:translateX(-100%);} }
+      .card{border:1px solid #eee; border-radius:12px; padding:.5rem;}
+      .btn{border:1px solid #111; padding:.6rem 1rem; border-radius:10px; text-decoration:none;}
+    </style>
+  {% else %}
+    <p>Aucun événement à venir.</p>
+  {% endif %}
+</section>
 {% endblock %}
