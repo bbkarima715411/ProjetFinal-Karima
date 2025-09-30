@@ -22,6 +22,8 @@ class EvenementEnchere
     #[ORM\OneToMany(mappedBy: 'evenementEnchere', targetEntity: Lot::class, orphanRemoval: true)]
     private Collection $lots;
 
+    
+
     public function getId(): ?int
     {
         return $this->id;
