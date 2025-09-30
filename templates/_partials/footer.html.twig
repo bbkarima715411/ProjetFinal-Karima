@@ -1,36 +1,37 @@
-{# templates/_partials/footer.html.twig #}
-<footer class="mt-12 border-t border-neutral-200 bg-white" id="contact">
-  <div class="container mx-auto px-4 py-10 grid gap-8 md:grid-cols-3">
+<footer class="bg-gray-900 text-gray-300 mt-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    <!-- Colonne 1 -->
     <div>
-      <div class="font-['UnifrakturMaguntia'] text-2xl">Vestige d’Or</div>
-      <p class="mt-2 text-sm text-neutral-500">Ventes aux enchères d’objets rares & pièces d’exception.</p>
+      <h3 class="text-white font-semibold mb-3">À propos</h3>
+      <p class="text-sm leading-relaxed">
+        Site d’enchères en ligne réalisé avec Symfony & Tailwind.<br>
+        Achetez, vendez et participez à des enchères en temps réel.
+      </p>
     </div>
 
-    <div class="text-sm space-y-2">
-      <div class="font-medium">Liens</div>
-      <div class="flex flex-wrap gap-4 text-neutral-600">
-        <a href="#" class="hover:text-black">À propos</a>
-        <a href="#" class="hover:text-black">Conditions</a>
-        <a href="#" class="hover:text-black">Confidentialité</a>
-        <a href="#contact" class="hover:text-black">Contact</a>
-        <a href="#chatbot" class="hover:text-black">Chatbot</a>
+    <!-- Colonne 2 -->
+    <div>
+      <h3 class="text-white font-semibold mb-3">Navigation</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a class="hover:text-white" href="{{ path('app_accueil') }}">Accueil</a></li>
+        <li><a class="hover:text-white" href="{{ path('app_lot_index') }}">Objets en cours</a></li>
+        <li><a class="hover:text-white" href="{{ path('app_contact') }}">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Colonne 3 -->
+    <div>
+      <h3 class="text-white font-semibold mb-3">Suivez-nous</h3>
+      <div class="flex gap-3">
+        <a href="#" class="hover:text-white">🐦 Twitter</a>
+        <a href="#" class="hover:text-white">📘 Facebook</a>
+        <a href="#" class="hover:text-white">📸 Instagram</a>
       </div>
-    </div>
-
-    <div class="text-sm">
-      <div class="font-medium">Newsletter</div>
-      <form class="mt-2 flex gap-2">
-        <input type="email" placeholder="Votre email"
-               class="flex-1 px-4 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-black/20">
-        <button class="px-4 py-2 rounded-xl bg-black text-white hover:bg-neutral-900">S’inscrire</button>
-      </form>
     </div>
   </div>
 
-  <div class="border-t border-neutral-200">
-    <div class="container mx-auto px-4 py-4 text-xs text-neutral-500 flex items-center justify-between">
-      <span>© {{ "now"|date("Y") }} Vestige d’Or</span>
-      <span>FR · EN</span>
-    </div>
+  <div class="border-t border-gray-700 py-4 text-center text-sm text-gray-400">
+    © {{ "now"|date("Y") }} Enchères — Tous droits réservés.
   </div>
 </footer>
