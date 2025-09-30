@@ -1,19 +1,22 @@
 {# templates/_partials/footer.html.twig #}
-<footer class="mt-12 border-t border-neutral-200 bg-white">
+<footer class="mt-12 border-t border-neutral-200 bg-white" id="contact">
   <div class="container mx-auto px-4 py-10 grid gap-8 md:grid-cols-3">
     <div>
       <div class="font-['UnifrakturMaguntia'] text-2xl">Vestige d’Or</div>
       <p class="mt-2 text-sm text-neutral-500">Ventes aux enchères d’objets rares & pièces d’exception.</p>
     </div>
+
     <div class="text-sm space-y-2">
       <div class="font-medium">Liens</div>
-      <div class="flex gap-4 text-neutral-600">
+      <div class="flex flex-wrap gap-4 text-neutral-600">
         <a href="#" class="hover:text-black">À propos</a>
         <a href="#" class="hover:text-black">Conditions</a>
         <a href="#" class="hover:text-black">Confidentialité</a>
-        <a href="#" class="hover:text-black">Contact</a>
+        <a href="#contact" class="hover:text-black">Contact</a>
+        <a href="#chatbot" class="hover:text-black">Chatbot</a>
       </div>
     </div>
+
     <div class="text-sm">
       <div class="font-medium">Newsletter</div>
       <form class="mt-2 flex gap-2">
@@ -23,6 +26,7 @@
       </form>
     </div>
   </div>
+
   <div class="border-t border-neutral-200">
     <div class="container mx-auto px-4 py-4 text-xs text-neutral-500 flex items-center justify-between">
       <span>© {{ "now"|date("Y") }} Vestige d’Or</span>
