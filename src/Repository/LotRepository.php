@@ -21,6 +21,23 @@ class LotRepository extends ServiceEntityRepository
         parent::__construct($registry, Lot::class);
     }
 
+        /** Lots d’événements ouverts (en cours) */
+        public function trouverLotsActifs(int $limit = 30): array
+        {
+            $now = new \DateTimeImmutable();
+            return $this->createQueryBuilder('l')
+                ->join('l.evenement', 'e')
+                ->andWhere('e.statut = :open')
+                ->andWhere('e.debutAt <= :now')
+                ->andWhere('e.finAt > :now')
+                ->setParameter('open', 'open')
+                ->setParameter('now', $now)
+                ->orderBy('l.id', 'DESC')
+                ->setMaxResults($limit)
+                ->getQuery()->getResult();
+        }
+    }
+
 //    /**
 //     * @return Lot[] Returns an array of Lot objects
 //     */
