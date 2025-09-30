@@ -1,22 +1,55 @@
-<header class="border-b border-stone-200 bg-white/70 backdrop-blur">
-  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="{{ path('app_home') }}" class="text-xl font-bold">
-      <span class="text-amber-700">Antiqua</span> Enchères
-    </a>
-    <nav class="hidden md:flex items-center gap-6 text-sm">
-      <a href="{{ path('app_lot_index') }}" class="hover:text-amber-700">Lots</a>
-      <a href="{{ path('app_evenement_enchere_index') }}" class="hover:text-amber-700">Événements</a>
-      <a href="{{ path('app_utilisateur_index') }}" class="hover:text-amber-700">Vendeurs</a>
-    </nav>
-    <div class="flex items-center gap-3">
-      {% if app.user %}
-        <span class="hidden sm:inline text-sm text-stone-600">{{ app.user.userIdentifier }}</span>
-        <a href="{{ path('app_logout') }}" class="px-3 py-2 rounded-lg border border-stone-300 hover:bg-stone-50">Logout</a>
-      {% else %}
-        <a href="{{ path('app_login') }}" class="px-3 py-2 rounded-lg border border-stone-300 hover:bg-stone-50">Login</a>
-        <a href="{{ path('app_register') }}" class="px-3 py-2 rounded-lg bg-amber-700 text-white hover:bg-amber-800">S’inscrire</a>
-      {% endif %}
+{# templates/_partials/header.html.twig #}
+<header class="border-b border-neutral-200 bg-white">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between gap-4">
+      {# Logo + Nom du site (sobre, N&B, touche dorée au hover) #}
+      <a href="{{ path('app_home') }}" class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-neutral-300 text-black font-bold ring-1 ring-neutral-200 text-sm">VD</span>
+        <span class="hidden sm:inline font-['UnifrakturMaguntia'] text-2xl tracking-wide hover:text-amber-600 transition-colors">Vestige d’Or</span>
+      </a>
+
+      {# Navigation principale (centrée sur md+) #}
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="{{ path('app_home') }}" class="text-neutral-600 hover:text-black hover:underline decoration-amber-500/60 underline-offset-4">Accueil</a>
+        <a href="{{ path('app_lot_index') }}" class="text-neutral-600 hover:text-black hover:underline decoration-amber-500/60 underline-offset-4">Lots</a>
+      </nav>
+
+      {# Actions à droite: recherche + authentification #}
+      <div class="flex items-center gap-3">
+        <form action="{{ path('app_lot_index') }}" method="get" class="flex items-center gap-2">
+          <input
+            type="search"
+            name="q"
+            value="{{ app.request.get('q') }}"
+            placeholder="Rechercher un lot…"
+            class="h-9 w-28 md:w-56 rounded-lg border border-neutral-300 bg-white px-3 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+          />
+          <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-300 text-black hover:border-amber-600 hover:text-amber-700" aria-label="Rechercher">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M20 20l-3.2-3.2"/>
+            </svg>
+            <span class="sr-only">Rechercher</span>
+          </button>
+        </form>
+
+        {% if app.user %}
+          <span class="hidden lg:inline text-sm text-neutral-600">{{ app.user.userIdentifier }}</span>
+          <a href="{{ path('app_logout') }}" class="px-3 h-9 inline-flex items-center rounded-lg border border-neutral-300 hover:border-amber-600 hover:text-amber-700">
+            Se déconnecter
+          </a>
+        {% else %}
+          <div class="flex items-center gap-2 whitespace-nowrap">
+            <a href="{{ path('app_login') }}" class="px-3 h-9 inline-flex items-center rounded-lg border border-neutral-300 hover:border-amber-600 hover:text-amber-700">
+              Se connecter
+            </a>
+            <span class="inline-block h-1 w-1 rounded-full bg-amber-600/60"></span>
+            <a href="{{ path('app_register') }}" class="px-3 h-9 inline-flex items-center rounded-lg bg-black text-white hover:bg-neutral-900 border border-black">
+              S’inscrire
+            </a>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </header>
-

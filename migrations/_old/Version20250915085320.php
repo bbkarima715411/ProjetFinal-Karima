@@ -31,7 +31,7 @@ final class Version20250915085320 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE enchère_utulisateur (id INT AUTO_INCREMENT NOT NULL, enchere_utlisateur DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE enchere_utulisateur (id INT AUTO_INCREMENT NOT NULL, enchere_utlisateur DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->addSql('ALTER TABLE enchere_utilisateur DROP FOREIGN KEY FK_4AD5E89DA8CBA5F7');
         $this->addSql('ALTER TABLE enchere_utilisateur DROP FOREIGN KEY FK_4AD5E89DFB88E14F');
         $this->addSql('ALTER TABLE lot DROP FOREIGN KEY FK_B81291B1971D2B5');
