@@ -21,6 +21,20 @@ class EvenementEnchereRepository extends ServiceEntityRepository
         parent::__construct($registry, EvenementEnchere::class);
     }
 
+    /** Événements à venir (fins futures, trié par début) */
+    public function trouverAVenir(int $limit = 10): array
+    {
+        $now = new \DateTimeImmutable();
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.debutAt > :now OR (e.debutAt <= :now AND e.finAt > :now AND e.statut = :open)')
+            ->setParameter('now', $now)
+            ->setParameter('open', 'open')
+            ->orderBy('e.debutAt', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()->getResult();
+    }
+}
+
 //    /**
 //     * @return EvenementEnchere[] Returns an array of EvenementEnchere objects
 //     */
