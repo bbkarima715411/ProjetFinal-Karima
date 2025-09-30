@@ -12,17 +12,11 @@ class AccueilController extends AbstractController
     #[Route('/', name: 'app_accueil')]
     public function index(EvenementEnchereRepository $repo): Response
     {
-        $now = new \DateTimeImmutable();
-        $aVenir = $repo->createQueryBuilder('e')
-            ->andWhere('e.finAt > :now')
-            ->setParameter('now', $now)
-            ->orderBy('e.debutAt', 'ASC')
-            ->setMaxResults(20)
-            ->getQuery()->getResult();
+        // Version "safe" (évite finAt/debutAt si tes champs ne sont pas encore en BDD)
+        $aVenir = $repo->findBy([], ['id' => 'DESC'], 20);
 
         return $this->render('accueil/index.html.twig', [
             'evenementsAVenir' => $aVenir,
         ]);
     }
 }
-

@@ -15,18 +15,21 @@ class LotController extends AbstractController
     #[Route('', name: 'app_lot_index')]
     public function index(LotRepository $repo): Response
     {
-        // simple: on affiche tout, ou fais une méthode "trouverLotsActifs()"
-        $lots = $repo->findBy([], ['id' => 'DESC']);
-        return $this->render('lot/index.html.twig', ['lots' => $lots]);
+        $lots = $repo->findBy([], ['id' => 'DESC']); // ou ta méthode maison
+        return $this->render('lot/index.html.twig', [
+            'lots' => $lots,
+        ]);
     }
 
     #[Route('/{id}', name: 'app_lot_show', requirements: ['id' => '\d+'])]
     public function show(Lot $lot): Response
     {
         $formOffre = $this->createForm(DeposerOffreType::class);
+
         return $this->render('lot/show.html.twig', [
             'lot' => $lot,
             'formOffre' => $formOffre->createView(),
         ]);
     }
 }
+
