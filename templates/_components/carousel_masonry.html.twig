@@ -1,0 +1,142 @@
+{# templates/_components/carousel_masonry.html.twig #}
+{#
+  Props:
+  - id: string (unique DOM id, required if multiple carousels on a page)
+  - images: array of URLs or relative asset paths
+  - batch: number of images per slide (default: 4)
+  - autoplay: bool (default: false)
+  - interval: number in ms (default: 4000)
+  - pauseOnHover: bool (default: true)
+#}
+
+{% set _id = id|default('carousel-' ~ random()) %}
+{% set _batch = batch|default(4) %}
+{% set _imgs = images|default([]) %}
+{% set _autoplay = autoplay|default(false) %}
+{% set _interval = interval|default(4000) %}
+{% set _pause = pauseOnHover|default(true) %}
+
+{# Normalize to absolute URLs with asset() when needed #}
+{% set normalized = [] %}
+{% for img in _imgs %}
+  {% set src = img starts with 'http' ? img : asset(img) %}
+  {% set normalized = normalized|merge([src]) %}
+{% endfor %}
+{% if normalized is empty %}
+  {% set normalized = [asset('images/placeholder.jpg')] %}
+{% endif %}
+
+<section id="{{ _id }}" class="relative" data-autoplay="{{ _autoplay ? '1' : '0' }}" data-interval="{{ _interval }}" data-pause="{{ _pause ? '1' : '0' }}">
+  <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+    <div class="flex transition-transform duration-500 will-change-transform" data-track>
+      {# Slides, each is a small masonry grid #}
+      {% for group in normalized|batch(_batch, fill_with=null) %}
+        <div class="w-full shrink-0 p-2">
+          <div class="grid grid-cols-4 gap-2 auto-rows-[80px] sm:auto-rows-[100px]">
+            {% for img in group if img is not null %}
+              {% set cls = [
+                loop.index == 1 ? 'col-span-2 row-span-2' : '',
+                loop.index == 2 ? 'col-span-2 row-span-1' : '',
+                loop.index == 3 ? 'col-span-1 row-span-1' : '',
+                loop.index == 4 ? 'col-span-1 row-span-1' : ''
+              ]|join(' ') %}
+              <a href="{{ img }}" target="_blank" rel="noopener"
+                 class="group relative block {{ cls }} overflow-hidden rounded-lg border border-neutral-200">
+                <img src="{{ img }}" alt="Image {{ loop.parent.loop.index }}-{{ loop.index }}"
+                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# Controls #}
+  <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white border border-neutral-300 text-black rounded-full p-1.5 shadow"
+          aria-label="Précédent" data-prev>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  </button>
+  <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white border border-neutral-300 text-black rounded-full p-1.5 shadow"
+          aria-label="Suivant" data-next>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  </button>
+
+  <div class="mt-2 flex items-center justify-center gap-1.5" data-dots>
+    {% set slidesCount = (normalized|length / _batch)|round(0, 'ceil') %}
+    {% for i in 1..(slidesCount > 0 ? slidesCount : 1) %}
+      <button type="button" class="h-1.5 w-1.5 rounded-full bg-neutral-300" aria-label="Slide {{ i }}"></button>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+(function () {
+  const root = document.getElementById('{{ _id }}');
+  if (!root) return;
+  const track = root.querySelector('[data-track]');
+  const slides = Array.from(track.children);
+  const prev  = root.querySelector('[data-prev]');
+  const next  = root.querySelector('[data-next]');
+  const dots  = Array.from(root.querySelectorAll('[data-dots] button'));
+  const viewport = root.querySelector('.overflow-hidden');
+  if (!viewport || slides.length === 0) return;
+
+  let index = 0;
+  let timerId = null;
+  const useAutoplay = root.getAttribute('data-autoplay') === '1';
+  const intervalMs = parseInt(root.getAttribute('data-interval') || '4000', 10);
+  const pauseOnHover = root.getAttribute('data-pause') === '1';
+
+  function translate() {
+    const w = viewport.clientWidth;
+    track.style.transform = 'translateX(' + (-index * w) + 'px)';
+  }
+  function updateUI() {
+    dots.forEach((d, i) => {
+      d.classList.toggle('bg-black', i === index);
+      d.classList.toggle('bg-neutral-300', i !== index);
+    });
+  }
+  function go(i) {
+    index = (i + slides.length) % slides.length;
+    translate();
+    updateUI();
+  }
+
+  function startAutoplay() {
+    if (!useAutoplay || timerId) return;
+    timerId = setInterval(() => {
+      go(index + 1);
+    }, intervalMs);
+  }
+  function stopAutoplay() {
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  prev && prev.addEventListener('click', () => go(index - 1));
+  next && next.addEventListener('click', () => go(index + 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+  window.addEventListener('resize', translate);
+
+  if (pauseOnHover) {
+    root.addEventListener('mouseenter', stopAutoplay);
+    root.addEventListener('mouseleave', startAutoplay);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay(); else startAutoplay();
+  });
+
+  // Init
+  translate();
+  updateUI();
+  startAutoplay();
+})();
+</script>
