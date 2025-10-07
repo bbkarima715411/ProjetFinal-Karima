@@ -15,7 +15,7 @@ class LotController extends AbstractController
     #[Route('', name: 'app_lot_index')]
     public function index(LotRepository $repo): Response
     {
-        $lots = $repo->findBy([], ['id' => 'DESC']); // ou ta méthode maison
+        $lots = $repo->findBy([], ['id' => 'DESC']);
         return $this->render('lot/index.html.twig', [
             'lots' => $lots,
         ]);
