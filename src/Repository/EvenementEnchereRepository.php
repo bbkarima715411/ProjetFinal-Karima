@@ -8,11 +8,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<EvenementEnchere>
- *
- * @method EvenementEnchere|null find($id, $lockMode = null, $lockVersion = null)
- * @method EvenementEnchere|null findOneBy(array $criteria, array $orderBy = null)
- * @method EvenementEnchere[]    findAll()
- * @method EvenementEnchere[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class EvenementEnchereRepository extends ServiceEntityRepository
 {
@@ -21,42 +16,15 @@ class EvenementEnchereRepository extends ServiceEntityRepository
         parent::__construct($registry, EvenementEnchere::class);
     }
 
-    /** Événements à venir (fins futures, trié par début) */
-    public function trouverAVenir(int $limit = 10): array
+    /** @return EvenementEnchere[] */
+    public function findEnCours(int $limit = 8): array
     {
-        $now = new \DateTimeImmutable();
+        // Utilise les colonnes que TU as dans l’entité (titre, debutAt, finAt, statut)
+        // Si pas encore de dates/statut en BDD, contente-toi d’un orderBy id DESC :
         return $this->createQueryBuilder('e')
-            ->andWhere('e.debutAt > :now OR (e.debutAt <= :now AND e.finAt > :now AND e.statut = :open)')
-            ->setParameter('now', $now)
-            ->setParameter('open', 'open')
-            ->orderBy('e.debutAt', 'ASC')
+            ->orderBy('e.id', 'DESC')
             ->setMaxResults($limit)
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 }
-
-//    /**
-//     * @return EvenementEnchere[] Returns an array of EvenementEnchere objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?EvenementEnchere
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-

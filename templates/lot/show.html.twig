@@ -1,39 +1,55 @@
-{# Prix actuel + incrément #}
-<div class="mt-3">
-  <p><strong>Prix actuel :</strong> {{ lot.prixActuel|number_format(2, ',', ' ') }} €</p>
-  <p><small>Incrément minimum : {{ lot.incrementMin|number_format(2, ',', ' ') }} €</small></p>
-</div>
+{% extends 'base.html.twig' %}
 
-{# Compte à rebours #}
-{% if lot.evenementEnchere and lot.evenementEnchere.finAt %}
-  <p><small>Fin dans : <span id="countdown" data-end="{{ lot.evenementEnchere.finAt|date('c') }}"></span></small></p>
-{% endif %}
+{% block title %}{{ lot.titre }} — Détails du lot{% endblock %}
 
-{# Formulaire d'enchère (POST) #}
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-  {{ form_start(formOffre, { action: path('app_offre_sur_lot', {id: lot.id}), method: 'POST' }) }}
-    {{ form_row(formOffre.montant) }}
-    <button class="btn">Enchérir</button>
-  {{ form_end(formOffre) }}
-{% else %}
-  <a class="btn" href="{{ path('app_login') }}">Connecte-toi pour enchérir</a>
-{% endif %}
+{% block body %}
+<main class="lot-details" style="background:#000; color:#fff; min-height:100vh; padding:2rem;">
+  <div style="max-width:900px; margin:0 auto;">
 
-{% block javascripts %}
-<script>
-(function(){
-  const el = document.getElementById('countdown');
-  if(!el) return;
-  const end = new Date(el.dataset.end).getTime();
-  function tick(){
-    const diff = Math.max(0, end - Date.now());
-    const s = Math.floor(diff/1000);
-    const h = String(Math.floor(s/3600)).padStart(2,'0');
-    const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
-    const ss= String(s%60).padStart(2,'0');
-    el.textContent = `${h}:${m}:${ss}`;
-  }
-  tick(); setInterval(tick, 1000);
-})();
-</script>
+    <h1 style="color:#d4af37; text-align:center; margin-bottom:2rem;">{{ lot.titre }}</h1>
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:2rem;">
+      {% if lot.imageFilename %}
+        <img src="{{ asset('uploads/' ~ lot.imageFilename) }}"
+             alt="{{ lot.titre }}"
+             style="width:100%; max-width:500px; border-radius:10px; box-shadow:0 0 20px rgba(212,175,55,0.3);">
+      {% else %}
+        <img src="{{ asset('images/demo/commo.png') }}"
+             alt="Aucune image"
+             style="width:100%; max-width:500px; border-radius:10px; opacity:0.8;">
+      {% endif %}
+
+      <div style="text-align:center;">
+        <p><strong>Catégorie :</strong> {{ lot.categorie|default('Non spécifiée') }}</p>
+        <p><strong>Prix de départ :</strong> {{ lot.prixDepart|number_format(2, ',', ' ') }} €</p>
+        <p><strong>Prix actuel :</strong> {{ lot.prixActuel|number_format(2, ',', ' ') }} €</p>
+        <p><strong>Incrément minimum :</strong> {{ lot.incrementMin|number_format(2, ',', ' ') }} €</p>
+
+        {% if lot.dateFin %}
+          <p><strong>Fin des enchères :</strong> {{ lot.dateFin|date('d/m/Y H:i') }}</p>
+        {% endif %}
+
+        {% if lot.estVendu %}
+          <p style="background:#b80000; color:white; display:inline-block; padding:0.4rem 0.8rem; border-radius:5px;">VENDU</p>
+        {% else %}
+          <p style="background:#222; color:#d4af37; display:inline-block; padding:0.4rem 0.8rem; border-radius:5px;">En vente</p>
+        {% endif %}
+      </div>
+
+      {% if lot.description %}
+        <div style="max-width:700px; margin-top:2rem;">
+          <h3 style="color:#d4af37;">Description</h3>
+          <p style="line-height:1.6; color:#ccc;">{{ lot.description }}</p>
+        </div>
+      {% endif %}
+
+      <div style="margin-top:2rem;">
+        <a href="{{ path('app_lot_index') }}"
+           style="background:#d4af37; color:#000; padding:0.6rem 1.2rem; border-radius:6px; text-decoration:none; font-weight:bold;">
+          ← Retour aux enchères
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -12,8 +11,8 @@ class DeposerOffreType extends AbstractType
     {
         $builder->add('montant', MoneyType::class, [
             'currency' => 'EUR',
-            'label' => 'Votre offre',
-            'mapped' => false,
+            'label' => 'Votre offre (€)',
+            'required' => true,
             'scale' => 2,
         ]);
     }

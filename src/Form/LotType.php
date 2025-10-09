@@ -6,8 +6,12 @@ use App\Entity\Lot;
 use App\Entity\EvenementEnchere;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,36 +22,42 @@ class LotType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ⇩ Ces noms correspondent EXACTEMENT à tes propriétés (avec majuscules)
-            ->add('Lot', TextType::class, [
+            // Champs “propres”
+            ->add('titre', TextType::class, [
                 'required' => false,
-                'label'    => 'Nom du lot',
+                'label' => 'Titre'
             ])
-            ->add('Categorie', TextType::class, [
+            ->add('description', TextareaType::class, [
                 'required' => false,
-                'label'    => 'Catégorie',
+                'label' => 'Description'
             ])
-            ->add('Paiement', NumberType::class, [
+            ->add('categorie', TextType::class, [
                 'required' => false,
-                'label'    => 'Paiement / Prix',
-                'scale'    => 2,
+                'label' => 'Catégorie'
             ])
-            ->add('Facture', TextType::class, [
+            ->add('prixDepart', MoneyType::class, [
+                'currency' => 'EUR',
+                'label' => 'Prix de départ'
+            ])
+            ->add('incrementMin', NumberType::class, [
+                'scale' => 2,
+                'label' => 'Incrément minimum'
+            ])
+            ->add('dateFin', DateTimeImmutableType::class, [
                 'required' => false,
-                'label'    => 'Facture',
+                'label' => 'Fin des enchères',
+                'widget' => 'single_text'
             ])
-            ->add('evenementEnchere', EntityType::class, [
-                'class' => EvenementEnchere::class,
-                'choice_label' => 'id', // change en 'titre' si ton entity a un champ titre
-                'placeholder'  => 'Sélectionner un événement',
-                'label'        => 'Événement d’enchère',
+            ->add('estVendu', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Vendu ?'
             ])
 
-            // 📷 Champ fichier NON mappé (on gère le move() dans le contrôleur)
+            // Upload image (non mappé)
             ->add('imageFile', FileType::class, [
-                'mapped'   => false,
+                'mapped' => false,
                 'required' => false,
-                'label'    => 'Image (JPEG / PNG / WebP)',
+                'label' => 'Image (JPEG/PNG/WebP)',
                 'constraints' => [
                     new File([
                         'maxSize' => '4M',
@@ -55,6 +65,13 @@ class LotType extends AbstractType
                         'mimeTypesMessage' => 'Upload une image JPEG/PNG/WebP (max 4 Mo).',
                     ]),
                 ],
+            ])
+
+            // Lier à un événement
+            ->add('evenementEnchere', EntityType::class, [
+                'class' => EvenementEnchere::class,
+                'choice_label' => 'titre',
+                'label' => 'Événement d’enchère'
             ])
         ;
     }

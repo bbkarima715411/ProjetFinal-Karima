@@ -1,18 +1,20 @@
+{# templates/_partials/header.html.twig #}
+{% set events = evenementsEnCours|default([]) %}
+
 <header id="lux-header">
   <div class="hero">
     <video src="{{ asset('video/intro.mp4') }}" autoplay muted loop playsinline></video>
     <div class="overlay"></div>
 
     <div class="top-bar">
-      <a href="{{ path('app_accueil') }}" class="logo">Vestige d’Or</a>
+      <a href="{{ path('app_accueil') }}" class="logo">Vestige d'Or</a>
 
       <div class="icons">
-        <a href="{{ path('app_lot_index') }}" title="Rechercher" class="icon-btn">
-          🔍
-        </a>
-        <a href="#" title="Favoris" class="icon-btn">❤️</a>
+        <a href="{{ path('app_lot_index') }}" title="Enchères" class="icon-btn">🔎</a>
+        <a href="{{ path('app_mes_favoris') }}" title="Favoris" class="icon-btn">❤️</a>
 
         {% if app.user %}
+          <a href="{{ path('app_profil') }}" title="Mon Profil" class="icon-btn">👤</a>
           <a href="{{ path('app_logout') }}" title="Déconnexion" class="icon-btn">🚪</a>
         {% else %}
           <a href="{{ path('app_login') }}" title="Connexion" class="icon-btn">👤</a>
@@ -21,23 +23,30 @@
       </div>
     </div>
 
-    <div class="carousel">
-      {% if evenementsEnCours is defined and evenementsEnCours|length %}
-        {% for ev in evenementsEnCours %}
-          <a href="{{ path('app_lot_index', { evenement: ev.id }) }}" class="carousel-item">
-            <img src="{{ ev.imageHero ? asset('uploads/' ~ ev.imageHero) : asset('images/demo/placeholder.jpg') }}" alt="{{ ev.titre }}">
-            <span>{{ ev.titre }}</span>
-          </a>
-        {% endfor %}
-      {% else %}
-        {% for i in 1..4 %}
-          <div class="carousel-item placeholder">
-            <div></div>
-            <span>Bientôt</span>
-          </div>
-        {% endfor %}
-      {% endif %}
-    </div>
+<div class="carousel">
+  {% if events|length %}
+    {% for ev in events %}
+      {# essaie de récupérer l'image du premier lot de l'événement #}
+      {% set firstLot = ev.lots|default([])|first %}
+      {% set imgPath = (firstLot and firstLot.imageFilename) 
+          ? asset('uploads/' ~ firstLot.imageFilename) 
+          : asset('images/demo/placeholder.jpg') %}
+
+      <a href="{{ path('app_evenement_enchere_show', { id: ev.id }) }}" class="carousel-item">
+        <img src="{{ imgPath }}" alt="{{ ev.titre }}">
+        <span>{{ ev.titre }}</span>
+      </a>
+    {% endfor %}
+  {% else %}
+    {% for i in 1..4 %}
+      <div class="carousel-item placeholder">
+        <div></div>
+        <span>Bientôt</span>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
   </div>
 
   <nav id="nav-hidden">
@@ -46,29 +55,33 @@
       <li class="dropdown">
         <span>Catégories ▾</span>
         <div class="dropdown-content">
-          <a href="{{ path('app_lot_index', {cat:'Mobilier'}) }}">Mobilier</a>
-          <a href="{{ path('app_lot_index', {cat:'Sieges'}) }}">Sièges & Fauteuils</a>
-          <a href="{{ path('app_lot_index', {cat:'Tables'}) }}">Tables & Bureaux</a>
-          <a href="{{ path('app_lot_index', {cat:'Armoires'}) }}">Armoires & Commodes</a>
-          <a href="{{ path('app_lot_index', {cat:'Tableaux'}) }}">Tableaux & Arts graphiques</a>
-          <a href="{{ path('app_lot_index', {cat:'Bijoux'}) }}">Bijoux & Montres</a>
-          <a href="{{ path('app_lot_index', {cat:'ObjetsPrecieux'}) }}">Objets précieux</a>
-          <a href="{{ path('app_lot_index', {cat:'Ethnique'}) }}">Art d’Orient & Ethnique</a>
+          <a href="{{ path('app_categorie_show', {slug: 'sieges-fauteuils'}) }}">Sièges & Fauteuils</a>
+          <a href="{{ path('app_categorie_show', {slug: 'tables-bureaux'}) }}">Tables & Bureaux</a>
+          <a href="{{ path('app_categorie_show', {slug: 'armoires-commodes'}) }}">Armoires & Commodes</a>
+
+          <a href="{{ path('app_categorie_show', {slug: 'peintures-anciennes'}) }}">Peintures anciennes</a>
+          <a href="{{ path('app_categorie_show', {slug: 'gravures-dessins'}) }}">Gravures & Dessins</a>
+          <a href="{{ path('app_categorie_show', {slug: 'affiches-anciennes'}) }}">Affiches anciennes</a>
+
+          <a href="{{ path('app_categorie_show', {slug: 'bijoux-anciens'}) }}">Bijoux anciens</a>
+          <a href="{{ path('app_categorie_show', {slug: 'montres-collection'}) }}">Montres de collection</a>
+          <a href="{{ path('app_categorie_show', {slug: 'objets-precieux'}) }}">Objets précieux</a>
+          <a href="{{ path('app_categorie_show', {slug: 'monnaies-medailles'}) }}">Monnaies & Médailles</a>
+
+          <a href="{{ path('app_categorie_show', {slug: 'objets-asiatiques'}) }}">Objets asiatiques</a>
+          <a href="{{ path('app_categorie_show', {slug: 'objets-africains'}) }}">Objets africains</a>
+          <a href="{{ path('app_categorie_show', {slug: 'objets-amerindiens'}) }}">Objets amérindiens</a>
         </div>
       </li>
       <li><a href="{{ path('app_lot_index') }}">Enchères</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="{{ path('app_contact') }}">Contact</a></li>
     </ul>
   </nav>
 </header>
 
 <script>
   const nav = document.getElementById("nav-hidden");
-  window.addEventListener("mousemove", e => {
-    if (e.clientY < 50) {
-      nav.classList.add("show");
-    } else {
-      nav.classList.remove("show");
-    }
+  window.addEventListener("mousemove", (e) => {
+    if (e.clientY < 60) nav.classList.add("show"); else nav.classList.remove("show");
   });
 </script>

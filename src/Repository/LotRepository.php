@@ -6,6 +6,9 @@ use App\Entity\Lot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Lot>
+ */
 class LotRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -13,22 +16,13 @@ class LotRepository extends ServiceEntityRepository
         parent::__construct($registry, Lot::class);
     }
 
-    /** Lots d’événements ouverts (optionnel) */
-    public function trouverLotsActifs(int $limit = 30): array
+    /** @return Lot[] */
+    public function findLatest(int $limit = 20): array
     {
-        $now = new \DateTimeImmutable();
-
         return $this->createQueryBuilder('l')
-            ->join('l.evenementEnchere', 'e')
-            ->andWhere('e.statut = :open')
-            ->andWhere('e.debutAt <= :now')
-            ->andWhere('e.finAt > :now')
-            ->setParameter('open', 'open')
-            ->setParameter('now', $now)
             ->orderBy('l.id', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
 }
-
