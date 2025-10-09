@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Lot;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -36,20 +35,19 @@ class LotFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < self::COUNT; $i++) {
             $lot = new Lot();
-            $lot->setLot(ucfirst($faker->unique()->word()))
+            $lot->setTitre(ucfirst($faker->words(3, true)))
+                ->setDescription($faker->paragraphs(2, true))
                 ->setCategorie($faker->randomElement($categories))
-                ->setPaiement($faker->randomFloat(2, 20, 300))
-                ->setFacture($faker->uuid())
                 ->setPrixDepart($faker->randomFloat(2, 50, 500))
-                ->setIncrementMin($faker->randomFloat(2, 1, 10));
+                ->setIncrementMin($faker->randomFloat(2, 1, 10))
+                ->setDateFin(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('+1 day', '+3 weeks')))
+                ->setEstVendu(false);
 
-            // Associer à un événement aléatoire via les références de EvenementEnchereFixtures
             $eventIndex = $faker->numberBetween(0, 2);
             $event = $this->getReference(EvenementEnchereFixtures::REF_PREFIX.$eventIndex);
             $lot->setEvenementEnchere($event);
 
             $manager->persist($lot);
-
             $this->addReference(self::REF_PREFIX.$i, $lot);
         }
 

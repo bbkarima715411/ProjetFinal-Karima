@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Repository\EvenementEnchereRepository;
@@ -12,11 +11,11 @@ class AccueilController extends AbstractController
     #[Route('/', name: 'app_accueil')]
     public function index(EvenementEnchereRepository $repo): Response
     {
-        // Version "safe" (évite finAt/debutAt si tes champs ne sont pas encore en BDD)
-        $aVenir = $repo->findBy([], ['id' => 'DESC'], 20);
+        // Simple: derniers events, on affichera leur titre dans le carrousel
+        $evenementsEnCours = $repo->findBy([], ['id' => 'DESC'], 8);
 
         return $this->render('accueil/index.html.twig', [
-            'evenementsAVenir' => $aVenir,
+            'evenementsEnCours' => $evenementsEnCours,
         ]);
     }
 }

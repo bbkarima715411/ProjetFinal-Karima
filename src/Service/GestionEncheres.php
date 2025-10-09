@@ -1,40 +1,24 @@
 <?php
-
 namespace App\Service;
 
-use App\Entity\Lot;
-use App\Entity\EnchereUtilisateur;
-use App\Entity\User;
+use App\Entity\{Lot, EnchereUtilisateur, User};
 use Doctrine\ORM\EntityManagerInterface;
 
 class GestionEncheres
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    /**
-     * Dépose une offre si l'événement est ouvert et si le montant respecte l'incrément.
-     * @throws \RuntimeException
-     */
-    public function deposerOffre(Lot $lot, User $user, float $montant): EnchereUtilisateur
+    public function deposerOffre(Lot $lot, User $user, float $montant): void
     {
-        $event = $lot->getEvenementEnchere();
-        if (!$event || !$event->estOuvert()) {
-            throw new \RuntimeException("L'événement n'est pas ouvert.");
+        $current = $lot->getPrixActuel();
+        $min = $current + $lot->getIncrementMin();
+        if ($montant < $min) {
+            throw new \RuntimeException(sprintf('Montant trop bas. Minimum requis: %.2f €', $min));
         }
 
-        $minimum = $lot->getPrixActuel() + $lot->getIncrementMin();
-        if ($montant < $minimum) {
-            throw new \RuntimeException(sprintf("Offre trop basse. Minimum requis : %.2f €", $minimum));
-        }
-
-        $offre = (new EnchereUtilisateur())
-            ->setLot($lot)
-            ->setUser($user)
-            ->setMontant($montant);
-
-        $this->em->persist($offre);
+        $bid = new EnchereUtilisateur();
+        $bid->setLot($lot)->setUser($user)->setMontant($montant);
+        $this->em->persist($bid);
         $this->em->flush();
-
-        return $offre;
     }
 }
