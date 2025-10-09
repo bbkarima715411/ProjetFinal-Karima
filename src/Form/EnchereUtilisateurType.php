@@ -14,7 +14,6 @@ class EnchereUtilisateurType extends AbstractType
         $builder
             ->add('montant')
             ->add('lot')
-            ->add('utilisateur')
         ;
     }
 

@@ -1,83 +1,74 @@
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-black/5">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <!-- Barre fine supérieure (optionnelle) -->
-    <div class="hidden md:flex h-8 items-center justify-end text-[11px] tracking-wide text-black/60">
-      <a href="{{ path('app_contact') }}" class="hover:underline">Service client</a>
-    </div>
+<header id="lux-header">
+  <div class="hero">
+    <video src="{{ asset('video/intro.mp4') }}" autoplay muted loop playsinline></video>
+    <div class="overlay"></div>
 
-    <!-- Ligne principale -->
-    <div class="flex items-center justify-between h-16">
-      <!-- Nav gauche (desktop) -->
-      <nav class="hidden lg:flex items-center gap-6 text-[13px] tracking-wide">
-        <a href="{{ path('app_accueil') }}" class="text-black/80 hover:text-black">ACCUEIL</a>
-        <details class="relative group">
-          <summary class="cursor-pointer list-none text-black/80 hover:text-black">CATÉGORIES</summary>
-          <div class="absolute left-0 mt-2 w-[720px] max-w-[90vw] bg-white border border-black/10 shadow-[0_20px_40px_rgba(0,0,0,.08)] rounded-xl p-6 hidden group-open:block">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-[13px]">
-              <div>
-                <h3 class="mb-2 font-medium text-black">Mobilier</h3>
-                <ul class="space-y-1">
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'sieges-fauteuils'}) }}">Sièges &amp; Fauteuils</a></li>
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'tables-bureaux'}) }}">Tables &amp; Bureaux</a></li>
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'armoires-commodes'}) }}">Armoires &amp; Commodes</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 class="mb-2 font-medium text-black">Arts graphiques</h3>
-                <ul class="space-y-1">
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'peintures-anciennes'}) }}">Peintures anciennes</a></li>
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'gravures-dessins'}) }}">Gravures &amp; Dessins</a></li>
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'affiches-anciennes'}) }}">Affiches anciennes</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 class="mb-2 font-medium text-black">Bijoux &amp; Montres</h3>
-                <ul class="space-y-1">
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'bijoux-anciens'}) }}">Bijoux anciens</a></li>
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'montres-collection'}) }}">Montres de collection</a></li>
-                  <li><a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'objets-precieux'}) }}">Objets précieux</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </details>
-        <a href="{{ path('app_lot_index') }}" class="text-black/80 hover:text-black">OBJETS EN COURS</a>
-        <a href="{{ path('app_contact') }}" class="text-black/80 hover:text-black">CONTACT</a>
-      </nav>
+    <div class="top-bar">
+      <a href="{{ path('app_accueil') }}" class="logo">Vestige d’Or</a>
 
-      <!-- Logo centré -->
-      <a href="{{ path('app_accueil') }}" class="mx-auto lg:mx-0 font-semibold tracking-[0.25em] text-[18px]">MAISON D’ENCHÈRES</a>
+      <div class="icons">
+        <a href="{{ path('app_lot_index') }}" title="Rechercher" class="icon-btn">
+          🔍
+        </a>
+        <a href="#" title="Favoris" class="icon-btn">❤️</a>
 
-      <!-- Icônes droite -->
-      <div class="flex items-center gap-4">
         {% if app.user %}
-          <a href="{{ path('app_profil') }}" class="text-black/80 hover:text-black" aria-label="Compte">
-            <!-- icône utilisateur -->
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
-          </a>
-          <a href="{{ path('app_logout') }}" class="text-[12px] underline underline-offset-4">Déconnexion</a>
+          <a href="{{ path('app_logout') }}" title="Déconnexion" class="icon-btn">🚪</a>
         {% else %}
-          <a href="{{ path('app_login') }}" class="text-black/80 hover:text-black text-[13px]">Connexion</a>
-          <a href="{{ path('app_register') }}" class="text-[12px] tracking-wide border border-black px-3 py-1 rounded hover:bg-black hover:text-white transition">Créer un compte</a>
+          <a href="{{ path('app_login') }}" title="Connexion" class="icon-btn">👤</a>
+          <a href="{{ path('app_register') }}" title="Inscription" class="icon-btn">➕</a>
         {% endif %}
-        <!-- burger mobile -->
-        <details class="lg:hidden">
-          <summary class="list-none cursor-pointer border border-black/10 rounded p-2" aria-label="Menu">☰</summary>
-          <nav class="absolute right-4 mt-2 w-56 bg-white border border-black/10 rounded-lg shadow-md p-3 space-y-2">
-            <a class="block text-[13px] hover:underline" href="{{ path('app_accueil') }}">Accueil</a>
-            <a class="block text-[13px] hover:underline" href="{{ path('app_lot_index') }}">Objets en cours</a>
-            <a class="block text-[13px] hover:underline" href="{{ path('app_contact') }}">Contact</a>
-            <details>
-              <summary class="cursor-pointer text-[13px] hover:underline">Catégories</summary>
-              <div class="mt-2 pl-3 space-y-1 text-[13px]">
-                <a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'sieges-fauteuils'}) }}">Sièges &amp; Fauteuils</a>
-                <a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'tables-bureaux'}) }}">Tables &amp; Bureaux</a>
-                <a class="block hover:underline" href="{{ path('app_categorie_show', {slug:'peintures-anciennes'}) }}">Peintures anciennes</a>
-              </div>
-            </details>
-          </nav>
-        </details>
       </div>
     </div>
+
+    <div class="carousel">
+      {% if evenementsEnCours is defined and evenementsEnCours|length %}
+        {% for ev in evenementsEnCours %}
+          <a href="{{ path('app_lot_index', { evenement: ev.id }) }}" class="carousel-item">
+            <img src="{{ ev.imageHero ? asset('uploads/' ~ ev.imageHero) : asset('images/demo/placeholder.jpg') }}" alt="{{ ev.titre }}">
+            <span>{{ ev.titre }}</span>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% for i in 1..4 %}
+          <div class="carousel-item placeholder">
+            <div></div>
+            <span>Bientôt</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
   </div>
+
+  <nav id="nav-hidden">
+    <ul>
+      <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+      <li class="dropdown">
+        <span>Catégories ▾</span>
+        <div class="dropdown-content">
+          <a href="{{ path('app_lot_index', {cat:'Mobilier'}) }}">Mobilier</a>
+          <a href="{{ path('app_lot_index', {cat:'Sieges'}) }}">Sièges & Fauteuils</a>
+          <a href="{{ path('app_lot_index', {cat:'Tables'}) }}">Tables & Bureaux</a>
+          <a href="{{ path('app_lot_index', {cat:'Armoires'}) }}">Armoires & Commodes</a>
+          <a href="{{ path('app_lot_index', {cat:'Tableaux'}) }}">Tableaux & Arts graphiques</a>
+          <a href="{{ path('app_lot_index', {cat:'Bijoux'}) }}">Bijoux & Montres</a>
+          <a href="{{ path('app_lot_index', {cat:'ObjetsPrecieux'}) }}">Objets précieux</a>
+          <a href="{{ path('app_lot_index', {cat:'Ethnique'}) }}">Art d’Orient & Ethnique</a>
+        </div>
+      </li>
+      <li><a href="{{ path('app_lot_index') }}">Enchères</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 </header>
+
+<script>
+  const nav = document.getElementById("nav-hidden");
+  window.addEventListener("mousemove", e => {
+    if (e.clientY < 50) {
+      nav.classList.add("show");
+    } else {
+      nav.classList.remove("show");
+    }
+  });
+</script>

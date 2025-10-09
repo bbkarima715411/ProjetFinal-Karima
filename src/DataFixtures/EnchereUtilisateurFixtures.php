@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\EnchereUtilisateur;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,10 +28,11 @@ class EnchereUtilisateurFixtures extends Fixture implements DependentFixtureInte
             $lot = $this->getReference(LotFixtures::REF_PREFIX.$lotIndex);
             $enchere->setLot($lot);
 
-            // Associer un utilisateur existant via les références de UtilisateurFixtures
-            $userIndex = $faker->numberBetween(0, 9);
-            $user = $this->getReference(UtilisateurFixtures::REF_PREFIX.$userIndex);
-            $enchere->setUtilisateur($user);
+            // Associer un utilisateur (User) existant via les références de UserFixtures
+            $userIndex = $faker->numberBetween(0, UserFixtures::COUNT - 1);
+            /** @var User $appUser */
+            $appUser = $this->getReference(UserFixtures::REF_PREFIX.$userIndex);
+            $enchere->setUser($appUser);
 
             $manager->persist($enchere);
         }
@@ -41,7 +43,7 @@ class EnchereUtilisateurFixtures extends Fixture implements DependentFixtureInte
     public function getDependencies(): array
     {
         return [
-            UtilisateurFixtures::class,
+            UserFixtures::class,
             LotFixtures::class,
         ];
     }
