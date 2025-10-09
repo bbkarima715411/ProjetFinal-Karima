@@ -4,14 +4,17 @@ namespace App\Entity;
 
 use App\Repository\EnchereUtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: EnchereUtilisateurRepository::class)]
+#[ORM\Table(name: 'enchere_utilisateur')]
 class EnchereUtilisateur
 {
-    #[ORM\Id] #[ORM\GeneratedValue] #[ORM\Column]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
-    // NON NULL maintenant
     #[ORM\Column]
     private float $montant = 0.0;
 
@@ -19,11 +22,11 @@ class EnchereUtilisateur
     #[ORM\JoinColumn(nullable: false)]
     private ?Lot $lot = null;
 
-    #[ORM\ManyToOne(inversedBy: 'encheresUtilisateur')]
+    // 👉 on référence bien User (et pas Utilisateur)
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $utilisateur = null;
+    private ?User $user = null;
 
-    // Nouveau : date
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $creeLe;
 
@@ -40,8 +43,8 @@ class EnchereUtilisateur
     public function getLot(): ?Lot { return $this->lot; }
     public function setLot(?Lot $lot): self { $this->lot = $lot; return $this; }
 
-    public function getUtilisateur(): ?Utilisateur { return $this->utilisateur; }
-    public function setUtilisateur(?Utilisateur $utilisateur): self { $this->utilisateur = $utilisateur; return $this; }
+    public function getUser(): ?User { return $this->user; }
+    public function setUser(?User $user): self { $this->user = $user; return $this; }
 
     public function getCreeLe(): \DateTimeImmutable { return $this->creeLe; }
     public function setCreeLe(\DateTimeImmutable $d): self { $this->creeLe = $d; return $this; }

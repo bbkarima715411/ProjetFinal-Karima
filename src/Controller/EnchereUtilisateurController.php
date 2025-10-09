@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\EnchereUtilisateur;
-use App\Form\EnchereUtilisateurType;
 use App\Repository\EnchereUtilisateurRepository;
+use App\Form\EnchereUtilisateurType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

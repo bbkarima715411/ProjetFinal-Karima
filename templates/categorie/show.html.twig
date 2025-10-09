@@ -2,52 +2,7 @@
 {% block title %}{{ label }} — Catégorie{% endblock %}
 
 {% block body %}
-<section class="bg-black text-white py-10">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <header class="mb-6">
-      <h1 class="text-2xl sm:text-3xl font-semibold">
-        {{ label }} <span class="text-[#D4AF37]">—</span> Résultats
-      </h1>
-      <p class="text-white/60 text-sm mt-1">Filtré par catégorie "{{ label }}".</p>
-    </header>
 
-    {% if lots is empty %}
-      <div class="rounded-xl border border-white/10 bg-white/5 p-6">
-        <p class="text-white/70">Aucun lot trouvé dans cette catégorie pour le moment.</p>
-      </div>
-    {% else %}
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {% for lot in lots %}
-          <article class="group rounded-xl overflow-hidden border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
-            <div class="aspect-[16/10] overflow-hidden">
-              {% set img = lot.imageFilename ? asset('uploads/' ~ lot.imageFilename) : asset('images/placeholder.jpg') %}
-              <img src="{{ img }}" alt="{{ lot.lot ?? 'Lot' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition">
-            </div>
-            <div class="p-4">
-              <h3 class="text-white/90 font-medium truncate">{{ lot.lot ?? 'Lot' }}</h3>
-              <p class="text-white/60 text-sm mt-1">
-                {{ lot.categorie ?? label }}
-                {% if lot.paiement is not null %}
-                  — Prix départ {{ lot.paiement|number_format(2, ',', ' ') }} €
-                {% endif %}
-              </p>
 
-              <div class="mt-3 flex items-center justify-between">
-                <a href="{{ path('app_lot_show', {id: lot.id}) }}"
-                   class="text-sm rounded-md border border-[#D4AF37] text-[#D4AF37] px-3 py-1.5 hover:bg-[#D4AF37] hover:text-black transition">
-                  Voir le lot
-                </a>
-                {% if lot.evenementEnchere and lot.evenementEnchere.finAt %}
-                  <span class="text-xs text-white/50">
-                    Fin {{ lot.evenementEnchere.finAt|date('d/m H:i') }}
-                  </span>
-                {% endif %}
-              </div>
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-    {% endif %}
-  </div>
-</section>
+
 {% endblock %}

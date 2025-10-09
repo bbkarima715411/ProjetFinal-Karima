@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Lot;
 use App\Entity\EnchereUtilisateur;
-use App\Entity\Utilisateur;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class GestionEncheres
@@ -15,7 +15,7 @@ class GestionEncheres
      * Dépose une offre si l'événement est ouvert et si le montant respecte l'incrément.
      * @throws \RuntimeException
      */
-    public function deposerOffre(Lot $lot, Utilisateur $utilisateur, float $montant): EnchereUtilisateur
+    public function deposerOffre(Lot $lot, User $user, float $montant): EnchereUtilisateur
     {
         $event = $lot->getEvenementEnchere();
         if (!$event || !$event->estOuvert()) {
@@ -29,7 +29,7 @@ class GestionEncheres
 
         $offre = (new EnchereUtilisateur())
             ->setLot($lot)
-            ->setUtilisateur($utilisateur)
+            ->setUser($user)
             ->setMontant($montant);
 
         $this->em->persist($offre);
