@@ -1,41 +1,88 @@
-{% extends 'base.html.twig'%}
+{% extends 'base.html.twig' %}
 
 {% block title %}Vestige d’Or — Tous les lots{% endblock %}
 
 {% block body %}
-<main class="lots-page" style="background-color:#000; color:#fff; min-height:100vh; padding:2rem;">
-  <h1 style="text-align:center; color:#d4af37; margin-bottom:2rem;">Nos Lots aux Enchères</h1>
+<main class="bg-black text-white py-4" style="min-height:100vh;">
+  <div class="container">
+    <h1 class="text-center mb-4 text-accent">Nos Lots aux Enchères</h1>
+
+  {# 🕗 Bandeau : si au moins un évènement se termine dans < 1h #}
+  {% set evImminent = null %}
+  {% for lot in lots %}
+    {% if lot.evenementEnchere is defined and lot.evenementEnchere and lot.evenementEnchere.fermeDansMoinsDuneHeure is defined and lot.evenementEnchere.fermeDansMoinsDuneHeure %}
+      {% set evImminent = lot.evenementEnchere %}
+    {% endif %}
+  {% endfor %}
+
+  {% if evImminent %}
+    <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+      <div class="fs-5">⏰</div>
+      <div class="flex-grow-1">
+        <strong>Fermeture imminente :</strong>
+        <span>les enchères ferment à
+          {{ evImminent.finAt ? evImminent.finAt|date('H\\hi','Europe/Paris') : '—' }}.
+        </span>
+        <span id="countdown-index"
+              data-deadline="{{ evImminent.finAt ? evImminent.finAt|date('Y-m-d H:i:s','Europe/Paris') : '' }}"
+              class="ms-2 fw-bold text-white"></span>
+      </div>
+    </div>
+  {% endif %}
 
   {% if lots is empty %}
-    <p style="text-align:center;">Aucun lot disponible pour le moment.</p>
+    <p class="text-center">Aucun lot disponible pour le moment.</p>
   {% else %}
-    <div class="lot-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;">
+    <div class="row g-4">
       {% for lot in lots %}
-        <div class="lot-card" style="background:#111; border:1px solid rgba(212,175,55,0.5); border-radius:10px; overflow:hidden; transition:transform 0.3s;">
-          <a href="{{ path('app_lot_show', {id: lot.id}) }}" style="color:inherit; text-decoration:none;">
-            {% if lot.imageFilename %}
-              <img src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre }}" style="width:100%; height:220px; object-fit:cover;">
-            {% else %}
-              <img src="{{ asset('images/demo/commo.png') }}" alt="Aucune image" style="width:100%; height:220px; object-fit:cover; opacity:0.8;">
-            {% endif %}
-
-            <div style="padding:1rem;">
-              <h3 style="color:#d4af37; margin-bottom:0.5rem;">{{ lot.titre }}</h3>
-              <p style="font-size:0.9rem; color:#ccc; margin-bottom:0.5rem;">Catégorie : {{ lot.categorie|default('Non spécifiée') }}</p>
-              <p style="font-weight:bold; color:#fff;">Prix actuel : {{ lot.prixActuel|number_format(2, ',', ' ') }} €</p>
-
-              {% if lot.dateFin %}
-                <p style="font-size:0.85rem; color:#aaa;">Fin de l’enchère : {{ lot.dateFin|date('d/m/Y H:i') }}</p>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="text-decoration-none text-white" href="{{ path('app_lot_show', {id: lot.id}) }}">
+            <div class="card bg-dark h-100 border-opacity-50" style="border-color: var(--line);">
+              {% if lot.imageFilename %}
+                <img class="card-img-top" src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.lot ?? 'Lot' }}" style="height:220px;object-fit:cover;">
+              {% else %}
+                <img class="card-img-top" src="{{ asset('images/demo/commo.png') }}" alt="Aucune image" style="height:220px;object-fit:cover;opacity:0.85;">
               {% endif %}
-
-              {% if lot.estVendu %}
-                <p style="background:#b80000; color:white; padding:0.3rem 0.5rem; display:inline-block; border-radius:5px;">VENDU</p>
-              {% endif %}
+              <div class="card-body">
+                <h3 class="h5 text-accent">{{ lot.titre }}</h3>
+                <p class="mb-1 text-secondary small">Catégorie : {{ lot.categorie|default('Non spécifiée') }}</p>
+                <p class="mb-1 small text-muted">Prix de départ : {{ lot.prixDepart|number_format(2, ',', ' ') }} €</p>
+                <p class="fw-bold mb-0">Prix actuel : {{ lot.prixActuel|number_format(2, ',', ' ') }} €</p>
+                {% if lot.evenementEnchere and lot.evenementEnchere.finAt %}
+                  <p class="text-muted small mb-0 mt-1">Fin : {{ lot.evenementEnchere.finAt|date('d/m/Y H:i','Europe/Paris') }}</p>
+                {% endif %}
+              </div>
             </div>
           </a>
         </div>
       {% endfor %}
     </div>
   {% endif %}
+  </div>
 </main>
+
+{% if evImminent %}
+<script>
+  (function () {
+    var el = document.getElementById('countdown-index');
+    if (!el) return;
+    var dl = el.getAttribute('data-deadline');
+    if (!dl) return;
+
+    function tick() {
+      var end = new Date(dl.replace(' ', 'T'));
+      var now = new Date();
+      var diff = end - now;
+      if (diff <= 0) { el.textContent = 'Terminé'; return; }
+
+      var s = Math.floor(diff / 1000);
+      var h = Math.floor(s / 3600); s %= 3600;
+      var m = Math.floor(s / 60); s %= 60;
+      el.textContent = (h>0?h+'h ':'') + (m>0?m+'m ':'') + s + 's';
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+</script>
+{% endif %}
 {% endblock %}

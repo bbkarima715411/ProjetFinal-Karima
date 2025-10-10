@@ -1,35 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}EnchereUtilisateur index{% endblock %}
+{% block title %}Enchères utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>EnchereUtilisateur index</h1>
+  <main class="bg-black text-white py-5" style="min-height:100vh;">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 text-accent m-0">Enchères utilisateurs</h1>
+        <a href="{{ path('app_enchere_utilisateur_new') }}" class="btn btn-primary text-white">Créer</a>
+      </div>
 
-    <table class="table">
-        <thead>
+      <div class="table-responsive">
+        <table class="table table-dark table-striped align-middle">
+          <thead>
             <tr>
-                <th>Id</th>
-                <th>Montant</th>
-                <th>actions</th>
+              <th>Id</th>
+              <th>Montant</th>
+              <th class="text-end">Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for enchere_utilisateur in enchere_utilisateurs %}
+          </thead>
+          <tbody>
+          {% for enchere_utilisateur in enchere_utilisateurs %}
             <tr>
-                <td>{{ enchere_utilisateur.id }}</td>
-                <td>{{ enchere_utilisateur.montant }}</td>
-                <td>
-                    <a href="{{ path('app_enchere_utilisateur_show', {'id': enchere_utilisateur.id}) }}">show</a>
-                    <a href="{{ path('app_enchere_utilisateur_edit', {'id': enchere_utilisateur.id}) }}">edit</a>
-                </td>
+              <td>{{ enchere_utilisateur.id }}</td>
+              <td>{{ enchere_utilisateur.montant }}</td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-light me-2" href="{{ path('app_enchere_utilisateur_show', {'id': enchere_utilisateur.id}) }}">Voir</a>
+                <a class="btn btn-sm btn-primary" href="{{ path('app_enchere_utilisateur_edit', {'id': enchere_utilisateur.id}) }}">Éditer</a>
+              </td>
             </tr>
-        {% else %}
+          {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+              <td colspan="3" class="text-center text-muted">Aucun enregistrement</td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_enchere_utilisateur_new') }}">Create new</a>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
 {% endblock %}

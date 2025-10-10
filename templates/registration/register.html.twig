@@ -1,19 +1,147 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}S'inscrire{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <h1>S'inscrire</h1>
+  <main class="bg-black text-white py-5" style="min-height:100vh;">
+    <div class="container" style="max-width:520px;">
+      <div class="card bg-dark border-light-subtle">
+        <div class="card-body p-4">
+          <h1 class="h4 mb-3 text-accent"><i class="bi bi-person-plus me-2"></i>Inscription</h1>
 
-    {{ form_errors(registrationForm) }}
+          {% if form_errors(registrationForm) %}
+            <div class="alert alert-danger small" role="alert">
+              {{ form_errors(registrationForm) }}
+            </div>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                if (window.showToast) {
+                  showToast('danger', "Veuillez corriger les champs requis avant de continuer.");
+                }
+                const formEl = document.querySelector('form');
+                if (formEl) {
+                  const firstRequired = formEl.querySelector('input[required], select[required], textarea[required]');
+                  if (firstRequired) { try { firstRequired.focus(); } catch(_) {}
+                  }
+                }
+              });
+            </script>
+          {% endif %}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+          {{ form_start(registrationForm, {'attr': {'class': 'vstack gap-3'}}) }}
+            <h2 class="h6 text-accent mt-2 mb-2">Informations personnelles</h2>
+            {# Prénom #}
+            {% set fn_invalid = not registrationForm.firstName.vars.valid %}
+            {{ form_label(registrationForm.firstName) }}
+            {{ form_widget(registrationForm.firstName, {
+              'attr': {
+                'class': 'form-control bg-dark text-white border-secondary' ~ (fn_invalid ? ' is-invalid' : '')
+              }
+            }) }}
 
-        <button type="submit" class="btn">S'insrire</button>
-    {{ form_end(registrationForm) }}
+            {# Nom #}
+            {% set ln_invalid = not registrationForm.lastName.vars.valid %}
+            {{ form_label(registrationForm.lastName) }}
+            {{ form_widget(registrationForm.lastName, {
+              'attr': {
+                'class': 'form-control bg-dark text-white border-secondary' ~ (ln_invalid ? ' is-invalid' : '')
+              }
+            }) }}
+
+            <div class="row g-2">
+              <div class="col-12 col-sm-6">
+                {% set bd_invalid = not registrationForm.birthDate.vars.valid %}
+                {{ form_label(registrationForm.birthDate) }}
+                {{ form_widget(registrationForm.birthDate, {
+                  'attr': {
+                    'class': 'form-control bg-dark text-white border-secondary' ~ (bd_invalid ? ' is-invalid' : '')
+                  }
+                }) }}
+              </div>
+              <div class="col-12 col-sm-6">
+                {% set ph_invalid = not registrationForm.phone.vars.valid %}
+                {{ form_label(registrationForm.phone) }}
+                {{ form_widget(registrationForm.phone, {
+                  'attr': {
+                    'class': 'form-control bg-dark text-white border-secondary' ~ (ph_invalid ? ' is-invalid' : '')
+                  }
+                }) }}
+              </div>
+            </div>
+
+            <h2 class="h6 text-accent mt-2 mb-2">Adresse</h2>
+            {% set ad1_invalid = not registrationForm.address1.vars.valid %}
+            {{ form_label(registrationForm.address1) }}
+            {{ form_widget(registrationForm.address1, {
+              'attr': {
+                'class': 'form-control bg-dark text-white border-secondary' ~ (ad1_invalid ? ' is-invalid' : '')
+              }
+            }) }}
+
+            {% set ad2_invalid = not registrationForm.address2.vars.valid %}
+            {{ form_label(registrationForm.address2) }}
+            {{ form_widget(registrationForm.address2, {
+              'attr': {
+                'class': 'form-control bg-dark text-white border-secondary' ~ (ad2_invalid ? ' is-invalid' : '')
+              }
+            }) }}
+
+            <div class="row g-2">
+              <div class="col-6">
+                {% set pc_invalid = not registrationForm.postalCode.vars.valid %}
+                {{ form_label(registrationForm.postalCode) }}
+                {{ form_widget(registrationForm.postalCode, {
+                  'attr': {
+                    'class': 'form-control bg-dark text-white border-secondary' ~ (pc_invalid ? ' is-invalid' : '')
+                  }
+                }) }}
+              </div>
+              <div class="col-6">
+                {% set ct_invalid = not registrationForm.city.vars.valid %}
+                {{ form_label(registrationForm.city) }}
+                {{ form_widget(registrationForm.city, {
+                  'attr': {
+                    'class': 'form-control bg-dark text-white border-secondary' ~ (ct_invalid ? ' is-invalid' : '')
+                  }
+                }) }}
+              </div>
+            </div>
+
+            {% set co_invalid = not registrationForm.country.vars.valid %}
+            {{ form_label(registrationForm.country) }}
+            {{ form_widget(registrationForm.country, {
+              'attr': {
+                'class': 'form-select bg-dark text-white border-secondary' ~ (co_invalid ? ' is-invalid' : '')
+              }
+            }) }}
+
+            <h2 class="h6 text-accent mt-3 mb-2">Compte</h2>
+            {% set em_invalid = not registrationForm.email.vars.valid %}
+            {{ form_label(registrationForm.email) }}
+            {{ form_widget(registrationForm.email, {
+              'attr': {
+                'class': 'form-control bg-dark text-white border-secondary' ~ (em_invalid ? ' is-invalid' : '')
+              }
+            }) }}
+
+            {% set pw_invalid = not registrationForm.plainPassword.vars.valid %}
+            {{ form_label(registrationForm.plainPassword, 'Mot de passe') }}
+            {{ form_widget(registrationForm.plainPassword, {
+              'attr': {
+                'class': 'form-control bg-dark text-white border-secondary' ~ (pw_invalid ? ' is-invalid' : '')
+              }
+            }) }}
+
+            <div class="form-check mt-1">
+              {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+              <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">J’accepte les conditions</label>
+            </div>
+            <div class="d-grid mt-2">
+              <button type="submit" class="btn btn-primary text-white fw-semibold">Créer mon compte</button>
+            </div>
+          {{ form_end(registrationForm) }}
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New EnchereUtilisateur{% endblock %}
+{% block title %}Nouvelle enchère utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Create new EnchereUtilisateur</h1>
-
-    {{ include('enchere_utilisateur/_form.html.twig') }}
-
-    <a href="{{ path('app_enchere_utilisateur_index') }}">back to list</a>
+  <main class="bg-black text-white py-5" style="min-height:100vh;">
+    <div class="container" style="max-width:800px;">
+      <h1 class="h3 text-accent mb-3">Créer une enchère utilisateur</h1>
+      <div class="card bg-dark border-light-subtle">
+        <div class="card-body">
+          {{ include('enchere_utilisateur/_form.html.twig') }}
+          <a href="{{ path('app_enchere_utilisateur_index') }}" class="btn btn-outline-light mt-2">← Retour à la liste</a>
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

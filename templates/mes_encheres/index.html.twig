@@ -1,20 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MesEncheresController!{% endblock %}
+{% block title %}Mes enchères — Maison d’Enchères{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+  <main class="bg-black text-white py-5" style="min-height:100vh;">
+    <div class="container" style="max-width:1100px;">
+      <h1 class="h3 text-accent mb-4">Mes enchères</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/ProjetFinal-Karima/src/Controller/MesEncheresController.php'|file_link(0) }}">src/Controller/MesEncheresController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/ProjetFinal-Karima/templates/mes_encheres/index.html.twig'|file_link(0) }}">templates/mes_encheres/index.html.twig</a></code></li>
-    </ul>
-</div>
+      <div class="card bg-dark border-light-subtle">
+        <div class="card-body">
+          <p class="text-muted mb-0">Vous n’avez pas encore participé à une enchère.</p>
+          <p class="text-muted mb-0">Découvrez <a class="link-light" href="{{ path('app_lot_index') }}">les lots en cours</a> et lancez-vous.</p>
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

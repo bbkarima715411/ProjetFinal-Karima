@@ -1,87 +1,85 @@
 {# templates/_partials/header.html.twig #}
 {% set events = evenementsEnCours|default([]) %}
 
-<header id="lux-header">
-  <div class="hero">
+<header id="lux-header" class="mb-3">
+  {# Navbar Bootstrap #}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-warning-subtle py-2">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ path('app_accueil') }}">Vestige d’Or</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_accueil') }}">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_lot_index') }}">Enchères</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Catégories</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'sieges-fauteuils'}) }}">Sièges & Fauteuils</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'tables-bureaux'}) }}">Tables & Bureaux</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'armoires-commodes'}) }}">Armoires & Commodes</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'peintures-anciennes'}) }}">Peintures anciennes</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'gravures-dessins'}) }}">Gravures & Dessins</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'affiches-anciennes'}) }}">Affiches anciennes</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'bijoux-anciens'}) }}">Bijoux anciens</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'montres-collection'}) }}">Montres de collection</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'objets-precieux'}) }}">Objets précieux</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'monnaies-medailles'}) }}">Monnaies & Médailles</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'objets-asiatiques'}) }}">Objets asiatiques</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'objets-africains'}) }}">Objets africains</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'objets-amerindiens'}) }}">Objets amérindiens</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_contact') }}">Contact</a></li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-2">
+          {% if app.user %}
+            {% set fname = app.user.firstName is defined and app.user.firstName ? app.user.firstName : '' %}
+            {% set lname = app.user.lastName is defined and app.user.lastName ? app.user.lastName : '' %}
+            {% set full = (fname ~ ' ' ~ lname)|trim %}
+            <span class="text-muted small me-1">Bonjour {{ full ?: app.user.userIdentifier }}</span>
+          {% endif %}
+          <a href="{{ path('app_mes_favoris') }}" class="btn btn-outline-light btn-sm" title="Favoris"><i class="bi bi-heart"></i></a>
+          {% if app.user %}
+            <a href="{{ path('app_profil') }}" class="btn btn-primary btn-sm text-white"><i class="bi bi-person me-1"></i>Mon Profil</a>
+            <a href="{{ path('app_logout') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-box-arrow-right me-1"></i>Déconnexion</a>
+          {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-box-arrow-in-right me-1"></i>Connexion</a>
+            <a href="{{ path('app_register') }}" class="btn btn-primary btn-sm text-white"><i class="bi bi-person-plus me-1"></i>Inscription</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  {# Hero vidéo conservé #}
+  <div class="hero position-relative">
     <video src="{{ asset('video/intro.mp4') }}" autoplay muted loop playsinline></video>
     <div class="overlay"></div>
 
-    <div class="top-bar">
-      <a href="{{ path('app_accueil') }}" class="logo">Vestige d'Or</a>
-
-      <div class="icons">
-        <a href="{{ path('app_lot_index') }}" title="Enchères" class="icon-btn">🔎</a>
-        <a href="{{ path('app_mes_favoris') }}" title="Favoris" class="icon-btn">❤️</a>
-
-        {% if app.user %}
-          <a href="{{ path('app_profil') }}" title="Mon Profil" class="icon-btn">👤</a>
-          <a href="{{ path('app_logout') }}" title="Déconnexion" class="icon-btn">🚪</a>
-        {% else %}
-          <a href="{{ path('app_login') }}" title="Connexion" class="icon-btn">👤</a>
-          <a href="{{ path('app_register') }}" title="Inscription" class="icon-btn">➕</a>
-        {% endif %}
-      </div>
+    {# CTA principal sur la vidéo #}
+    <div class="position-absolute top-50 start-50 translate-middle text-center" style="z-index:4;">
+      <a href="{{ path('app_lot_index') }}" class="btn btn-primary btn-lg text-white fw-semibold shadow">
+        Découvrir les enchères
+      </a>
     </div>
 
-<div class="carousel">
-  {% if events|length %}
-    {% for ev in events %}
-      {# essaie de récupérer l'image du premier lot de l'événement #}
-      {% set firstLot = ev.lots|default([])|first %}
-      {% set imgPath = (firstLot and firstLot.imageFilename) 
-          ? asset('uploads/' ~ firstLot.imageFilename) 
-          : asset('images/demo/placeholder.jpg') %}
-
-      <a href="{{ path('app_evenement_enchere_show', { id: ev.id }) }}" class="carousel-item">
-        <img src="{{ imgPath }}" alt="{{ ev.titre }}">
-        <span>{{ ev.titre }}</span>
-      </a>
-    {% endfor %}
-  {% else %}
-    {% for i in 1..4 %}
-      <div class="carousel-item placeholder">
-        <div></div>
-        <span>Bientôt</span>
+    {% if events|length %}
+      <div class="carousel">
+        {% for ev in events %}
+          {% set firstLot = ev.lots|default([])|first %}
+          {% set imgPath = (firstLot and firstLot.imageFilename) ? asset('uploads/' ~ firstLot.imageFilename) : asset('images/demo/placeholder.jpg') %}
+          <a href="{{ path('app_evenement_enchere_show', { id: ev.id }) }}" class="carousel-item">
+            <img src="{{ imgPath }}" alt="{{ ev.titre }}">
+            <span>{{ ev.titre }}</span>
+          </a>
+        {% endfor %}
       </div>
-    {% endfor %}
-  {% endif %}
-</div>
-
+    {% endif %}
   </div>
-
-  <nav id="nav-hidden">
-    <ul>
-      <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
-      <li class="dropdown">
-        <span>Catégories ▾</span>
-        <div class="dropdown-content">
-          <a href="{{ path('app_categorie_show', {slug: 'sieges-fauteuils'}) }}">Sièges & Fauteuils</a>
-          <a href="{{ path('app_categorie_show', {slug: 'tables-bureaux'}) }}">Tables & Bureaux</a>
-          <a href="{{ path('app_categorie_show', {slug: 'armoires-commodes'}) }}">Armoires & Commodes</a>
-
-          <a href="{{ path('app_categorie_show', {slug: 'peintures-anciennes'}) }}">Peintures anciennes</a>
-          <a href="{{ path('app_categorie_show', {slug: 'gravures-dessins'}) }}">Gravures & Dessins</a>
-          <a href="{{ path('app_categorie_show', {slug: 'affiches-anciennes'}) }}">Affiches anciennes</a>
-
-          <a href="{{ path('app_categorie_show', {slug: 'bijoux-anciens'}) }}">Bijoux anciens</a>
-          <a href="{{ path('app_categorie_show', {slug: 'montres-collection'}) }}">Montres de collection</a>
-          <a href="{{ path('app_categorie_show', {slug: 'objets-precieux'}) }}">Objets précieux</a>
-          <a href="{{ path('app_categorie_show', {slug: 'monnaies-medailles'}) }}">Monnaies & Médailles</a>
-
-          <a href="{{ path('app_categorie_show', {slug: 'objets-asiatiques'}) }}">Objets asiatiques</a>
-          <a href="{{ path('app_categorie_show', {slug: 'objets-africains'}) }}">Objets africains</a>
-          <a href="{{ path('app_categorie_show', {slug: 'objets-amerindiens'}) }}">Objets amérindiens</a>
-        </div>
-      </li>
-      <li><a href="{{ path('app_lot_index') }}">Enchères</a></li>
-      <li><a href="{{ path('app_contact') }}">Contact</a></li>
-    </ul>
-  </nav>
 </header>
-
-<script>
-  const nav = document.getElementById("nav-hidden");
-  window.addEventListener("mousemove", (e) => {
-    if (e.clientY < 60) nav.classList.add("show"); else nav.classList.remove("show");
-  });
-</script>
