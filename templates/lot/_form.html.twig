@@ -1,4 +1,7 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{{ form_start(form, {'attr': {'class': 'vstack gap-3'}}) }}
+  {{ form_widget(form, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+  <div class="d-flex gap-2">
+    <button class="btn btn-warning text-dark fw-semibold">{{ button_label|default('Enregistrer') }}</button>
+  </div>
 {{ form_end(form) }}

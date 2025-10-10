@@ -16,6 +16,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class LotController extends AbstractController
 {
+    // Redirection de /lot vers /lots pour éviter une 404 sur l'URL courte
+    #[Route('/lot', name: 'app_lot_redirect', methods: ['GET'])]
+    public function redirectLotIndex(): Response
+    {
+        return $this->redirectToRoute('app_lot_index', [], 301);
+    }
+
     #[Route('/lots', name: 'app_lot_index')]
     public function index(LotRepository $repo): Response
     {
@@ -45,16 +52,19 @@ class LotController extends AbstractController
     {
         $lot = $repo->find($id);
         if (!$lot) {
+            $this->addFlash('danger', 'Lot introuvable.');
             return new JsonResponse(['ok' => false, 'error' => 'Lot introuvable'], 404);
         }
 
         $token = $request->request->get('_token');
         if (!$this->isCsrfTokenValid('bid_lot_'.$lot->getId(), $token)) {
+            $this->addFlash('danger', 'Erreur de sécurité (CSRF). Veuillez réessayer.');
             return new JsonResponse(['ok' => false, 'error' => 'CSRF'], 400);
         }
 
         $ev = $lot->getEvenementEnchere();
         if ($ev && (!$ev->estOuvert())) {
+            $this->addFlash('warning', 'Enchères non ouvertes pour ce lot.');
             return new JsonResponse(['ok' => false, 'error' => 'Enchères non ouvertes'], 400);
         }
 
@@ -69,6 +79,7 @@ class LotController extends AbstractController
 
             if ($amount < $min) {
                 $em->rollback();
+                $this->addFlash('danger', sprintf('Montant trop bas. Minimum requis: %.2f €', $min));
                 return new JsonResponse([
                     'ok' => false,
                     'error' => sprintf('Montant trop bas. Minimum requis: %.2f €', $min)
@@ -84,6 +95,7 @@ class LotController extends AbstractController
             $em->flush();
             $em->commit();
 
+            $this->addFlash('success', 'Votre enchère a bien été déposée.');
             $next = $lot->getPrixActuel() + $lot->getIncrementMin();
 
             return new JsonResponse([
@@ -95,6 +107,7 @@ class LotController extends AbstractController
             if ($em->getConnection()->isTransactionActive()) {
                 $em->rollback();
             }
+            $this->addFlash('danger', 'Erreur serveur, veuillez réessayer.');
             return new JsonResponse(['ok' => false, 'error' => 'Erreur serveur'], 500);
         }
     }

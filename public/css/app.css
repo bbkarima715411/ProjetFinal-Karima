@@ -1,10 +1,14 @@
 :root {
-    --gold: #D4AF37;
-    --bg: #fff;
-    --text: #111;
-    --muted: #666;
-    --line: #e6e6e6;
+    /* Palette Platine & Bleu Nuit */
+    --bg: #0B1220;
+    --surface: #131A26;
+    --text: #F4F6F8;
+    --muted: #A7B0BD;
+    --line: #202734;
+    --accent: #C9D1D9;
+    --brand: #2B6CB0;
 }
+
 
 * {
     box-sizing: border-box
@@ -33,13 +37,12 @@ img {
     padding: 0 16px
 }
 
-/* HEADER HERO */
 #lux-header .hero {
     position: relative;
     height: 60vh;
     min-height: 420px;
-    color: #fff;
-    overflow: hidden
+    color: var(--text);
+    background: var(--bg)
 }
 
 #lux-header .hero video {
@@ -92,11 +95,10 @@ img {
 }
 
 #lux-header .icon-btn:hover {
-    border-color: var(--gold);
-    color: var(--gold)
+    border-color: var(--brand);
+    color: var(--brand)
 }
 
-/* Carousel d’événements */
 #lux-header .carousel {
     position: absolute;
     left: 0;
@@ -147,7 +149,6 @@ img {
     transition: .2s
 }
 
-/* Nav cachée qui apparaît au survol haut */
 #nav-hidden {
     position: fixed;
     top: -56px;
@@ -156,7 +157,7 @@ img {
     height: 56px;
     background: #000;
     color: #fff;
-    border-bottom: 1px solid rgba(212, 175, 55, .4);
+    border-bottom: 1px solid var(--line);
     z-index: 5;
     transition: transform .25s ease;
     transform: translateY(-56px)
@@ -183,7 +184,7 @@ img {
 }
 
 #nav-hidden a:hover {
-    color: var(--gold)
+    color: var(--brand)
 }
 
 #nav-hidden .dropdown {
@@ -214,14 +215,13 @@ img {
 
 #nav-hidden .dropdown-content a:hover {
     background: #181818;
-    color: var(--gold)
+    color: var(--brand)
 }
 
-/* FOOTER */
 .footer {
     border-top: 1px solid var(--line);
     margin-top: 48px;
-    background: #fff
+    background: var(--surface)
 }
 
 .footer-content {
@@ -245,7 +245,7 @@ img {
 .footer p,
 .footer li,
 .footer a {
-    color: #444
+    color: var(--muted)
 }
 
 .footer ul {
@@ -271,8 +271,8 @@ img {
 .footer button {
     padding: 10px 14px;
     border-radius: 10px;
-    border: 1px solid #000;
-    background: #000;
+    border: 1px solid var(--brand);
+    background: var(--brand);
     color: #fff
 }
 
@@ -287,7 +287,6 @@ img {
     color: #777
 }
 
-/* LOT SHOW */
 .lot-grid {
     display: grid;
     grid-template-columns: 1.1fr .9fr;
@@ -319,7 +318,7 @@ img {
     padding: 14px;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: #fafafa
+    background: var(--surface)
 }
 
 .price .value {
@@ -342,12 +341,14 @@ img {
 .bid-form input {
     padding: 10px 12px;
     border: 1px solid var(--line);
-    border-radius: 10px
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text)
 }
 
 .bid-form button {
-    border: 1px solid #000;
-    background: #000;
+    border: 1px solid var(--brand);
+    background: var(--brand);
     color: #fff;
     border-radius: 10px;
     padding: 10px 14px
@@ -370,9 +371,32 @@ img {
 .crumbs {
     font-size: 12px;
     color: #777;
-    margin-bottom: 10px
 }
-
 .crumbs a {
     color: #444
+}
+
+/* Accessibility: increase contrast of text on dark backgrounds */
+.text-muted { color: #CFD8E3 !important; }
+.small, .form-text { color: #CFD8E3 !important; }
+label, .form-label { color: #E6ECF5; }
+.card, .card p, .card li { color: var(--text); }
+.navbar-dark .navbar-nav .nav-link { color: rgba(255,255,255,.92); }
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link:hover { color: #fff; }
+/* Helpers to map Bootstrap utility classes to our palette */
+.bg-black { background: var(--bg) !important; }
+.bg-dark { background: var(--surface) !important; }
+.text-white { color: var(--text) !important; }
+.text-accent { color: var(--accent) !important; }
+
+/* Form validation visuals (no inline messages) */
+.is-invalid {
+    border-color: #dc3545 !important; /* Bootstrap danger */
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+.is-invalid:focus {
+    border-color: #dc3545 !important;
+    outline: none;
+    box-shadow: 0 0 0 0.3rem rgba(220, 53, 69, 0.35);
 }

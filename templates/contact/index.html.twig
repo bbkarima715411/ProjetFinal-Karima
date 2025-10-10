@@ -1,7 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ContactController!{% endblock %}
+{% block title %}Contact — Maison d’Enchères{% endblock %}
 
 {% block body %}
+  <main class="bg-black text-white py-5" style="min-height:100vh;">
+    <div class="container" style="max-width:800px;">
+      <h1 class="h3 text-accent mb-4">Nous contacter</h1>
+      <div class="card bg-dark border-light-subtle">
+        <div class="card-body p-4">
+          {# Flash messages via Bootstrap toasts #}
+          {% for type, messages in app.flashes %}
+            {% for message in messages %}
+              <script>
+                window.showToast && showToast('{{ type|e('js') }}', '{{ message|e('js') }}');
+              </script>
+              <div class="alert alert-{{ type }} mb-3" role="alert" aria-live="polite">{{ message }}</div>
+            {% endfor %}
+          {% endfor %}
 
+          {# Symfony Form #}
+          {% if form is defined %}
+            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'vstack gap-3'}}) }}
+              {{ form_row(form.nom) }}
+              {{ form_row(form.email) }}
+              {{ form_row(form.sujet) }}
+              {{ form_row(form.message) }}
+              {# Honeypot is hidden by attr in form type #}
+              {{ form_widget(form.website) }}
+              <div class="form-check">
+                {{ form_widget(form.consent, {'attr': {'class': 'form-check-input'}}) }}
+                <label class="form-check-label" for="{{ form.consent.vars.id }}">{{ form.consent.vars.label }}</label>
+                {{ form_errors(form.consent) }}
+              </div>
+              <div class="d-flex gap-2">
+                {{ form_widget(form.envoyer) }}
+                <a href="{{ path('app_lot_index') }}" class="btn btn-outline-light">Voir les enchères</a>
+              </div>
+            {{ form_end(form) }}
+          {% else %}
+            <p class="text-muted mb-0">Le formulaire est indisponible pour le moment.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

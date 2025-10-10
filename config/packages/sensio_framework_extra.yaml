@@ -1,3 +1,0 @@
-# This file used to configure SensioFrameworkExtraBundle.
-# The bundle and its configuration are removed because the package is abandoned
-# and the project uses Symfony native attributes for routing/security.
