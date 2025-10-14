@@ -8,6 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Représente un événement d'enchères (fenêtre pendant laquelle on peut enchérir sur des lots).
+ *
+ * Contient une collection de `Lot` et des utilitaires d'ouverture/fermeture.
+ */
 #[ORM\Entity(repositoryClass: EvenementEnchereRepository::class)]
 class EvenementEnchere
 {
@@ -16,18 +21,23 @@ class EvenementEnchere
     #[ORM\Column]
     private ?int $id = null;
 
+    /** Titre lisible de l'événement */
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
+    /** Date/heure de début (immutable) */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $debutAt = null;
 
+    /** Date/heure de fin (immutable) */
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $finAt = null;
 
+    /** Statut textuel (ex: programmé, en_cours, clos) */
     #[ORM\Column(length: 20)]
     private ?string $statut = 'programmé';
 
+    /** Lots rattachés à l'événement */
     #[ORM\OneToMany(mappedBy: 'evenementEnchere', targetEntity: Lot::class, orphanRemoval: true)]
     private Collection $lots;
 
@@ -37,6 +47,9 @@ class EvenementEnchere
     }
 
     // --- 🕗 Helpers : horaires fixes 8h-20h ---
+    /**
+     * Renvoie le début de la journée à 8h dans le fuseau donné (Europe/Paris par défaut).
+     */
     public static function debutDuJour(?\DateTimeZone $tz = null): \DateTimeImmutable
     {
         $tz ??= new \DateTimeZone('Europe/Paris');
@@ -44,6 +57,9 @@ class EvenementEnchere
         return $now->setTime(8, 0, 0);
     }
 
+    /**
+     * Renvoie la fin de la journée à 20h dans le fuseau donné (Europe/Paris par défaut).
+     */
     public static function finDuJour(?\DateTimeZone $tz = null): \DateTimeImmutable
     {
         $tz ??= new \DateTimeZone('Europe/Paris');
@@ -52,7 +68,7 @@ class EvenementEnchere
     }
 
     /**
-     * Mode DEV : ouvert tous les jours de 8h à 20h
+     * Indique si l'événement est ouvert (mode DEV: ouvert 8h-20h chaque jour).
      */
     public function estOuvert(): bool
     {
@@ -64,6 +80,9 @@ class EvenementEnchere
         return $maintenant >= $debut && $maintenant < $fin;
     }
 
+    /**
+     * Minutes restantes avant la fermeture effective (0 si dépassée). Null si `finAt` non définie.
+     */
     public function minutesAvantFermeture(?\DateTimeZone $tz = null): ?int
 {
     if (!$this->finAt) return null;
@@ -73,8 +92,10 @@ class EvenementEnchere
     return $diff < 0 ? 0 : (int) floor($diff / 60);
 }
 
-/** true si l'événement ferme dans < 60 min, et est encore ouvert */
-public function fermeDansMoinsDuneHeure(?\DateTimeZone $tz = null): bool
+    /**
+     * True si l'événement ferme dans moins d'une heure et n'est pas déjà fermé.
+     */
+    public function fermeDansMoinsDuneHeure(?\DateTimeZone $tz = null): bool
 {
     if (!$this->finAt) return false;
     $tz ??= new \DateTimeZone('Europe/Paris');
