@@ -42,7 +42,8 @@
             {% set fname = app.user.firstName is defined and app.user.firstName ? app.user.firstName : '' %}
             {% set lname = app.user.lastName is defined and app.user.lastName ? app.user.lastName : '' %}
             {% set full = (fname ~ ' ' ~ lname)|trim %}
-            <span class="text-muted small me-1">Bonjour {{ full ?: app.user.userIdentifier }}</span>
+            {# Afficher le prénom/nom si dispo, sinon ne pas afficher l'email: fallback générique #}
+            <span class="text-muted small me-1">Bonjour {{ full ?: 'Utilisateur' }}</span>
           {% endif %}
           <a href="{{ path('app_mes_favoris') }}" class="btn btn-outline-light btn-sm" title="Favoris"><i class="bi bi-heart"></i></a>
           {% if app.user %}

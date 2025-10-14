@@ -12,9 +12,11 @@
       <div class="card bg-dark border-light-subtle">
         <div class="card-body">
           {{ include('enchere_utilisateur/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
-          <div class="mt-2">
-            {{ include('enchere_utilisateur/_delete_form.html.twig') }}
-          </div>
+          {% if is_granted('ROLE_ADMIN') %}
+            <div class="mt-2">
+              {{ include('enchere_utilisateur/_delete_form.html.twig') }}
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>

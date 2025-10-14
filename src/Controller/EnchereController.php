@@ -12,9 +12,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Contrôleur dédié au dépôt d'offres sur un lot.
+ *
+ * Flux recommandé pour créer des enchères: formulaire minimal puis
+ * délégation au service `GestionEncheres`.
+ */
 #[Route('/encheres')]
 class EnchereController extends AbstractController
 {
+    /**
+     * Dépose une offre sur un `Lot`.
+     *
+     * Exige un utilisateur authentifié et un formulaire valide contenant `montant`.
+     * En cas de succès, le service persiste l'enchère et applique la règle du minimum.
+     */
     #[Route('/lot/{id}/offre', name: 'app_offre_sur_lot', methods: ['POST'])]
     public function deposerOffre(
         Lot $lot,
@@ -23,8 +35,10 @@ class EnchereController extends AbstractController
         UserRepository $userRepo,
         EntityManagerInterface $em
     ): Response {
+        // Nécessite un utilisateur connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        // Récupère et valide le montant soumis
         $form = $this->createForm(DeposerOffreType::class);
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {

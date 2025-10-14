@@ -7,6 +7,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Formulaire CRUD pour l'entité `EnchereUtilisateur` (usage admin).
+ *
+ * Ne gère pas l'assignation du `user` connecté: ceci relève du flux métier.
+ */
 class EnchereUtilisateurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

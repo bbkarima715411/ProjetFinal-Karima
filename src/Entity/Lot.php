@@ -8,6 +8,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Représente un lot proposé aux enchères.
+ *
+ * Contient des informations d'affichage (titre, description, image),
+ * des paramètres d'enchères (prix de départ, incrément minimal),
+ * et les relations vers l'événement d'enchères et les offres des utilisateurs.
+ */
 #[ORM\Entity(repositoryClass: LotRepository::class)]
 class Lot
 {
@@ -16,7 +23,7 @@ class Lot
     #[ORM\Column]
     private ?int $id = null;
 
-    // === NOUVEAUX CHAMPS utiles pour tes pages ===
+    // === NOUVEAUX CHAMPS utiles pour l'affichage ===
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $titre = null;
 
@@ -46,20 +53,25 @@ class Lot
     private ?string $imageFilename = null;
 
     // Relations
+    /** Événement d'enchères auquel ce lot appartient (obligatoire) */
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
     private ?EvenementEnchere $evenementEnchere = null;
 
+    /** Enchères posées par les utilisateurs sur ce lot */
     #[ORM\OneToMany(mappedBy: 'lot', targetEntity: EnchereUtilisateur::class, orphanRemoval: true)]
     private Collection $encheresUtilisateur;
 
     // Champs d’enchères
+    /** Prix initial à partir duquel on peut enchérir */
     #[ORM\Column(type: 'float')]
     private float $prixDepart = 0.0;
 
+    /** Incrément minimal ajouté au prix actuel pour valider une nouvelle offre */
     #[ORM\Column(type: 'float')]
     private float $incrementMin = 1.0;
 
+    /** Gagnant (une fois l'enchère terminée) */
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $gagnant = null;
 
@@ -138,6 +150,10 @@ class Lot
     public function setGagnant(?User $u): self { $this->gagnant = $u; return $this; }
 
     // Prix actuel = max(offres) ou prix de départ
+    /**
+     * Renvoie le prix courant du lot en fonction des offres déposées.
+     * Si aucune offre, retourne le `prixDepart`.
+     */
     public function getPrixActuel(): float
     {
         $max = $this->prixDepart;

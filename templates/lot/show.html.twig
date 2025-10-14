@@ -45,11 +45,28 @@
               <input class="form-control bg-dark text-white border-secondary" type="number" name="amount" step="0.01"
                      min="{{ (lot.prixActuel + lot.incrementMin)|number_format(2, '.', '') }}" required>
             </div>
-            <div class="col-12 d-flex gap-2">
+            <div class="col-12 d-flex gap-2 align-items-center">
               <button type="submit" class="btn btn-primary text-white fw-semibold">Enchérir</button>
               <a href="{{ path('app_lot_index') }}" class="btn btn-outline-light">← Retour aux enchères</a>
             </div>
           </form>
+
+          <div class="mt-2 d-flex">
+            <div class="ms-auto">
+              {# Bouton Favori / Retirer des favoris (formulaires séparés pour éviter les formulaires imbriqués) #}
+              {% if is_favorite %}
+                <form action="{{ path('app_favori_remove', { id: lot.id }) }}" method="post" class="d-inline">
+                  <input type="hidden" name="_token" value="{{ csrf_token('fav_remove_' ~ lot.id) }}">
+                  <button class="btn btn-outline-warning" title="Retirer des favoris">★ Retirer</button>
+                </form>
+              {% else %}
+                <form action="{{ path('app_favori_add', { id: lot.id }) }}" method="post" class="d-inline">
+                  <input type="hidden" name="_token" value="{{ csrf_token('fav_add_' ~ lot.id) }}">
+                  <button class="btn btn-warning text-black" title="Ajouter aux favoris">☆ Favori</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
         {% else %}
           <div class="alert alert-secondary mt-2" role="alert">
             <a href="{{ path('app_login') }}" class="link-warning">Connectez-vous</a> pour déposer une enchère.
