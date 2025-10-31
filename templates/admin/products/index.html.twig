@@ -1,0 +1,92 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Gestion des produits - Administration{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestion des produits</h1>
+        <a href="{{ path('admin_product_new') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Ajouter un produit
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            {% if products|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Référence</th>
+                                <th>Nom</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                                <tr>
+                                    <td>
+                                        {% if product.image %}
+                                            <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" style="width: 50px; height: 50px; object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                <i class="bi bi-image text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ product.reference }}</td>
+                                    <td>
+                                        <strong>{{ product.name }}</strong><br>
+                                        <small class="text-muted">{{ product.shortDescription|slice(0, 50) }}{% if product.shortDescription|length > 50 %}...{% endif %}</small>
+                                    </td>
+                                    <td>{{ product.price|format_currency('EUR') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ product.stock > 10 ? 'success' : (product.stock > 0 ? 'warning' : 'danger') }}">
+                                            {{ product.stock }} en stock
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ product.isActive ? 'success' : 'secondary' }}">
+                                            {{ product.isActive ? 'Actif' : 'Inactif' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{ path('app_product_show', {'slug': product.slug}) }}" class="btn btn-sm btn-outline-primary" target="_blank" title="Voir">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-sm btn-outline-secondary" title="Modifier">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form method="post" action="{{ path('admin_product_delete', {'id': product.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="bi bi-box-seam display-1 text-muted"></i>
+                    </div>
+                    <h4>Aucun produit trouvé</h4>
+                    <p class="text-muted">Commencez par ajouter votre premier produit.</p>
+                    <a href="{{ path('admin_product_new') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Ajouter un produit
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

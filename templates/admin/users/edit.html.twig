@@ -1,0 +1,164 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur {{ user.email }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">Modifier l'utilisateur</h1>
+            <div>
+                <a href="{{ path('admin_users') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-user-edit"></i> {{ user.email }}
+                </h6>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ form_row(form.email, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'email@exemple.com'
+                                },
+                                'label': 'Adresse email *',
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.plainPassword, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'autocomplete': 'new-password',
+                                    'placeholder': 'Laisser vide pour ne pas modifier'
+                                },
+                                'label': 'Nouveau mot de passe',
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ form_row(form.firstName, {
+                                'attr': {
+                                    'class': 'form-control'
+                                },
+                                'label': 'Prénom *',
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.lastName, {
+                                'attr': {
+                                    'class': 'form-control'
+                                },
+                                'label': 'Nom *',
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            {{ form_row(form.roles, {
+                                'attr': {
+                                    'class': 'form-check-input',
+                                },
+                                'label': 'Rôles *',
+                                'label_attr': {'class': 'd-block mb-2'}
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            {{ form_row(form.isVerified, {
+                                'attr': {
+                                    'class': 'form-check-input',
+                                },
+                                'label': 'Email vérifié',
+                                'label_attr': {'class': 'form-check-label'}
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Enregistrer les modifications
+                        </button>
+                        <a href="{{ path('admin_users') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Annuler
+                        </a>
+                        
+                        {% if user != app.user %}
+                            <button type="button" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                <i class="fas fa-trash"></i> Supprimer l'utilisateur
+                            </button>
+                        {% endif %}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <!-- Modal de confirmation de suppression -->
+        {% if user != app.user %}
+            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteUserModalLabel">Confirmer la suppression</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{{ user.email }}</strong> ?</p>
+                            <p class="text-danger">Cette action est irréversible.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <form action="{{ path('admin_user_delete', {'id': user.id}) }}" method="post" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Confirmer la suppression
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Désactiver la validation HTML5 native
+        (function() {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        // Initialiser les tooltips Bootstrap
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+{% endblock %}

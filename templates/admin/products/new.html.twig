@@ -1,0 +1,127 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Ajouter un produit - Administration{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Ajouter un produit</h1>
+        <a href="{{ path('admin_products') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nom du produit *</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Prix (€) *</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+                                        <span class="input-group-text">€</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="stock" class="form-label">Stock *</label>
+                                    <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="short_description" class="form-label">Description courte *</label>
+                            <textarea class="form-control" id="short_description" name="short_description" rows="2" required></textarea>
+                            <div class="form-text">Cette description apparaîtra dans les listes de produits.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description détaillée</label>
+                            <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                Image principale
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <img id="imagePreview" src="data:image/svg+xml,%3Csvg class='img-fluid' width='300' height='200' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Image' preserveAspectRatio='xMidYMid slice' focusable='false'%3E%3Ctitle%3EPlaceholder%3C/title%3E%3Crect width='100%25' height='100%25' fill='%23e9ecef'%3E%3C/rect%3E%3Ctext x='50%25' y='50%25' fill='%236c757d' dy='.3em'%3E300x200%3C/text%3E%3C/svg%3E" 
+                                         class="img-fluid rounded" style="max-height: 200px;" alt="Aperçu de l'image">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(this)">
+                                </div>
+                                <div class="form-text">Format recommandé : 800x600px. Taille max : 2MB.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                Paramètres
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="is_active" name="is_active" checked>
+                                    <label class="form-check-label" for="is_active">Produit actif</label>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="reference" class="form-label">Référence *</label>
+                                    <input type="text" class="form-control" id="reference" name="reference" value="{{ 'PROD_' ~ random(1000, 9999) }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Catégorie</label>
+                                    <select class="form-select" id="category" name="category">
+                                        <option value="">Sélectionnez une catégorie</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-save"></i> Enregistrer le produit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onloadend = function() {
+                preview.src = reader.result;
+            }
+            
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "data:image/svg+xml,%3Csvg class='img-fluid' width='300' height='200' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Image' preserveAspectRatio='xMidYMid slice' focusable='false'%3E%3Ctitle%3EPlaceholder%3C/title%3E%3Crect width='100%25' height='100%25' fill='%23e9ecef'%3E%3C/rect%3E%3Ctext x='50%25' y='50%25' fill='%236c757d' dy='.3em'%3E300x200%3C/text%3E%3C/svg%3E";
+            }
+        }
+    </script>
+{% endblock %}

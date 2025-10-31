@@ -18,3 +18,21 @@ services:
   App\Controller\:
     resource: '../src/Controller/'
     tags: ['controller.service_arguments']
+
+  # Configuration des contrôleurs avec injection de dépendances
+  App\Controller\PaymentController:
+    arguments:
+      $paypalClientId: '%env(PAYPAL_CLIENT_ID)%'
+      $paypalSecret: '%env(PAYPAL_SECRET)%'
+
+  App\Controller\CheckoutController:
+    arguments:
+      $paypalClientId: '%env(PAYPAL_CLIENT_ID)%'
+      $paypalSecret: '%env(PAYPAL_SECRET)%'
+      $mailService: '@App\Service\MailService'
+
+  # Configuration du service d'email
+  App\Service\MailService:
+    arguments:
+      $senderEmail: 'noreply@votresite.com'
+      $senderName: 'Votre Boutique'

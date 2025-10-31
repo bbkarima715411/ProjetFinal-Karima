@@ -1,0 +1,2659 @@
+/* Variables CSS */
+:root {
+  --primary: #ffc107;
+  --primary-dark: #e0a800;
+  --secondary: #6c757d;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #0dcaf0;
+}
+
+/* Styles généraux */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-dark);
+  text-decoration: none;
+}
+
+/* Boutons */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+}
+
+/* Cartes */
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card-title {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+/* En-tête */
+.navbar {
+  padding: 0.75rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.25rem;
+}
+
+.nav-link:hover, .nav-link:focus {
+  color: var(--primary) !important;
+}
+
+.nav-link.active {
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+
+/* Pied de page */
+footer {
+  background-color: var(--dark);
+  color: #fff;
+  padding: 3rem 0 0;
+  margin-top: 3rem;
+}
+
+footer a {
+  color: #adb5bd;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+footer h4, footer h5, footer h6 {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+/* Formulaire */
+.form-control {
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
+/* Alertes */
+.alert {
+  border: none;
+  border-radius: 0.25rem;
+  padding: 1rem 1.25rem;
+}
+
+/* Badges */
+.badge {
+  padding: 0.35em 0.65em;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    padding: 1rem 0;
+  }
+  
+  .nav-item {
+    margin: 0.25rem 0;
+  }
+  
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Personnalisation de la barre de défilement */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Effets de survol */
+.hover-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Chargement */
+.loading {
+  position: relative;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Personnalisation des onglets */
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--primary);
+  background: transparent;
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Personnalisation des cartes d'enchères */n.auction-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.auction-card .badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.auction-card-img {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.auction-card:hover .auction-card-img {
+  transform: scale(1.05);
+}
+
+.auction-countdown {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+/* Animation pour les messages flash */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast.show {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Style pour les prix */
+.price {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+/* Style pour les étoiles de notation */
+.rating {
+  color: #ffc107;
+  margin: 0.5rem 0;
+}
+
+/* Style pour les états des enchères */
+.status-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+}
+
+.status-active {
+  background-color: rgba(25, 135, 84, 0.9);
+  color: white;
+}
+
+.status-upcoming {
+  background-color: rgba(13, 110, 253, 0.9);
+  color: white;
+}
+
+.status-ended {
+  background-color: rgba(108, 117, 125, 0.9);
+  color: white;
+}
+
+/* Style pour le compteur d'enchères */
+.bid-count {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* Style pour le formulaire d'enchère */n.bid-form {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Style pour l'historique des enchères */
+.bid-history {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.bid-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.bid-item:last-child {
+  border-bottom: none;
+}
+
+/* Style pour les onglets responsives */
+@media (max-width: 576px) {
+  .nav-tabs .nav-link {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Personnalisation de la pagination */
+.pagination .page-link {
+  color: var(--dark);
+  border: 1px solid #dee2e6;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem !important;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+}
+
+.pagination .page-link:hover {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: var(--primary);
+}
+
+/* Style pour les étiquettes de formulaire */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #495057;
+}
+
+/* Style pour les champs de formulaire en lecture seule */
+.form-control[readonly] {
+  background-color: #f8f9fa;
+  opacity: 1;
+}
+
+/* Style pour les messages d'erreur de formulaire */
+.invalid-feedback {
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+/* Style pour les champs de formulaire invalides */
+.is-invalid {
+  border-color: var(--danger) !important;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* Style pour les champs de formulaire valides */
+.is-valid {
+  border-color: var(--success) !important;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* Style pour les tooltips personnalisés */
+.tooltip-inner {
+  background-color: var(--dark);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 0.25rem;
+}
+
+.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before, 
+.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: var(--dark);
+}
+
+/* Style pour les modales */
+.modal-content {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 1rem 1.5rem;
+}
+
+/* Style pour les tableaux */
+.table {
+  margin-bottom: 1.5rem;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #6c757d;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Style pour les badges de statut */
+.badge-status {
+  padding: 0.35em 0.65em;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Style pour les cartes de statistiques */
+.stats-card {
+  border-left: 4px solid var(--primary);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card .card-body {
+  padding: 1.5rem;
+}
+
+.stats-card .stats-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.stats-card .stats-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.stats-card .stats-label {
+  color: #6c757d;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* Style pour les onglets de navigation secondaires */
+.nav-pills .nav-link {
+  color: #6c757d;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link.active, 
+.nav-pills .show > .nav-link {
+  background-color: var(--primary);
+  color: #000;
+}
+
+.nav-pills .nav-link:hover:not(.active) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Style pour les cartes de profil */
+.profile-card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.profile-card .card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+  font-weight: 600;
+}
+
+.profile-card .card-body {
+  padding: 1.5rem;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin: -70px auto 1rem;
+  display: block;
+  background-color: #fff;
+}
+
+/* Style pour les listes de notifications */
+.notification-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+  background-color: #f8f9fa;
+  border-left: 3px solid var(--primary);
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+/* Style pour les indicateurs de chargement */
+.loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Style pour les cartes de produit */
+.product-card {
+  position: relative;
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card .card-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-card .card-text {
+  flex: 1;
+  margin-bottom: 1rem;
+  color: #6c757d;
+}
+
+.product-card .price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+/* Style pour les étiquettes de promotion */
+.sale-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--danger);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 1;
+}
+
+/* Style pour les filtres de produits */
+.filter-section {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-section h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.filter-item {
+  margin-bottom: 0.75rem;
+}
+
+.filter-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Style pour la pagination personnalisée */
+.pagination-custom .page-link {
+  min-width: 40px;
+  text-align: center;
+  margin: 0 0.125rem;
+  border-radius: 0.25rem !important;
+}
+
+/* Style pour les cartes de témoignages */
+.testimonial-card {
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.testimonial-text {
+  font-style: italic;
+  color: #6c757d;
+  margin: 1rem 0;
+}
+
+.testimonial-author {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-position {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+/* Style pour les cartes de fonctionnalités */
+.feature-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.feature-text {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+/* Style pour les cartes d'équipe */
+.team-card {
+  text-align: center;
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.team-card .card-img-top {
+  height: 250px;
+  object-fit: cover;
+}
+
+.team-card .card-body {
+  padding: 1.5rem;
+}
+
+.team-card .card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.team-card .card-subtitle {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.team-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  transition: all 0.3s ease;
+}
+
+.team-social a:hover {
+  background-color: var(--primary);
+  color: #000;
+  transform: translateY(-3px);
+}
+
+/* Style pour les cartes de tarification */
+.pricing-card {
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card.popular {
+  border: 2px solid var(--primary);
+  position: relative;
+  overflow: visible;
+}
+
+.pricing-card.popular .popular-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background-color: var(--primary);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 1rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pricing-header {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.pricing-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 1rem 0;
+}
+
+.pricing-period {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.pricing-features {
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.pricing-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing-features li {
+  padding: 0.5rem 0;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+}
+
+.pricing-features li i {
+  color: var(--success);
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.pricing-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+/* Style pour les cartes de statistiques */
+.stats-card-simple {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.stats-card-simple:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card-simple .stats-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.stats-card-simple .stats-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.stats-card-simple .stats-label {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Style pour les cartes de blog */
+.blog-card {
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.blog-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.blog-card .card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-card .card-text {
+  flex: 1;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.blog-meta {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.blog-meta span {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.blog-meta i {
+  margin-right: 0.25rem;
+  font-size: 1rem;
+}
+
+/* Style pour les cartes de portfolio */
+.portfolio-card {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.portfolio-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: all 0.5s ease;
+}
+
+.portfolio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+  text-align: center;
+  color: #fff;
+}
+
+.portfolio-card:hover .portfolio-overlay {
+  opacity: 1;
+}
+
+.portfolio-card:hover img {
+  transform: scale(1.1);
+}
+
+.portfolio-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.portfolio-category {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  transform: translateY(20px);
+  transition: all 0.3s ease 0.1s;
+  opacity: 0;
+}
+
+.portfolio-links {
+  display: flex;
+  gap: 1rem;
+  transform: translateY(20px);
+  transition: all 0.3s ease 0.2s;
+  opacity: 0;
+}
+
+.portfolio-card:hover .portfolio-title,
+.portfolio-card:hover .portfolio-category,
+.portfolio-card:hover .portfolio-links {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portfolio-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: #000;
+  transition: all 0.3s ease;
+}
+
+.portfolio-link:hover {
+  background-color: #fff;
+  transform: translateY(-3px);
+}
+
+/* Style pour les cartes de témoignages en carrousel */
+.testimonial-carousel .carousel-item {
+  padding: 2rem;
+}
+
+.testimonial-carousel .carousel-control-prev,
+.testimonial-carousel .carousel-control-next {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.testimonial-carousel .carousel-control-prev {
+  left: -20px;
+}
+
+.testimonial-carousel .carousel-control-next {
+  right: -20px;
+}
+
+.testimonial-carousel .carousel-control-prev-icon,
+.testimonial-carousel .carousel-control-next-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Style pour les cartes de fonctionnalités en icônes */
+.feature-icon-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.feature-icon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon-card .icon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 193, 7, 0.1);
+  border-radius: 50%;
+  color: var(--primary);
+  font-size: 2rem;
+  transition: all 0.3s ease;
+}
+
+.feature-icon-card:hover .icon-wrapper {
+  background-color: var(--primary);
+  color: #000;
+  transform: rotateY(180deg);
+}
+
+.feature-icon-card h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.feature-icon-card p {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+/* Style pour les cartes de statistiques en icônes */
+.stats-icon-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+  text-align: center;
+  height: 100%;
+}
+
+.stats-icon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stats-icon-card .icon-wrapper {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 193, 7, 0.1);
+  border-radius: 50%;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+.stats-icon-card .stats-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: var(--dark);
+}
+
+.stats-icon-card .stats-label {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Style pour les cartes de services */
+.service-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.service-card .service-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.service-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.service-card .card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.service-card .card-text {
+  flex: 1;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.service-card .service-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.service-card .service-link i {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-link {
+  color: var(--primary-dark);
+}
+
+.service-card:hover .service-link i {
+  transform: translateX(5px);
+}
+
+/* Style pour les cartes de témoignages en grille */
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.testimonial-item {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+}
+
+.testimonial-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.testimonial-content::before {
+  content: '"\201C"';
+  position: absolute;
+  left: 0;
+  top: -10px;
+  font-size: 3rem;
+  color: var(--primary);
+  font-family: Georgia, serif;
+  line-height: 1;
+  opacity: 0.3;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de tarification en grille */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes d'équipe en grille */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes de blog en grille */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes de portfolio en grille */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes de fonctionnalités en grille */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes de statistiques en grille */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes de services en grille */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les cartes de témoignages en carrousel */
+.testimonial-carousel .carousel-item {
+  padding: 2rem;
+}
+
+.testimonial-carousel .testimonial-item {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin: 0 1rem;
+}
+
+.testimonial-carousel .carousel-control-prev,
+.testimonial-carousel .carousel-control-next {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.testimonial-carousel .carousel-control-prev {
+  left: -20px;
+}
+
+.testimonial-carousel .carousel-control-next {
+  right: -20px;
+}
+
+.testimonial-carousel .carousel-control-prev-icon,
+.testimonial-carousel .carousel-control-next-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Style pour les indicateurs de carrousel personnalisés */
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+.carousel-indicators .active {
+  background-color: var(--primary);
+}
+
+/* Style pour les cartes de témoignages avec image de fond */
+.testimonial-bg-card {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 2rem;
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.testimonial-bg-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
+  z-index: -1;
+}
+
+.testimonial-bg-card .testimonial-content {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 2rem;
+}
+
+.testimonial-bg-card .testimonial-content::before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: -10px;
+  font-size: 4rem;
+  font-family: Georgia, serif;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.testimonial-bg-card .testimonial-author {
+  align-items: center;
+}
+
+.testimonial-bg-card .testimonial-avatar {
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.testimonial-bg-card .testimonial-author-info h5 {
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-bg-card .testimonial-author-info p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Style pour les cartes de témoignages avec citation */
+.testimonial-quote-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: relative;
+  height: 100%;
+}
+
+.testimonial-quote-card::before {
+  content: '"\201C"';
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 4rem;
+  color: var(--primary);
+  font-family: Georgia, serif;
+  line-height: 1;
+  opacity: 0.2;
+}
+
+.testimonial-quote-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-quote-card .testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-quote-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.testimonial-quote-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-quote-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec bordure */
+.testimonial-border-card {
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  height: 100%;
+  position: relative;
+}
+
+.testimonial-border-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+.testimonial-border-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--primary);
+}
+
+.testimonial-border-card .testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-border-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.testimonial-border-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-border-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec étoiles */
+.testimonial-rating-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  text-align: center;
+  height: 100%;
+}
+
+.testimonial-rating-card .testimonial-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  border: 3px solid var(--primary);
+  padding: 3px;
+}
+
+.testimonial-rating-card .rating {
+  color: var(--warning);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-rating-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating-card .testimonial-author h5 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-rating-card .testimonial-author p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec image de fond pleine largeur */
+.testimonial-fullwidth-card {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 4rem 2rem;
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 2rem;
+}
+
+.testimonial-fullwidth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+  z-index: -1;
+}
+
+.testimonial-fullwidth-card .container {
+  position: relative;
+  z-index: 2;
+}
+
+.testimonial-fullwidth-card .section-title {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.testimonial-fullwidth-card .testimonial-slider {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testimonial-fullwidth-card .testimonial-item {
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.testimonial-fullwidth-card .testimonial-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+  border: 3px solid var(--primary);
+}
+
+.testimonial-fullwidth-card .testimonial-content {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding: 0 2rem;
+}
+
+.testimonial-fullwidth-card .testimonial-content::before,
+.testimonial-fullwidth-card .testimonial-content::after {
+  content: '"';
+  font-family: Georgia, serif;
+  font-size: 4rem;
+  color: var(--primary);
+  opacity: 0.3;
+  position: absolute;
+  line-height: 1;
+}
+
+.testimonial-fullwidth-card .testimonial-content::before {
+  top: -20px;
+  left: 0;
+}
+
+testimonial-fullwidth-card .testimonial-content::after {
+  bottom: -40px;
+  right: 0;
+}
+
+testimonial-fullwidth-card .testimonial-author h5 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-fullwidth-card .testimonial-author p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+testimonial-fullwidth-card .carousel-control-prev,
+testimonial-fullwidth-card .carousel-control-next {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+testimonial-fullwidth-card .carousel-control-prev {
+  left: -60px;
+}
+
+testimonial-fullwidth-card .carousel-control-next {
+  right: -60px;
+}
+
+/* Style pour les indicateurs de carrousel personnalisés */
+.testimonial-fullwidth-card .carousel-indicators {
+  bottom: -40px;
+}
+
+testimonial-fullwidth-card .carousel-indicators [data-bs-target] {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+}
+
+testimonial-fullwidth-card .carousel-indicators .active {
+  background-color: var(--primary);
+}
+
+/* Style pour les cartes de témoignages en grille avec image de fond */
+testimonial-grid-bg {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+testimonial-bg-item {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 2rem;
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+testimonial-bg-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
+  z-index: -1;
+}
+
+testimonial-bg-item .testimonial-content {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--primary);
+}
+
+testimonial-bg-item .testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+testimonial-bg-item .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--primary);
+}
+
+testimonial-bg-item .testimonial-author-info h5 {
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-bg-item .testimonial-author-info p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Style pour les cartes de témoignages avec citation stylisée */
+testimonial-quote-style {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: relative;
+  height: 100%;
+}
+
+testimonial-quote-style::before {
+  content: '"';
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  font-size: 6rem;
+  color: var(--primary);
+  font-family: Georgia, serif;
+  line-height: 1;
+  opacity: 0.1;
+}
+
+testimonial-quote-style .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+testimonial-quote-style .testimonial-author {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #e9ecef;
+  padding-top: 1.5rem;
+}
+
+testimonial-quote-style .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+testimonial-quote-style .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-quote-style .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec bordure colorée */
+testimonial-border-color-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  border-top: 4px solid var(--primary);
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+testimonial-border-color-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+testimonial-border-color-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid #e9ecef;
+}
+
+testimonial-border-color-card .testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+testimonial-border-color-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--primary);
+  padding: 2px;
+}
+
+testimonial-border-color-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-border-color-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec icône de citation */
+testimonial-icon-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: relative;
+  height: 100%;
+  text-align: center;
+}
+
+testimonial-icon-card .quote-icon {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 193, 7, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+testimonial-icon-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+testimonial-icon-card .testimonial-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+testimonial-icon-card .testimonial-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid var(--primary);
+  padding: 2px;
+}
+
+testimonial-icon-card .testimonial-author-info h5 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-icon-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec fond coloré */
+testimonial-colored-card {
+  background-color: var(--primary);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  color: #000;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+testimonial-colored-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+  z-index: -1;
+}
+
+testimonial-colored-card::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+testimonial-colored-card .quote-icon {
+  font-size: 2.5rem;
+  color: rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+testimonial-colored-card .testimonial-content {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+testimonial-colored-card .testimonial-author {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 1.5rem;
+}
+
+testimonial-colored-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+testimonial-colored-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: #000;
+}
+
+testimonial-colored-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+/* Style pour les cartes de témoignages avec séparateur */
+testimonial-separator-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: relative;
+  height: 100%;
+  text-align: center;
+  border-top: 4px solid var(--primary);
+}
+
+testimonial-separator-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding: 0 1rem;
+}
+
+testimonial-separator-card .testimonial-content::before,
+testimonial-separator-card .testimonial-content::after {
+  content: '"';
+  font-family: Georgia, serif;
+  font-size: 3rem;
+  color: var(--primary);
+  opacity: 0.2;
+  position: absolute;
+  line-height: 1;
+}
+
+testimonial-separator-card .testimonial-content::before {
+  top: -20px;
+  left: 0;
+}
+
+testimonial-separator-card .testimonial-content::after {
+  bottom: -40px;
+  right: 0;
+}
+
+testimonial-separator-card .testimonial-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+testimonial-separator-card .testimonial-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid var(--primary);
+  padding: 2px;
+}
+
+testimonial-separator-card .testimonial-author-info h5 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-separator-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+testimonial-separator-card .rating {
+  color: var(--warning);
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* Style pour les cartes de témoignages avec image latérale */
+testimonial-side-image-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  testimonial-side-image-card {
+    flex-direction: row;
+  }
+  
+  testimonial-side-image-card .testimonial-image {
+    width: 40%;
+    flex-shrink: 0;
+  }
+  
+  testimonial-side-image-card .testimonial-content-wrapper {
+    width: 60%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+testimonial-side-image-card .testimonial-image {
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  testimonial-side-image-card .testimonial-image {
+    height: auto;
+  }
+}
+
+testimonial-side-image-card .testimonial-content-wrapper {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+testimonial-side-image-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+testimonial-side-image-card .testimonial-author {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+testimonial-side-image-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--primary);
+  padding: 2px;
+}
+
+testimonial-side-image-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-side-image-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+testimonial-side-image-card .rating {
+  color: var(--warning);
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Style pour les cartes de témoignages avec fond dégradé */
+testimonial-gradient-card {
+  background: linear-gradient(135deg, var(--primary), #ffab00);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  color: #000;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+testimonial-gradient-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+  z-index: -1;
+}
+
+testimonial-gradient-card .quote-icon {
+  font-size: 2.5rem;
+  color: rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+testimonial-gradient-card .testimonial-content {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+testimonial-gradient-card .testimonial-author {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+testimonial-gradient-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+testimonial-gradient-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: #000;
+}
+
+testimonial-gradient-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+testimonial-gradient-card .rating {
+  color: #000;
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Style pour les cartes de témoignages avec bordure animée */
+testimonial-animated-border-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+testimonial-animated-border-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), #ffab00);
+  animation: borderAnimation 3s linear infinite;
+  background-size: 200% 100%;
+  z-index: 2;
+}
+
+@keyframes borderAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+testimonial-animated-border-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--primary);
+}
+
+testimonial-animated-border-card .testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+testimonial-animated-border-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--primary);
+  padding: 2px;
+}
+
+testimonial-animated-border-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-animated-border-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+testimonial-animated-border-card .rating {
+  color: var(--warning);
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Style pour les cartes de témoignages avec effet de profondeur */
+testimonial-depth-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+testimonial-depth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), #ffab00);
+  z-index: 2;
+}
+
+testimonial-depth-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+
+testimonial-depth-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+testimonial-depth-card .testimonial-author {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+testimonial-depth-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--primary);
+  padding: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+testimonial-depth-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+testimonial-depth-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+testimonial-depth-card .rating {
+  color: var(--warning);
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Style pour les cartes de témoignages avec effet de flottement */
+testimonial-float-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+testimonial-float-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), #ffab00);
+  z-index: 2;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+testimonial-float-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+testimonial-float-card:hover::before {
+  transform: scaleX(1);
+}
+
+testimonial-float-card .testimonial-content {
+  font-style: italic;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+testimonial-float-card:hover .testimonial-content {
+  color: #495057;
+}
+
+testimonial-float-card .testimonial-author {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+testimonial-float-card:hover .testimonial-author {
+  border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+testimonial-float-card .testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--primary);
+  padding: 2px;
+  transition: all 0.3s ease;
+}
+
+testimonial-float-card:hover .testimonial-avatar {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+testimonial-float-card .testimonial-author-info h5 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+testimonial-float-card:hover .testimonial-author-info h5 {
+  color: var(--primary);
+}
+
+testimonial-float-card .testimonial-author-info p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+testimonial-float-card:hover .testimonial-author-info p {
+  color: #868e96;
+}
+
+testimonial-float-card .rating {
+  color: var(--warning);
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+testimonial-float-card:hover .rating {
+  transform: scale(1.1);
+}

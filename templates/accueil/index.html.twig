@@ -1,15 +1,23 @@
 {% extends 'base.html.twig' %}
 {% block title %}Maison d’Enchères — Accueil{% endblock %}
 {% block body %}
-  <main class="bg-black text-white py-5" style="min-height:100vh;">
-    <div class="container">
-      <div class="row align-items-center g-4">
+  <section class="hero position-relative overflow-hidden">
+    <!-- Vidéo de fond -->
+    <div class="video-background">
+      <video autoplay muted loop id="hero-video">
+        <source src="{{ asset('videos/hero-video.mp4') }}" type="video/mp4">
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    
+    <div class="container position-relative z-index-1">
+      <div class="row min-vh-100 align-items-center">
         <div class="col-12 col-lg-7">
-          <h1 class="display-5 text-accent mb-3">Maison d’Enchères</h1>
-          <p class="lead text-muted mb-4">Ventes aux enchères d’objets rares & pièces d’exception.</p>
-          <div class="d-flex gap-2">
-            <a href="{{ path('app_lot_index') }}" class="btn btn-primary btn-lg text-white">Découvrir les enchères</a>
-            <a href="{{ path('app_contact') }}" class="btn btn-outline-light btn-lg">Nous contacter</a>
+          <h1 class="display-4 fw-bold text-white mb-4">Maison d'Enchères</h1>
+          <p class="lead text-white-50 mb-5">Découvrez des pièces uniques et rares issues des plus grandes collections privées.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="{{ path('app_lot_index') }}" class="btn btn-primary btn-lg px-4">Découvrir les enchères</a>
+            <a href="{{ path('app_contact') }}" class="btn btn-outline-light btn-lg px-4">Nous contacter</a>
           </div>
         </div>
         <div class="col-12 col-lg-5">
@@ -22,6 +30,6 @@
         </div>
       </div>
     </div>
-  </main>
+  </section>
 {% endblock %}
 

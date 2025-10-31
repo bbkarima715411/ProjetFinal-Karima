@@ -32,7 +32,11 @@ class RegistrationFormType extends AbstractType
                     new NotBlank(['message' => 'Veuillez saisir votre adresse email']),
                     new EmailConstraint(['message' => 'Adresse email invalide'])
                 ],
-                'attr' => ['class' => 'form-control bg-dark text-white border-secondary']
+                'attr' => [
+                    'class' => 'form-control bg-dark text-white border-secondary',
+                    'autocomplete' => 'email',
+                    'placeholder' => 'votre@email.com'
+                ]
             ])
             // Champs de profil (non mappés pour l'instant; ajout BDD possible plus tard)
             ->add('firstName', TextType::class, [
@@ -103,10 +107,8 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                'label' => 'Mot de passe',
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un mot de passe',
@@ -114,11 +116,15 @@ class RegistrationFormType extends AbstractType
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
-                'label_attr' => ['data-required' => '1']
+                'label_attr' => ['data-required' => '1'],
+                'attr' => [
+                    'class' => 'form-control bg-dark text-white border-secondary',
+                    'autocomplete' => 'new-password',
+                    'placeholder' => '••••••'
+                ]
             ])
         ;
     }

@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif de la commande - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Récapitulatif de la commande</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for item in cart.items %}
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                                <div class="d-flex align-items-center">
+                                    {% if item.product.image %}
+                                        <img src="{{ asset('uploads/products/' ~ item.product.image) }}" 
+                                             alt="{{ item.product.name }}" 
+                                             class="img-fluid rounded" 
+                                             style="width: 70px; height: auto;">
+                                    {% endif %}
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">{{ item.product.name }}</h6>
+                                        <small class="text-muted">Quantité: {{ item.quantity }}</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">{{ (item.product.price * item.quantity)|number_format(2, ',', ' ') }} €</div>
+                                    <small class="text-muted">{{ item.product.price|number_format(2, ',', ' ') }} € l'unité</small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Adresse de livraison</h5>
+                    </div>
+                    <div class="card-body">
+                        <address>
+                            <strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong><br>
+                            {{ app.user.address1 }}<br>
+                            {% if app.user.address2 %}{{ app.user.address2 }}<br>{% endif %}
+                            {{ app.user.postalCode }} {{ app.user.city }}<br>
+                            {{ app.user.country }}
+                        </address>
+                        <a href="{{ path('account_address_edit', {'id': app.user.id}) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit me-1"></i> Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Résumé de la commande</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Sous-total</span>
+                            <span>{{ total|number_format(2, ',', ' ') }} €</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Livraison</span>
+                            <span>Gratuite</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fw-bold">Total TTC</span>
+                            <span class="fw-bold">{{ total|number_format(2, ',', ' ') }} €</span>
+                        </div>
+
+                        <form action="{{ path('checkout_payment') }}" method="post">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fab fa-paypal me-2"></i> Payer avec PayPal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="mb-3">Modes de paiement acceptés</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <i class="fab fa-cc-paypal fa-2x text-primary me-2"></i>
+                                <span>PayPal</span>
+                            </div>
+                            <div>
+                                <i class="fas fa-lock fa-lg text-success"></i>
+                                <small class="text-muted">Paiement sécurisé</small>
+                            </div>
+                        </div>
+                        <p class="small text-muted mt-3">
+                            Votre paiement est traité de manière sécurisée. Nous ne stockons pas vos informations de carte bancaire.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

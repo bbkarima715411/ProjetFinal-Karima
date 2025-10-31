@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\ORM\QueryBuilder;
+use DateTimeImmutable;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -63,4 +65,38 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * Compte le nombre de nouveaux utilisateurs inscrits ce mois-ci
+     *
+     * @return int
+     */
+    public function countNewUsersThisMonth(): int
+    {
+        $startOfMonth = new DateTimeImmutable('first day of this month 00:00:00');
+        $endOfMonth = new DateTimeImmutable('last day of this month 23:59:59');
+
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.createdAt BETWEEN :start AND :end')
+            ->setParameter('start', $startOfMonth)
+            ->setParameter('end', $endOfMonth)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Trouve les utilisateurs récemment inscrits
+     *
+     * @param int $limit Nombre maximum d'utilisateurs à retourner
+     * @return User[]
+     */
+    public function findRecentUsers(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

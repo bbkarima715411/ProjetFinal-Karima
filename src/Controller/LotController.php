@@ -33,9 +33,18 @@ class LotController extends AbstractController
 
     /** Liste tous les lots (triés du plus récent au plus ancien). */
     #[Route('/lots', name: 'app_lot_index')]
-    public function index(LotRepository $repo): Response
+    public function index(LotRepository $lotRepository): Response
     {
-        $lots = $repo->findBy([], ['id' => 'DESC']);
+        // Nettoyer les lots orphelins (sans événement)
+        $deleted = $lotRepository->removeOrphanedLots();
+        
+        if ($deleted > 0) {
+            $this->addFlash('info', sprintf('%d lots orphelins ont été supprimés.', $deleted));
+        }
+        
+        // Récupérer uniquement les lots qui ont un événement d'enchères valide
+        $lots = $lotRepository->findAllWithValidEvent();
+        
         return $this->render('lot/index.html.twig', [
             'lots' => $lots,
         ]);
@@ -44,11 +53,33 @@ class LotController extends AbstractController
     // ✅ NOUVELLE ROUTE "show"
     /** Affiche le détail d'un lot par son identifiant. */
     #[Route('/lot/{id}', name: 'app_lot_show', requirements: ['id' => '\\d+'], methods: ['GET'])]
-    public function show(int $id, LotRepository $repo, FavoriRepository $favoriRepo): Response
+    public function show(int $id, LotRepository $repo, FavoriRepository $favoriRepo, EntityManagerInterface $em): Response
     {
-        $lot = $repo->find($id);
+        // Utiliser une requête DQL pour s'assurer que l'événement est chargé
+        $query = $em->createQuery(
+            'SELECT l, e FROM App\Entity\Lot l
+             LEFT JOIN l.evenementEnchere e
+             WHERE l.id = :id'
+        )->setParameter('id', $id);
+        
+        try {
+            $lot = $query->getOneOrNullResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            $lot = null;
+        }
+        
         if (!$lot) {
             throw $this->createNotFoundException('Lot introuvable.');
+        }
+        
+        // Vérifier si l'événement d'enchères existe
+        if (!$lot->getEvenementEnchere()) {
+            // Supprimer le lot orphelin
+            $em->remove($lot);
+            $em->flush();
+            
+            $this->addFlash('warning', 'Ce lot n\'est plus disponible car son événement d\'enchères a été supprimé.');
+            return $this->redirectToRoute('app_lot_index');
         }
 
         $isFavorite = false;

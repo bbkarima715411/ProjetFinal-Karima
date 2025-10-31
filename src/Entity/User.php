@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -48,6 +50,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 120, nullable: true)]
     private ?string $city = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Cart::class, cascade: ['persist', 'remove'])]
+    private ?Cart $cart = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
+    private $orders;
+
     #[ORM\Column(length: 120, nullable: true)]
     private ?string $country = null;
 
@@ -56,6 +64,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthDate = null;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+        $this->cart = new Cart();
+        $this->cart->setUser($this);
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -187,9 +206,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->city;
     }
 
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Cart $cart): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($cart === null && $this->cart !== null) {
+            $this->cart->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($cart !== null && $cart->getUser() !== $this) {
+            $cart->setUser($this);
+        }
+
+        $this->cart = $cart;
+        return $this;
+    }
+
     public function setCity(?string $city): static
     {
         $this->city = $city;
+        return $this;
+    }
+
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    public function setOrders($orders): self
+    {
+        $this->orders = $orders;
         return $this;
     }
 
@@ -223,6 +274,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBirthDate(?\DateTimeInterface $birthDate): static
     {
         $this->birthDate = $birthDate;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 }

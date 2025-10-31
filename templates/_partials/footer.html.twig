@@ -1,45 +1,158 @@
 {# templates/_partials/footer.html.twig #}
-<footer class="footer border-top mt-5">
-  <div class="container py-5">
-    <div class="row g-4">
-      <div class="col-12 col-lg-5">
-        <h5 class="fw-bold mb-2 text-accent">Vestige d’Or</h5>
-        <p class="mb-0 text-muted">Maison d’enchères — objets rares et pièces d’exception.</p>
+<footer class="bg-dark text-white pt-5">
+  <div class="container">
+    <div class="row g-4 g-lg-5">
+      <!-- À propos -->
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-gem fs-2 text-warning me-2"></i>
+          <h3 class="h5 mb-0 fw-bold">Vestige d'Or</h3>
+        </div>
+        <p class="text-muted">
+          Votre maison d'enchères en ligne pour des objets rares, des pièces d'exception et des trésors uniques. 
+          Experts en art, antiquités et objets de collection depuis 2023.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#" class="text-white opacity-75-hover" aria-label="Instagram">
+            <i class="bi bi-instagram fs-5"></i>
+          </a>
+          <a href="#" class="text-white opacity-75-hover" aria-label="Facebook">
+            <i class="bi bi-facebook fs-5"></i>
+          </a>
+          <a href="#" class="text-white opacity-75-hover" aria-label="Twitter">
+            <i class="bi bi-twitter-x fs-5"></i>
+          </a>
+          <a href="#" class="text-white opacity-75-hover" aria-label="Pinterest">
+            <i class="bi bi-pinterest fs-5"></i>
+          </a>
+        </div>
       </div>
 
-      <div class="col-6 col-lg-3">
-        <h6 class="text-uppercase text-muted small mb-2">Navigation</h6>
-        <ul class="list-unstyled mb-0">
-          <li class="mb-1"><a class="link-light" href="{{ path('app_accueil') }}">Accueil</a></li>
-          <li class="mb-1"><a class="link-light" href="{{ path('app_lot_index') }}">Enchères</a></li>
-          <li class="mb-1"><a class="link-light" href="{{ path('app_contact') }}">Contact</a></li>
-          {% if app.user %}
-            <li class="mb-1"><a class="link-light" href="{{ path('app_profil') }}">Mon profil</a></li>
-          {% else %}
-            <li class="mb-1"><a class="link-light" href="{{ path('app_login') }}">Connexion</a></li>
+      <!-- Liens rapides -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <h4 class="h6 text-uppercase fw-bold mb-3">Navigation</h4>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <a href="{{ path('app_accueil') }}" class="nav-link p-0 text-muted">Accueil</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="{{ path('app_lot_index') }}" class="nav-link p-0 text-muted">Enchères</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="{{ path('app_categorie_show', {slug: 'dernieres-acquisitions'}) }}" class="nav-link p-0 text-muted">Nouveautés</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="{{ path('app_contact') }}" class="nav-link p-0 text-muted">Contact</a>
+          </li>
+          {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+              <a href="{{ path('admin_dashboard') }}" class="nav-link p-0 text-warning">
+                <small><i class="bi bi-shield-lock me-1"></i> Administration</small>
+              </a>
+            </li>
           {% endif %}
         </ul>
       </div>
 
-      <div class="col-6 col-lg-4">
-        <h6 class="text-uppercase text-muted small mb-2">Contact</h6>
-        <ul class="list-unstyled mb-3">
-          <li class="mb-1 text-muted">Email: contact@vestigedor.example</li>
-          <li class="mb-1 text-muted">Tél: +33 1 23 45 67 89</li>
+      <!-- Mon compte -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <h4 class="h6 text-uppercase fw-bold mb-3">Mon compte</h4>
+        <ul class="nav flex-column">
+          {% if app.user %}
+            <li class="nav-item mb-2">
+              <a href="{{ path('app_profil') }}" class="nav-link p-0 text-muted">Mon profil</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="{{ path('app_mes_encheres') }}" class="nav-link p-0 text-muted">Mes enchères</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="{{ path('app_mes_favoris') }}" class="nav-link p-0 text-muted">Favoris</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ path('app_logout') }}" class="nav-link p-0 text-muted">Déconnexion</a>
+            </li>
+          {% else %}
+            <li class="nav-item mb-2">
+              <a href="{{ path('app_login') }}" class="nav-link p-0 text-muted">Connexion</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ path('app_register') }}" class="nav-link p-0 text-muted">Créer un compte</a>
+            </li>
+          {% endif %}
         </ul>
-        <div class="d-flex gap-3">
-          <a class="link-light" href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          <a class="link-light" href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
-          <a class="link-light" href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        </div>
+      </div>
+
+      <!-- Contact & Infos -->
+      <div class="col-md-6 col-lg-4">
+        <h4 class="h6 text-uppercase fw-bold mb-3">Contact & Informations</h4>
+        <ul class="list-unstyled text-muted">
+          <li class="mb-2">
+            <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+            123 Rue des Antiquaires, 75001 Paris
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-telephone-fill text-warning me-2"></i>
+            +33 1 23 45 67 89
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-envelope-fill text-warning me-2"></i>
+            contact@vestigedor.fr
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-clock-fill text-warning me-2"></i>
+            Lun-Ven: 9h-18h | Sam: 10h-17h
+          </li>
+        </ul>
+        
+        <h5 class="h6 text-uppercase fw-bold mt-4 mb-3">Newsletter</h5>
+        <form class="mb-3">
+          <div class="input-group">
+            <input type="email" class="form-control form-control-sm" placeholder="Votre email" aria-label="Votre email">
+            <button class="btn btn-warning btn-sm" type="button"><i class="bi bi-send"></i></button>
+          </div>
+          <small class="text-muted">Inscrivez-vous pour recevoir nos offres exclusives</small>
+        </form>
+      </div>
+    </div>
+
+    <hr class="my-4 border-secondary">
+    
+    <!-- Copyright & Mentions -->
+    <div class="row align-items-center py-3">
+      <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+        <p class="mb-0 small text-muted">
+          &copy; {{ "now"|date("Y") }} Vestige d'Or - Tous droits réservés
+        </p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <a href="#" class="text-muted text-decoration-none small me-3">Mentions légales</a>
+        <a href="#" class="text-muted text-decoration-none small me-3">CGV</a>
+        <a href="#" class="text-muted text-decoration-none small">Politique de confidentialité</a>
       </div>
     </div>
   </div>
-
-  <div class="border-top py-3">
-    <div class="container d-flex justify-content-between align-items-center small text-muted">
-      <span>© {{ "now"|date("Y") }} Vestige d’Or</span>
-      <span>FR · EN</span>
-    </div>
-  </div>
 </footer>
+
+<!-- Bouton retour en haut -->
+<button id="backToTop" class="btn btn-warning btn-sm position-fixed bottom-0 end-0 m-3 rounded-circle shadow" style="width: 40px; height: 40px; display: none;">
+  <i class="bi bi-arrow-up"></i>
+</button>
+
+<script>
+  // Bouton retour en haut
+  const backToTopButton = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopButton.style.display = 'flex';
+      backToTopButton.style.alignItems = 'center';
+      backToTopButton.style.justifyContent = 'center';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+  
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

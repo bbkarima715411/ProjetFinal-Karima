@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Cart;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,48 +17,73 @@ use App\Security\AutoLoginAuthenticator;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserAuthenticatorInterface $userAuthenticator, AutoLoginAuthenticator $authenticator): Response
+    #[Route('/inscription', name: 'app_register')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_accueil');
+        }
+        
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            try {
+                // Encoder le mot de passe
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
 
-            // Copier les champs de profil (non mappés) vers l'entité User
-            $user->setFirstName($form->get('firstName')->getData());
-            $user->setLastName($form->get('lastName')->getData());
-            $user->setAddress1($form->get('address1')->getData());
-            $user->setAddress2($form->get('address2')->getData());
-            $user->setPostalCode($form->get('postalCode')->getData());
-            $user->setCity($form->get('city')->getData());
-            $user->setCountry($form->get('country')->getData());
-            $user->setPhone($form->get('phone')->getData());
-            $user->setBirthDate($form->get('birthDate')->getData());
+                // Définir le rôle par défaut
+                $user->setRoles(['ROLE_USER']);
+                
+                // Définir l'email (déjà mappé par défaut)
+                $user->setEmail($form->get('email')->getData());
+                
+                // Définir les champs supplémentaires
+                $user->setFirstName($form->get('firstName')->getData());
+                $user->setLastName($form->get('lastName')->getData());
+                $user->setAddress1($form->get('address1')->getData());
+                
+                // Champs optionnels
+                $user->setAddress2($form->get('address2')->getData() ?? null);
+                $user->setPostalCode($form->get('postalCode')->getData());
+                $user->setCity($form->get('city')->getData());
+                $user->setCountry($form->get('country')->getData());
+                $user->setPhone($form->get('phone')->getData() ?? null);
+                $user->setBirthDate($form->get('birthDate')->getData() ?? null);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+                // Créer un panier pour l'utilisateur
+                $cart = new Cart();
+                $cart->setUser($user);
+                $user->setCart($cart);
 
-            // Message de confirmation + redirection vers la connexion
-            $first = $user->getFirstName() ?: '';
-            $last  = $user->getLastName() ?: '';
-            $full  = trim($first.' '.$last);
-            $name  = $full !== '' ? $full : $user->getEmail();
-            $this->addFlash('success', sprintf('Bienvenue %s. Votre compte a été créé. Vous pouvez maintenant vous connecter.', $name));
-            return $this->redirectToRoute('app_login');
-        }
+                $entityManager->persist($user);
+                $entityManager->persist($cart);
+                $entityManager->flush();
 
-        // Soumis mais invalide: guider l'utilisateur
-        if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('danger', 'Veuillez corriger les champs requis avant de continuer.');
+                // Message de confirmation + redirection vers la connexion
+                $name = trim($user->getFirstName() . ' ' . $user->getLastName());
+                $displayName = $name ?: $user->getEmail();
+                
+                $this->addFlash('success', sprintf(
+                    'Bienvenue %s. Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.',
+                    $displayName
+                ));
+                
+                return $this->redirectToRoute('app_login');
+                
+            } catch (\Exception $e) {
+                // En cas d'erreur, afficher un message d'erreur
+                $this->addFlash('error', 'Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.');
+                
+                // Journaliser l'erreur pour le débogage
+                error_log('Erreur lors de l\'inscription : ' . $e->getMessage());
+            }
         }
 
         return $this->render('registration/register.html.twig', [
