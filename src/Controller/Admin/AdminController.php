@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -25,15 +26,45 @@ class AdminController extends AbstractController
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $recentOrders = method_exists($orderRepository, 'findRecentOrders') ? $orderRepository->findRecentOrders(5) : [];
-        $lowStockProducts = method_exists($productRepository, 'findLowStock') ? $productRepository->findLowStock(5) : [];
-        $totalUsers = $userRepository->count([]);
-        $newUsersThisMonth = method_exists($userRepository, 'countNewUsersThisMonth') ? $userRepository->countNewUsersThisMonth() : 0;
-        $recentUsers = method_exists($userRepository, 'findRecentUsers') ? $userRepository->findRecentUsers(5) : [];
+        try {
+            $recent_orders = $orderRepository->findBy([], ['createdAt' => 'DESC'], 5);
+            $low_stock_products = $productRepository->createQueryBuilder('p')
+                ->where('p.stock < 10')
+                ->orderBy('p.stock', 'ASC')
+                ->setMaxResults(5)
+                ->getQuery()
+                ->getResult();
+            
+            $total_users = $userRepository->count([]);
+            
+            $new_users_this_month = $userRepository->createQueryBuilder('u')
+                ->select('COUNT(u.id)')
+                ->where('u.createdAt >= :startDate')
+                ->setParameter('startDate', new \DateTime('first day of this month'))
+                ->getQuery()
+                ->getSingleScalarResult();
+                
+            $recent_users = $userRepository->findBy([], ['createdAt' => 'DESC'], 5);
 
-        return $this->render('admin/dashboard.html.twig', compact(
-            'recentOrders','lowStockProducts','totalUsers','newUsersThisMonth','recentUsers'
-        ));
+            return $this->render('admin/dashboard.html.twig', [
+                'recent_orders' => $recent_orders,
+                'low_stock_products' => $low_stock_products,
+                'total_users' => $total_users,
+                'new_users_this_month' => $new_users_this_month,
+                'recent_users' => $recent_users
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Une erreur est survenue lors du chargement du tableau de bord : ' . $e->getMessage());
+            
+            // Retourner une réponse avec des tableaux vides en cas d'erreur
+            return $this->render('admin/dashboard.html.twig', [
+                'recent_orders' => [],
+                'low_stock_products' => [],
+                'total_users' => 0,
+                'new_users_this_month' => 0,
+                'recent_users' => []
+            ]);
+        }
     }
 
     #[Route('/orders', name: 'admin_orders')]
@@ -60,26 +91,33 @@ class AdminController extends AbstractController
             'products' => $productRepository->findAll(),
         ]);
     }
-
     #[Route('/product/new', name: 'admin_product_new')]
-    public function newProduct(Request $request, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
-    {
+    public function newProduct(
+        Request $request, 
+        EntityManagerInterface $em, 
+        CategoryRepository $catRepo, 
+        SluggerInterface $slugger
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $product = new Product();
-        $categories = $categoryRepository->findAll();
+        $categories = $catRepo->findAll();
 
         if ($request->isMethod('POST')) {
-            $product->setName($request->request->get('name'));
+            $name = trim((string)$request->request->get('name'));
+            $price = (float)$request->request->get('price');
+
+            $product->setName($name);
+            $product->setSlug(strtolower($slugger->slug($name)));
             $product->setShortDescription($request->request->get('short_description'));
             $product->setDescription($request->request->get('description'));
-            $product->setPrice((float)$request->request->get('price'));
-            $product->setStock((int)$request->request->get('stock', 0));
-            $product->setReference(uniqid('PROD_'));
-            $product->setIsActive($request->request->has('is_active'));
+            $product->setPrice($price);
+            $product->setStock($request->request->getInt('stock', 0));
+            $product->setIsActive($request->request->getBoolean('is_active', true));
+            $product->setReference($request->request->get('reference') ?: uniqid('PROD_'));
 
             if ($id = $request->request->get('category')) {
-                if ($cat = $categoryRepository->find($id)) {
+                if ($cat = $catRepo->find($id)) {
                     $product->setCategory($cat);
                 }
             }
@@ -92,39 +130,52 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/products/new.html.twig', [
-            'categories' => $categories,
+            'categories' => $categories
         ]);
     }
 
     #[Route('/product/{id}/edit', name: 'admin_product_edit')]
-    public function editProduct(Product $product, Request $request, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
-    {
+    public function editProduct(
+        Product $product, 
+        Request $request, 
+        EntityManagerInterface $em, 
+        SluggerInterface $slugger, 
+        CategoryRepository $catRepo
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($request->isMethod('POST')) {
-            $product->setName($request->request->get('name'));
+            $name = trim((string)$request->request->get('name'));
+
+            // si le nom change, on régénère le slug
+            if ($name && $name !== $product->getName()) {
+                $product->setSlug(strtolower($slugger->slug($name)));
+            }
+            
+            $product->setName($name);
             $product->setShortDescription($request->request->get('short_description'));
             $product->setDescription($request->request->get('description'));
             $product->setPrice((float)$request->request->get('price'));
-            $product->setStock((int)$request->request->get('stock', 0));
-            $product->setIsActive($request->request->has('is_active'));
+            $product->setStock($request->request->getInt('stock', 0));
+            $product->setIsActive($request->request->getBoolean('is_active', true));
+            $product->setReference($request->request->get('reference') ?: $product->getReference());
 
             if ($id = $request->request->get('category')) {
-                $cat = $categoryRepository->find($id);
-                $product->setCategory($cat);
+                if ($cat = $catRepo->find($id)) {
+                    $product->setCategory($cat);
+                }
             } else {
                 $product->setCategory(null);
             }
 
             $em->flush();
-
-            $this->addFlash('success', 'Produit mis à jour avec succès.');
+            $this->addFlash('success', 'Produit mis à jour.');
             return $this->redirectToRoute('admin_products');
         }
 
         return $this->render('admin/products/edit.html.twig', [
             'product' => $product,
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $catRepo->findAll(),
         ]);
     }
 
