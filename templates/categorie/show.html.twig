@@ -1,8 +1,32 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ label }} — Catégorie{% endblock %}
 
 {% block body %}
+<main class="lots-page" style="background:#000;color:#fff;min-height:100vh;padding:2rem;">
+  <h1 style="color:#d4af37;text-align:center;margin-bottom:1rem;">{{ label }}</h1>
 
-
-
+  {% if lots is empty %}
+    <p style="text-align:center;">Aucun lot dans cette catégorie.</p>
+  {% else %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;">
+      {% for lot in lots %}
+        <article style="background:#111;border:1px solid rgba(212,175,55,.4);border-radius:10px;overflow:hidden;">
+          <a href="{{ path('app_lot_show', {id: lot.id}) }}" style="text-decoration:none;color:inherit;">
+            {% if lot.imageFilename %}
+              <img src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.Lot ?? 'Lot' }}" style="width:100%;height:220px;object-fit:cover;">
+            {% else %}
+              <img src="{{ asset('images/demo/commo.png') }}" alt="Image par défaut" style="width:100%;height:220px;object-fit:cover;opacity:.85;">
+            {% endif %}
+            <div style="padding:1rem;">
+              <h3 style="color:#d4af37;margin:0 0 .4rem 0;">{{ lot.Lot ?? 'Lot' }}</h3>
+              <p style="color:#bbb;margin:.2rem 0;">Catégorie : {{ lot.Categorie }}</p>
+              <p style="color:#fff;font-weight:700;margin:.2rem 0;">Prix actuel : {{ lot.prixActuel|number_format(2, ',', ' ') }} €</p>
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</main>
 {% endblock %}

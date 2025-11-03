@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Category;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -15,6 +16,9 @@ class Product
 
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $shortDescription = null; // ✅ ajouté
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
@@ -37,6 +41,9 @@ class Product
     #[ORM\Column(type: 'string', length: 50, unique: true)]
     private $reference;
 
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    private $category;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -55,6 +62,17 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getShortDescription(): ?string
+    {
+        return $this->shortDescription;
+    }
+
+    public function setShortDescription(?string $shortDescription): self
+    {
+        $this->shortDescription = $shortDescription;
         return $this;
     }
 
@@ -132,6 +150,17 @@ class Product
     public function setReference(string $reference): self
     {
         $this->reference = $reference;
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
         return $this;
     }
 }

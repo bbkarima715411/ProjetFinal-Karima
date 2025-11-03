@@ -36,3 +36,7 @@ services:
     arguments:
       $senderEmail: 'noreply@votresite.com'
       $senderName: 'Votre Boutique'
+
+  # Extension Twig personnalisée pour le formatage des devises
+  App\Twig\AppExtension:
+    tags: [twig.extension]

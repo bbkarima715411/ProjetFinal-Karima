@@ -19,6 +19,7 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $users = [
+            ['email' => 'admin1@enchere.be', 'password' => '123', 'roles' => ['ROLE_ADMIN']],
             ['email' => 'admin@enchères.fr', 'password' => 'admin123', 'roles' => ['ROLE_ADMIN']],
             ['email' => 'user1@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
             ['email' => 'user2@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],

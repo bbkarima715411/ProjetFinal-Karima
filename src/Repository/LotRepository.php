@@ -5,11 +5,7 @@ namespace App\Repository;
 use App\Entity\Lot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\ResultSetMapping;
 
-/**
- * @extends ServiceEntityRepository<Lot>
- */
 class LotRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -17,47 +13,48 @@ class LotRepository extends ServiceEntityRepository
         parent::__construct($registry, Lot::class);
     }
 
-    /** 
-     * Récupère les derniers lots avec leurs événements d'enchères
-     * @return Lot[] 
-     */
-    public function findLatest(int $limit = 20): array
+    /** Retourne la liste DISTINCT des catégories (strings) triées */
+    public function findDistinctCategories(): array
     {
-        return $this->createQueryBuilder('l')
-            ->leftJoin('l.evenementEnchere', 'e')
-            ->addSelect('e')
-            ->andWhere('e IS NOT NULL') // Ne récupère que les lots avec un événement valide
-            ->orderBy('l.id', 'DESC')
-            ->setMaxResults($limit)
+        $rows = $this->createQueryBuilder('l')
+            ->select('DISTINCT l.Categorie AS cat')
+            ->where('l.Categorie IS NOT NULL')
+            ->orderBy('l.Categorie', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
+
+        return array_map(fn($r) => $r['cat'], $rows);
     }
 
-    /**
-     * Récupère tous les lots avec un événement d'enchères valide
-     * @return Lot[]
-     */
-    public function findAllWithValidEvent()
+    /** Retourne les lots d'une catégorie exacte (libellé tel qu'en BDD) */
+    public function findByCategoryLabel(string $label): array
     {
         return $this->createQueryBuilder('l')
-            ->leftJoin('l.evenementEnchere', 'e')
-            ->addSelect('e')
-            ->andWhere('e IS NOT NULL') // Ne récupère que les lots avec un événement valide
+            ->andWhere('l.Categorie = :cat')
+            ->setParameter('cat', $label)
             ->orderBy('l.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-    /**
-     * Supprime les lots orphelins (sans événement d'enchères)
-     * @return int Nombre de lots supprimés
-     */
+    /** Supprime les lots orphelins (sans événement) et retourne le nombre supprimé */
     public function removeOrphanedLots(): int
     {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'DELETE l FROM lot l LEFT JOIN evenement_enchere e ON l.evenement_enchere_id = e.id WHERE e.id IS NULL';
+        $stmt = $conn->executeQuery($sql);
+        return $stmt->rowCount();
+    }
+
+    /** Récupère les lots qui ont un événement lié (basique) */
+    public function findAllWithValidEvent(): array
+    {
         return $this->createQueryBuilder('l')
-            ->delete()
-            ->where('l.evenementEnchere IS NULL')
+            ->leftJoin('l.evenementEnchere', 'e')
+            ->addSelect('e')
+            ->andWhere('e.id IS NOT NULL')
+            ->orderBy('l.id', 'DESC')
             ->getQuery()
-            ->execute();
+            ->getResult();
     }
 }

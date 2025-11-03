@@ -2,14 +2,13 @@
 {% set events = evenementsEnCours|default([]) %}
 
 <header id="main-header" class="sticky-top">
-  {# Barre de navigation supérieure #}
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand fw-bold text-warning" href="{{ path('app_accueil') }}">
         <i class="bi bi-gem me-2"></i>Vestige d'Or
       </a>
       
-      {# Bouton de menu mobile #}
+      {# Bouton mobile #}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -29,30 +28,27 @@
             </a>
           </li>
           
+          {# --- Catégories dynamiques --- #}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle {{ app.request.get('_route') == 'app_categorie_show' ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle {{ app.request.get('_route') starts with 'app_categorie_' ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-tags me-1"></i>Catégories
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><h6 class="dropdown-header">Mobilier</h6></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'sieges-fauteuils'}) }}">Sièges & Fauteuils</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'tables-bureaux'}) }}">Tables & Bureaux</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'armoires-commodes'}) }}">Armoires & Commodes</a></li>
-              <li><hr class="dropdown-divider"></li>
-              
-              <li><h6 class="dropdown-header">Art</h6></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'peintures-anciennes'}) }}">Peintures anciennes</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'gravures-dessins'}) }}">Gravures & Dessins</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'affiches-anciennes'}) }}">Affiches anciennes</a></li>
-              <li><hr class="dropdown-divider"></li>
-              
-              <li><h6 class="dropdown-header">Objets de valeur</h6></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'bijoux-anciens'}) }}">Bijoux anciens</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'montres-collection'}) }}">Montres de collection</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'objets-precieux'}) }}">Objets précieux</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_categorie_show', {slug: 'monnaies-medailles'}) }}">Monnaies & Médailles</a></li>
+              {% set categories = categories_nav() %}
+              {% if categories is not empty %}
+                {% for cat in categories %}
+                  <li>
+                    <a class="dropdown-item" href="{{ path('app_categorie_show', {slug: cat_slug(cat)}) }}">
+                      {{ cat }}
+                    </a>
+                  </li>
+                {% endfor %}
+              {% else %}
+                <li><span class="dropdown-item-text text-muted">Aucune catégorie disponible</span></li>
+              {% endif %}
             </ul>
           </li>
+          {# --- fin du menu dynamique --- #}
           
           <li class="nav-item">
             <a class="nav-link {{ app.request.get('_route') == 'app_contact' ? 'active' : '' }}" href="{{ path('app_contact') }}">
@@ -69,7 +65,7 @@
           {% endif %}
         </ul>
 
-        {# Actions utilisateur #}
+        {# Actions utilisateur (connexion, compte, panier) #}
         <div class="d-flex align-items-center gap-2">
           {% if app.user %}
             <div class="dropdown">
@@ -109,7 +105,7 @@
   </nav>
 </header>
 
-{# Bannière d'information #}
+{# Bande d’information #}
 <div class="bg-warning py-2 text-center small" style="color: #000 !important; font-weight: 500;">
   <div class="container">
     <i class="bi bi-truck me-2"></i> Livraison offerte à partir de 500€ d'achat

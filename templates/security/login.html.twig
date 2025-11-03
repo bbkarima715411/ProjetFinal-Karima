@@ -15,7 +15,11 @@
 
           {% if app.user %}
             <div class="alert alert-success small" role="alert">
-              Connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>. <a class="alert-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+              Connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>.
+              {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-sm btn-outline-light ms-2" href="{{ path('admin_dashboard') }}">Tableau de bord admin</a>
+              {% endif %}
+              <a class="btn btn-sm btn-outline-light ms-2" href="{{ path('app_logout') }}">Se déconnecter</a>
             </div>
           {% endif %}
 
