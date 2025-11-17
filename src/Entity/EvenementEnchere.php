@@ -68,16 +68,22 @@ class EvenementEnchere
     }
 
     /**
-     * Indique si l'événement est ouvert (mode DEV: ouvert 8h-20h chaque jour).
+     * Indique si l'événement est ouvert en fonction de ses dates de début/fin.
+     *
+     * L'événement est considéré comme ouvert si:
+     *   - debutAt et finAt sont définies
+     *   - et que "maintenant" est compris entre les deux.
      */
     public function estOuvert(): bool
     {
+        if (!$this->debutAt || !$this->finAt) {
+            return false;
+        }
+
         $tz = new \DateTimeZone('Europe/Paris');
         $maintenant = new \DateTimeImmutable('now', $tz);
-        $debut = self::debutDuJour($tz);
-        $fin = self::finDuJour($tz);
 
-        return $maintenant >= $debut && $maintenant < $fin;
+        return $maintenant >= $this->debutAt && $maintenant < $this->finAt;
     }
 
     /**

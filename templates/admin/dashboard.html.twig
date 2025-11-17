@@ -3,194 +3,157 @@
 {% block title %}Tableau de bord - Administration{% endblock %}
 
 {% block body %}
-    <h1 class="mb-4">Tableau de bord</h1>
-    
-    <div class="row mb-4">
-        <!-- Carte Commandes en attente -->
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3 h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title">Commandes en attente</h5>
-                            <h2 class="mb-0">{{ recent_orders is defined and recent_orders ? recent_orders|filter(o => o.status == 'pending')|length : 0 }}</h2>
-                        </div>
-                        <i class="bi bi-cart3" style="font-size: 2.5rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{{ path('admin_orders') }}" class="text-white">Voir les commandes <i class="bi bi-arrow-right"></i></a>
-                </div>
+    <h1 class="mb-3 text-accent text-center">Tableau de bord</h1>
+
+    <nav class="mb-4">
+        <ul class="nav justify-content-center gap-2 flex-wrap align-items-center">
+            <li class="nav-item">
+                <a href="{{ path('admin_dashboard') }}" class="nav-link text-white-50 {% if app.request.attributes.get('_route') == 'admin_dashboard' %}active fw-semibold text-white{% endif %}">Vue d'ensemble</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('admin_orders') }}" class="nav-link text-white-50">Commandes</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('admin_users') }}" class="nav-link text-white-50">Utilisateurs</a>
+            </li>
+            <li class="nav-item ms-3">
+                <a href="{{ path('admin_product_new') }}" class="btn btn-sm btn-primary">
+                    + Ajouter un article aux enchères
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Vue d'ensemble sous forme de liste -->
+    <section class="mb-4">
+        <h2 class="h6 text-accent text-uppercase mb-3">Vue d'ensemble</h2>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center text-white">
+                <span>Commandes en attente</span>
+                <span class="fw-semibold">{{ recent_orders is defined and recent_orders ? recent_orders|filter(o => o.status == 'pending')|length : 0 }}</span>
+            </li>
+            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center text-white">
+                <span>Enchères en cours</span>
+                <span class="fw-semibold">{{ nb_encheres_ouvertes ?? 0 }}</span>
+            </li>
+            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center text-white">
+                <span>Enchères à venir</span>
+                <span class="fw-semibold">{{ nb_encheres_a_venir ?? 0 }}</span>
+            </li>
+            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center text-white">
+                <span>Lots vendus</span>
+                <span class="fw-semibold">{{ nb_lots_vendus ?? 0 }}</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Dernières commandes -->
+    <section class="mb-4">
+        <div class="card card-admin">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Dernières commandes</h5>
+                <a href="{{ path('admin_orders') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
             </div>
-        </div>
-        
-        <!-- Carte Produits en stock -->
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3 h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title">Produits en stock</h5>
-                            <h2 class="mb-0">{{ low_stock_products is defined ? low_stock_products|length : 0 }}</h2>
-                        </div>
-                        <i class="bi bi-box-seam" style="font-size: 2.5rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{{ path('admin_products') }}" class="text-white">Gérer les produits <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Carte Utilisateurs -->
-        <div class="col-md-3">
-            <div class="card text-white bg-info mb-3 h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title">Utilisateurs</h5>
-                            <h2 class="mb-0">{{ total_users is defined ? total_users : 0 }}</h2>
-                            <small class="text-white-50">+{{ new_users_this_month is defined ? new_users_this_month : 0 }} ce mois-ci</small>
-                        </div>
-                        <i class="bi bi-people" style="font-size: 2.5rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{{ path('admin_users') }}" class="text-white">Gérer les utilisateurs <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Carte Alertes stock bas -->
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3 h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title">Alertes stock bas</h5>
-                            <h2 class="mb-0">{{ low_stock_products is defined ? low_stock_products|length : 0 }}</h2>
-                        </div>
-                        <i class="bi bi-exclamation-triangle" style="font-size: 3rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{{ path('admin_products') }}" class="text-white">Voir les produits <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <!-- Section Utilisateurs récents -->
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Utilisateurs récents</h5>
-                    <a href="{{ path('admin_users') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% if recent_users is defined and recent_users is not empty %}
-                        {% if recent_users is defined and recent_users|length > 0 %}
-                            {% for user in recent_users %}
-                                <a href="{{ path('admin_user_edit', {'id': user.id ?? 0}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3">
-                                            <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">{{ (user.firstName ?? '') ~ ' ' ~ (user.lastName ?? '')|trim }}</h6>
-                                            <small class="text-muted">{{ user.email ?? 'Email non disponible' }}</small>
-                                        </div>
-                                    </div>
-                                    <span class="badge bg-primary rounded-pill">Nouveau</span>
-                                </a>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>N° Commande</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Statut</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_orders is defined and recent_orders|length > 0 %}
+                            {% for order in recent_orders|slice(0, 5) %}
+                                <tr>
+                                    <td>#{{ order.id ?? 'N/A' }}</td>
+                                    <td>{{ (order.deliveryFirstname ?? '') ~ ' ' ~ (order.deliveryLastname ?? '') }}</td>
+                                    <td>{{ order.createdAt is defined and order.createdAt ? order.createdAt|date('d/m/Y H:i') : 'N/A' }}</td>
+                                    <td>{{ order.total is defined ? order.total|format_currency('EUR') : '0.00 €' }}</td>
+                                    <td>
+                                        {% set status = order.status ?? 'pending' %}
+                                        <span class="badge bg-{{ status == 'pending' ? 'warning' : (status == 'shipped' ? 'info' : (status == 'delivered' ? 'success' : (status == 'cancelled' ? 'danger' : 'secondary'))) }}">
+                                            {{ ('order.status.' ~ status)|trans }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{{ path('admin_order_show', {'id': order.id ?? 0}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             {% endfor %}
                         {% else %}
-                            <div class="list-group-item text-muted">Aucun utilisateur récent</div>
-                        {% endif %}
-                    {% else %}
-                        <div class="list-group-item text-muted">Aucun utilisateur récent</div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Dernières commandes</h5>
-                    <a href="{{ path('admin_orders') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead>
                             <tr>
-                                <th>N° Commande</th>
-                                <th>Client</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Statut</th>
-                                <th></th>
+                                <td colspan="6" class="text-center">Aucune commande récente</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% if recent_orders is defined and recent_orders|length > 0 %}
-                                {% for order in recent_orders|slice(0, 5) %}
-                                    <tr>
-                                        <td>#{{ order.id ?? 'N/A' }}</td>
-                                        <td>{{ (order.deliveryFirstname ?? '') ~ ' ' ~ (order.deliveryLastname ?? '') }}</td>
-                                        <td>{{ order.createdAt is defined and order.createdAt ? order.createdAt|date('d/m/Y H:i') : 'N/A' }}</td>
-                                        <td>{{ order.total is defined ? order.total|format_currency('EUR') : '0.00 €' }}</td>
-                                        <td>
-                                            {% set status = order.status ?? 'pending' %}
-                                            <span class="badge bg-{{ status == 'pending' ? 'warning' : (status == 'shipped' ? 'info' : (status == 'delivered' ? 'success' : (status == 'cancelled' ? 'danger' : 'secondary'))) }}">
-                                                {{ ('order.status.' ~ status)|trans }}
-                                            </span>
-                                        </td>
-                                        <td class="text-end">
-                                            <a href="{{ path('admin_order_show', {'id': order.id ?? 0}) }}" class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="6" class="text-center">Aucune commande récente</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
         </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Produits en stock bas</h5>
-                    <a href="{{ path('admin_products') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% if low_stock_products is defined and low_stock_products|length > 0 %}
-                        {% for product in low_stock_products|slice(0, 5) %}
-                            <a href="{{ path('admin_product_edit', {'id': product.id ?? 0}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">{{ product.name ?? 'Produit sans nom' }}</h6>
-                                    <small class="text-muted">Réf: {{ product.reference ?? 'N/A' }}</small>
+    </section>
+
+    <!-- Utilisateurs récents -->
+    <section class="mb-4">
+        <div class="card card-admin">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Utilisateurs récents</h5>
+                <a href="{{ path('admin_users') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
+            </div>
+            <div class="list-group list-group-flush">
+                {% if recent_users is defined and recent_users is not empty and recent_users|length > 0 %}
+                    {% for user in recent_users %}
+                        <a href="{{ path('admin_user_edit', {'id': user.id ?? 0}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
                                 </div>
-                                <span class="badge bg-{{ (product.stock ?? 0) == 0 ? 'danger' : 'warning' }}">
-                                    {{ product.stock ?? 0 }} en stock
-                                </span>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        <div class="list-group-item text-center text-muted">
-                            Aucun produit en stock bas
-                        </div>
-                    {% endif %}
-                </div>
+                                <div>
+                                    <h6 class="mb-1">{{ (user.firstName ?? '') ~ ' ' ~ (user.lastName ?? '')|trim }}</h6>
+                                    <small class="text-muted">{{ user.email ?? 'Email non disponible' }}</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">Nouveau</span>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="list-group-item text-muted">Aucun utilisateur récent</div>
+                {% endif %}
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Enchères imminentes -->
+    <section>
+        <div class="card card-admin">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Enchères qui se terminent bientôt</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                {% if encheres_imminentes is defined and encheres_imminentes|length > 0 %}
+                    {% for lot in encheres_imminentes %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ lot.titre ?? 'Lot sans titre' }}</h6>
+                                {% set ev = lot.evenementEnchere %}
+                                {% if ev and ev.finAt %}
+                                    <small class="text-muted">Fin : {{ ev.finAt|date('d/m/Y H:i','Europe/Paris') }}</small>
+                                {% endif %}
+                            </div>
+                            <a href="{{ path('app_lot_show', {id: lot.id}) }}" class="btn btn-sm btn-outline-light">Voir</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="list-group-item text-center text-muted">
+                        Aucune enchère imminente
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
 {% endblock %}

@@ -40,26 +40,56 @@
     <div class="row g-4">
       {% for lot in lots %}
         {% if lot.evenementEnchere is defined and lot.evenementEnchere is not null %}
+          {# Déterminer un état simple côté vue à partir des helpers de l'entité #}
+          {% set etat = 'termine' %}
+          {% if lot.enchereOuverte %}
+            {% set etat = 'ouverte' %}
+          {% elseif lot.evenementEnchere.debutAt is defined and lot.evenementEnchere.debutAt %}
+            {% if 'now'|date('U') < lot.evenementEnchere.debutAt|date('U','Europe/Paris') %}
+              {% set etat = 'a_venir' %}
+            {% endif %}
+          {% endif %}
+
           <div class="col-12 col-sm-6 col-lg-4">
             <a class="text-decoration-none text-white" href="{{ path('app_lot_show', {id: lot.id}) }}">
-              <div class="card bg-dark h-100 border-opacity-50" style="border-color: var(--line);">
-                {% if lot.imageFilename %}
-                  <img class="card-img-top" src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre|default('Lot') }}" style="height:220px;object-fit:cover;">
-                {% else %}
-                  <img class="card-img-top" src="{{ asset('images/demo/commo.png') }}" alt="Aucune image" style="height:220px;object-fit:cover;opacity:0.85;">
-                {% endif %}
-                <div class="card-body">
-                  <h3 class="h5 text-accent">{{ lot.titre|default('Lot sans titre') }}</h3>
+              <div class="lot-card {% if etat == 'termine' %}opacity-50{% endif %}">
+                <div class="mb-3">
+                  {% if lot.imageFilename %}
+                    <img src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre|default('Lot') }}" style="height:220px;object-fit:cover;border-radius:8px;">
+                  {% else %}
+                    <img src="{{ asset('images/demo/commo.png') }}" alt="Aucune image" style="height:220px;object-fit:cover;opacity:0.85;border-radius:8px;">
+                  {% endif %}
+                </div>
+                <div>
+                  <h3 class="h5 text-accent mb-1">{{ lot.titre|default('Lot sans titre') }}</h3>
                   <p class="mb-1 text-secondary small">Catégorie : {{ lot.categorie|default('Non spécifiée') }}</p>
                   <p class="mb-1 small text-muted">Prix de départ : {{ lot.prixDepart is defined ? lot.prixDepart|number_format(2, ',', ' ') : '0,00' }} €</p>
                   <p class="fw-bold mb-0">Prix actuel : {{ lot.prixActuel is defined ? lot.prixActuel|number_format(2, ',', ' ') : '0,00' }} €</p>
-                {% if lot.evenementEnchere is defined and lot.evenementEnchere is not null and lot.evenementEnchere.finAt is defined %}
-                  <p class="text-muted small mb-0 mt-1">Fin : {{ lot.evenementEnchere.finAt|date('d/m/Y H:i','Europe/Paris') }}</p>
-                {% endif %}
+                  {% if lot.evenementEnchere is defined and lot.evenementEnchere is not null and lot.evenementEnchere.finAt is defined %}
+                    <p class="text-muted small mb-0 mt-1">Fin : {{ lot.evenementEnchere.finAt|date('d/m/Y H:i','Europe/Paris') }}</p>
+                  {% endif %}
+
+                  {# Petit texte de statut #}
+                  <p class="small mt-1 mb-0">
+                    {% if etat == 'ouverte' %}
+                      <span class="text-success">Enchères en cours</span>
+                    {% elseif etat == 'a_venir' %}
+                      <span class="text-info">Enchères à venir</span>
+                    {% else %}
+                      {% set final = lot.statutFinal %}
+                      {% if final == 'remportee' %}
+                        <span class="text-muted">Enchère remportée</span>
+                      {% elseif final == 'annulee' %}
+                        <span class="text-muted">Enchère annulée</span>
+                      {% else %}
+                        <span class="text-muted">Enchères terminées</span>
+                      {% endif %}
+                    {% endif %}
+                  </p>
+                </div>
               </div>
-            </div>
-          </a>
-        </div>
+            </a>
+          </div>
         {% endif %}
       {% endfor %}
     </div>

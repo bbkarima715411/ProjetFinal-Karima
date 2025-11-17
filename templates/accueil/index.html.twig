@@ -2,17 +2,12 @@
 {% block title %}Maison d’Enchères — Accueil{% endblock %}
 {% block body %}
   <section class="hero position-relative overflow-hidden">
-    <!-- Vidéo de fond -->
-    <div class="video-background">
-      <video autoplay muted loop id="hero-video">
-        <source src="{{ asset('videos/hero-video.mp4') }}" type="video/mp4">
-      </video>
-      <div class="video-overlay"></div>
-    </div>
-    
-    <div class="container position-relative z-index-1">
-      <div class="row min-vh-100 align-items-center">
+    <div class="container position-relative z-index-1 py-4">
+      <div class="row align-items-center">
         <div class="col-12 col-lg-7">
+          <div class="mb-3" style="max-height:260px; overflow:hidden; border-radius:8px;">
+            <img src="{{ asset('images/demo/old-imgA.jpg') }}" alt="Montre ancienne" class="w-100" style="object-fit:cover;">
+          </div>
           <h1 class="display-4 fw-bold text-white mb-4">Maison d'Enchères</h1>
           <p class="lead text-white-50 mb-5">Découvrez des pièces uniques et rares issues des plus grandes collections privées.</p>
           <div class="d-flex flex-wrap gap-3">
@@ -21,11 +16,44 @@
           </div>
         </div>
         <div class="col-12 col-lg-5">
-          <div class="card bg-dark border-light-subtle">
-            <div class="card-body">
-              <h2 class="h5 text-accent">Prochaines ventes</h2>
-              <p class="text-muted mb-0">Découvrez notre sélection à venir et inscrivez-vous pour enchérir en direct.</p>
+          <div class="ps-lg-4 mt-4 mt-lg-0 pt-3 pt-lg-0">
+            <h2 class="h6 text-accent text-uppercase mb-2">Prochaines ventes</h2>
+            <p class="text-muted mb-0">Découvrez notre sélection à venir et inscrivez-vous pour enchérir en direct.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 bg-black text-white border-top border-secondary">
+    <div class="container">
+      <h2 class="h4 text-accent mb-4 text-center">Comment ça marche ?</h2>
+      <div class="row g-4 text-center text-md-start">
+        <div class="col-12 col-md-4">
+          <div class="d-flex flex-column align-items-center align-items-md-start">
+            <div class="mb-2">
+              <span class="badge rounded-pill bg-primary me-2">1</span>
+              <span class="fw-semibold">Créez votre compte</span>
             </div>
+            <p class="text-muted small mb-0">Inscrivez-vous en quelques clics et complétez vos informations de profil pour participer aux ventes.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="d-flex flex-column align-items-center align-items-md-start">
+            <div class="mb-2">
+              <span class="badge rounded-pill bg-primary me-2">2</span>
+              <span class="fw-semibold">Choisissez vos lots</span>
+            </div>
+            <p class="text-muted small mb-0">Parcourez les ventes en cours, consultez les descriptifs détaillés et placez vos enchères en temps réel.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="d-flex flex-column align-items-center align-items-md-start">
+            <div class="mb-2">
+              <span class="badge rounded-pill bg-primary me-2">3</span>
+              <span class="fw-semibold">Réglez et récupérez</span>
+            </div>
+            <p class="text-muted small mb-0">Si vous remportez un lot, réglez votre achat puis organisez le retrait ou la livraison avec notre équipe.</p>
           </div>
         </div>
       </div>

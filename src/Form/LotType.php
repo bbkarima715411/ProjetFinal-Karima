@@ -43,6 +43,21 @@ class LotType extends AbstractType
                 'scale' => 2,
                 'label' => 'Incrément minimum'
             ])
+            ->add('prixAchatImmediat', MoneyType::class, [
+                'required' => false,
+                'currency' => 'EUR',
+                'label' => 'Prix d\'achat immédiat (optionnel)'
+            ])
+            ->add('estimationMin', MoneyType::class, [
+                'required' => false,
+                'currency' => 'EUR',
+                'label' => 'Estimation minimale (optionnel)'
+            ])
+            ->add('estimationMax', MoneyType::class, [
+                'required' => false,
+                'currency' => 'EUR',
+                'label' => 'Estimation maximale (optionnel)'
+            ])
             ->add('dateFin', DateTimeImmutableType::class, [
                 'required' => false,
                 'label' => 'Fin des enchères',

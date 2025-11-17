@@ -7,32 +7,126 @@
     <div class="container" style="max-width:900px;">
       <h1 class="h3 text-accent mb-4">Mon profil</h1>
 
+      {% set u = user ?? app.user %}
+
       <div class="row g-4">
         <div class="col-12 col-lg-6">
-          <div class="card bg-dark border-light-subtle h-100">
-            <div class="card-body">
-              <h2 class="h5 text-accent mb-3">Informations</h2>
-              <p class="mb-1"><span class="text-muted">Email:</span> {{ app.user ? app.user.userIdentifier : '—' }}</p>
-              <p class="mb-1"><span class="text-muted">Nom:</span> {{ app.user and app.user.nom is defined ? app.user.nom : '—' }}</p>
-              <p class="mb-0"><span class="text-muted">Prénom:</span> {{ app.user and app.user.prenom is defined ? app.user.prenom : '—' }}</p>
-            </div>
-          </div>
+          <section class="mb-3">
+            <p class="mb-1">
+              <span class="text-muted">Email :</span>
+              {{ u ? u.email : '—' }}
+            </p>
+            <p class="mb-1">
+              <span class="text-muted">Nom :</span>
+              {% if u and u.lastName %}{{ u.lastName }}{% else %}—{% endif %}
+            </p>
+            <p class="mb-1">
+              <span class="text-muted">Prénom :</span>
+              {% if u and u.firstName %}{{ u.firstName }}{% else %}—{% endif %}
+            </p>
+            <p class="mb-1">
+              <span class="text-muted">Téléphone :</span>
+              {% if u and u.phone %}{{ u.phone }}{% else %}—{% endif %}
+            </p>
+
+            <h3 class="h6 text-accent mt-3 mb-2">Adresse</h3>
+            {% if u %}
+              <p class="mb-1">
+                {% if u.address1 %}{{ u.address1 }}{% else %}<span class="text-muted">—</span>{% endif %}
+              </p>
+              {% if u.address2 %}
+                <p class="mb-1">{{ u.address2 }}</p>
+              {% endif %}
+              <p class="mb-1">
+                {% if u.postalCode or u.city or u.country %}
+                  {{ u.postalCode ?? '' }} {{ u.city ?? '' }}{% if u.country %}, {{ u.country }}{% endif %}
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </p>
+            {% else %}
+              <p class="text-muted mb-1">
+                Aucune information d'adresse disponible.
+              </p>
+            {% endif %}
+
+            <p class="mb-0 mt-2">
+              <span class="text-muted">Inscrit(e) depuis :</span>
+              {% if u and u.createdAt %}{{ u.createdAt|date('d/m/Y','Europe/Paris') }}{% else %}—{% endif %}
+            </p>
+          </section>
         </div>
 
         <div class="col-12 col-lg-6">
-          <div class="card bg-dark border-light-subtle h-100">
-            <div class="card-body">
-              <h2 class="h5 text-accent mb-3">Actions</h2>
-              <div class="d-flex gap-2 flex-wrap">
-                <a href="{{ path('app_mes_favoris') }}" class="btn btn-primary text-white">Voir mes favoris</a>
-                <a href="{{ path('app_lot_index') }}" class="btn btn-outline-light">Parcourir les lots</a>
-                {% if app.user %}
-                  <a href="{{ path('app_logout') }}" class="btn btn-outline-light">Se déconnecter</a>
-                {% endif %}
-              </div>
+          <section class="mb-3">
+            <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+              <li>
+                <a href="{{ path('app_mes_encheres') }}" class="btn btn-primary text-white w-100">Mes enchères</a>
+              </li>
+              <li>
+                <a href="{{ path('app_mes_factures') }}" class="btn btn-outline-light w-100">Mes factures</a>
+              </li>
+              <li>
+                <a href="{{ path('app_mes_favoris') }}" class="btn btn-outline-light w-100">Mes favoris</a>
+              </li>
+              <li>
+                <a href="{{ path('app_lot_index') }}" class="btn btn-outline-light w-100">Parcourir les lots</a>
+              </li>
+              <li>
+                <a href="{{ path('app_profil', { edit: 1 }) }}" class="btn btn-outline-light w-100">Éditer mon profil</a>
+              </li>
+              {% if app.user %}
+                <li>
+                  <a href="{{ path('app_logout') }}" class="btn btn-outline-light w-100">Se déconnecter</a>
+                </li>
+              {% endif %}
+            </ul>
+          </section>
+        </div>
+
+        {% if edit_mode %}
+          <div class="col-12">
+            <div class="border border-secondary border-opacity-50 rounded-3 mt-2 p-3 p-md-4 bg-dark">
+              <h2 class="h5 text-accent mb-3">Modifier mon profil</h2>
+              {% if profil_form is defined %}
+                {{ form_start(profil_form) }}
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      {{ form_row(profil_form.firstName) }}
+                    </div>
+                    <div class="col-md-6">
+                      {{ form_row(profil_form.lastName) }}
+                    </div>
+                    <div class="col-md-6">
+                      {{ form_row(profil_form.phone) }}
+                    </div>
+                    <div class="col-md-6">
+                      {{ form_row(profil_form.address1) }}
+                    </div>
+                    <div class="col-md-6">
+                      {{ form_row(profil_form.address2) }}
+                    </div>
+                    <div class="col-md-3">
+                      {{ form_row(profil_form.postalCode) }}
+                    </div>
+                    <div class="col-md-3">
+                      {{ form_row(profil_form.city) }}
+                    </div>
+                    <div class="col-md-6">
+                      {{ form_row(profil_form.country) }}
+                    </div>
+                  </div>
+                  <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Mettre à jour mon profil</button>
+                    <a href="{{ path('app_profil') }}" class="btn btn-outline-light">Annuler</a>
+                  </div>
+                {{ form_end(profil_form) }}
+              {% else %}
+                <p class="text-muted mb-0">Le formulaire de profil n'est pas disponible.</p>
+              {% endif %}
             </div>
           </div>
-        </div>
+        {% endif %}
       </div>
     </div>
   </main>

@@ -8,6 +8,7 @@ use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\LotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,18 +23,13 @@ class AdminController extends AbstractController
     public function dashboard(
         OrderRepository $orderRepository,
         ProductRepository $productRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        LotRepository $lotRepository
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         try {
             $recent_orders = $orderRepository->findBy([], ['createdAt' => 'DESC'], 5);
-            $low_stock_products = $productRepository->createQueryBuilder('p')
-                ->where('p.stock < 10')
-                ->orderBy('p.stock', 'ASC')
-                ->setMaxResults(5)
-                ->getQuery()
-                ->getResult();
             
             $total_users = $userRepository->count([]);
             
@@ -46,12 +42,52 @@ class AdminController extends AbstractController
                 
             $recent_users = $userRepository->findBy([], ['createdAt' => 'DESC'], 5);
 
+            // --- Vue d'ensemble des enchères ---
+            $lots = $lotRepository->findAllWithValidEvent();
+
+            $nbEncheresOuvertes = 0;
+            $nbEncheresAVenir = 0;
+            $nbEncheresTerminees = 0;
+            $nbLotsVendus = 0;
+            $encheresImminentes = [];
+
+            $tz = new \DateTimeZone('Europe/Paris');
+            $now = new \DateTimeImmutable('now', $tz);
+
+            foreach ($lots as $lot) {
+                $evenement = $lot->getEvenementEnchere();
+
+                if ($lot->isEnchereOuverte()) {
+                    $nbEncheresOuvertes++;
+                } elseif ($evenement && $evenement->getDebutAt() instanceof \DateTimeImmutable && $now < $evenement->getDebutAt()) {
+                    $nbEncheresAVenir++;
+                }
+
+                if ($lot->isEnchereTerminee()) {
+                    $nbEncheresTerminees++;
+                    if ($lot->getStatutFinal() === 'remportee') {
+                        $nbLotsVendus++;
+                    }
+                }
+
+                if ($evenement && $evenement->fermeDansMoinsDuneHeure($tz)) {
+                    $encheresImminentes[] = $lot;
+                }
+            }
+
+            // On limite la liste des enchères imminentes à 5
+            $encheresImminentes = array_slice($encheresImminentes, 0, 5);
+
             return $this->render('admin/dashboard.html.twig', [
                 'recent_orders' => $recent_orders,
-                'low_stock_products' => $low_stock_products,
                 'total_users' => $total_users,
                 'new_users_this_month' => $new_users_this_month,
-                'recent_users' => $recent_users
+                'recent_users' => $recent_users,
+                'nb_encheres_ouvertes' => $nbEncheresOuvertes,
+                'nb_encheres_a_venir' => $nbEncheresAVenir,
+                'nb_encheres_terminees' => $nbEncheresTerminees,
+                'nb_lots_vendus' => $nbLotsVendus,
+                'encheres_imminentes' => $encheresImminentes,
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Une erreur est survenue lors du chargement du tableau de bord : ' . $e->getMessage());
@@ -59,10 +95,14 @@ class AdminController extends AbstractController
             // Retourner une réponse avec des tableaux vides en cas d'erreur
             return $this->render('admin/dashboard.html.twig', [
                 'recent_orders' => [],
-                'low_stock_products' => [],
                 'total_users' => 0,
                 'new_users_this_month' => 0,
-                'recent_users' => []
+                'recent_users' => [],
+                'nb_encheres_ouvertes' => 0,
+                'nb_encheres_a_venir' => 0,
+                'nb_encheres_terminees' => 0,
+                'nb_lots_vendus' => 0,
+                'encheres_imminentes' => [],
             ]);
         }
     }

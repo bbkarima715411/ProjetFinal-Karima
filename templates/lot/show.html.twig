@@ -7,37 +7,44 @@
   <div class="container">
     <h1 class="text-center mb-4 text-accent">{{ lot.titre|default('Détails du lot') }}</h1>
 
-    <div class="row g-4 align-items-start">
-      <div class="col-12 col-lg-6">
-        <div class="card bg-dark border-0">
-          {% if lot.imageFilename %}
-            <img class="rounded" src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre|default('Lot') }}">
-          {% else %}
-            <img class="rounded" src="{{ asset('images/demo/commo.png') }}" alt="Aucune image">
-          {% endif %}
-        </div>
+    <div class="lot-grid align-items-start">
+      <div class="lot-media">
+        {% if lot.imageFilename %}
+          <img src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre|default('Lot') }}">
+        {% else %}
+          <img src="{{ asset('images/demo/commo.png') }}" alt="Aucune image">
+        {% endif %}
       </div>
 
-      <div class="col-12 col-lg-6">
+      <div class="lot-info">
         <div class="mb-2 text-secondary">Catégorie : {{ lot.categorie|default('Non spécifiée') }}</div>
 
-        <div class="card bg-dark border-light-subtle mb-3">
-          <div class="card-body">
-            <div class="d-flex justify-content-between">
-              <div>
-                <div class="small text-muted">Prix de départ</div>
-                <div class="fw-semibold">{{ lot.prixDepart|number_format(2, ',', ' ') }} €</div>
-              </div>
-              <div class="text-end">
-                <div class="small text-muted">Prix actuel</div>
-                <div class="fw-bold fs-5 text-accent">{{ lot.prixActuel|number_format(2, ',', ' ') }} €</div>
-              </div>
+        {# Badge d'état de l'enchère #}
+        {% if etat_enchere is defined %}
+          {% if etat_enchere == 'ouverte' %}
+            <span class="badge bg-success mb-2">Enchères ouvertes</span>
+          {% elseif etat_enchere == 'a_venir' %}
+            <span class="badge bg-info mb-2">Enchères à venir</span>
+          {% else %}
+            <span class="badge bg-danger mb-2">Enchères terminées</span>
+          {% endif %}
+        {% endif %}
+
+        <div class="price mb-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <div class="small text-muted">Prix de départ</div>
+              <div class="fw-semibold">{{ lot.prixDepart|number_format(2, ',', ' ') }} €</div>
             </div>
-            <div class="small text-muted mt-2">Incrément minimum : {{ lot.incrementMin|number_format(2, ',', ' ') }} €</div>
+            <div class="text-end">
+              <div class="small text-muted">Prix actuel</div>
+              <div class="fw-bold fs-5 text-accent">{{ lot.prixActuel|number_format(2, ',', ' ') }} €</div>
+            </div>
           </div>
+          <div class="small text-muted mt-2">Incrément minimum : {{ lot.incrementMin|number_format(2, ',', ' ') }} €</div>
         </div>
 
-        {% if app.user %}
+        {% if app.user and etat_enchere == 'ouverte' %}
           <form action="{{ path('app_lot_bid', { id: lot.id }) }}" method="post" class="row gy-2 gx-2 align-items-end">
             <input type="hidden" name="_token" value="{{ csrf_token('bid_lot_' ~ lot.id) }}">
             <div class="col-12">
@@ -69,12 +76,59 @@
           </div>
         {% else %}
           <div class="alert alert-secondary mt-2" role="alert">
-            <a href="{{ path('app_login') }}" class="link-warning">Connectez-vous</a> pour déposer une enchère.
+            {% if not app.user %}
+              <a href="{{ path('app_login') }}" class="link-warning">Connectez-vous</a> pour déposer une enchère.
+            {% elseif etat_enchere == 'a_venir' %}
+              Les enchères pour ce lot ne sont pas encore ouvertes.
+            {% else %}
+              Les enchères pour ce lot sont terminées.
+            {% endif %}
           </div>
           <a href="{{ path('app_lot_index') }}" class="btn btn-outline-light">← Retour aux enchères</a>
         {% endif %}
       </div>
     </div>
+
+    {# Historique des enchères pour ce lot #}
+    {% if encheres is defined and encheres|length > 0 %}
+      <div class="mt-4">
+        <h2 class="h5 text-accent mb-3">Historique des enchères</h2>
+        <div class="border border-secondary border-opacity-25 rounded-3 overflow-hidden">
+          <table class="table table-dark table-sm mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Enchérisseur</th>
+                  <th scope="col" class="text-end">Montant</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for enchere in encheres|sort((a, b) => b.creeLe <=> a.creeLe) %}
+                  <tr>
+                    <td class="small text-muted">
+                      {{ enchere.creeLe|date('d/m/Y H:i','Europe/Paris') }}
+                    </td>
+                    <td class="small">
+                      {% if enchere.user %}
+                        {{ enchere.user.firstName ?? '' }} {{ enchere.user.lastName ?? '' }}
+                        {% if not enchere.user.firstName and not enchere.user.lastName %}
+                          {{ enchere.user.email }}
+                        {% endif %}
+                      {% else %}
+                        Utilisateur inconnu
+                      {% endif %}
+                    </td>
+                    <td class="text-end fw-semibold">
+                      {{ enchere.montant|number_format(2, ',', ' ') }} €
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
   </div>
 </main>
 {% set ev = lot.evenementEnchere %}

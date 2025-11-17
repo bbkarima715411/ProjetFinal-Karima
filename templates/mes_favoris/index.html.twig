@@ -11,28 +11,59 @@
       </div>
 
       {% if favoris is empty %}
-        <div class="card bg-dark border-light-subtle">
-          <div class="card-body">
-            <p class="text-muted mb-0">Aucun favori pour le moment.</p>
-            <p class="text-muted mb-0">Parcourez <a class="link-light" href="{{ path('app_lot_index') }}">les lots</a> et ajoutez-les à vos favoris.</p>
-          </div>
+        <div class="border border-secondary border-opacity-25 rounded-3 p-3 p-md-4 bg-dark">
+          <p class="text-muted mb-1">Aucun favori pour le moment.</p>
+          <p class="text-muted mb-0">Parcourez <a class="link-light" href="{{ path('app_lot_index') }}">les lots</a> et ajoutez-les à vos favoris.</p>
         </div>
       {% else %}
         <div class="row g-3">
           {% for fav in favoris %}
-            {# fav.lot est une entité Lot #}
+            {% set lot = fav.lot %}
             <div class="col-12 col-md-6 col-lg-4">
-              <div class="card bg-dark border-light-subtle h-100">
-                <div class="card-body d-flex flex-column">
-                  <h2 class="h6 text-accent mb-2">{{ fav.lot.titre ?? 'Lot #' ~ fav.lot.id }}</h2>
-                  <div class="text-muted small mb-3">Catégorie: {{ fav.lot.categorie ?? '—' }}</div>
-                  <div class="mt-auto d-flex gap-2">
-                    <a class="btn btn-sm btn-outline-light" href="{{ path('app_lot_show', {id: fav.lot.id}) }}">Voir</a>
-                    <form action="{{ path('app_favori_remove', { id: fav.lot.id }) }}" method="post" class="d-inline ms-auto">
-                      <input type="hidden" name="_token" value="{{ csrf_token('fav_remove_' ~ fav.lot.id) }}">
-                      <button class="btn btn-sm btn-outline-warning">★ Retirer</button>
-                    </form>
+              <div class="lot-card h-100 d-flex flex-column">
+                {% if lot %}
+                  <a href="{{ lot.enchereOuverte ? path('app_lot_show', {id: lot.id}) : '#' }}" class="text-decoration-none text-white {% if not lot.enchereOuverte %}disabled-link{% endif %}">
+                    <div class="mb-3">
+                      {% if lot.imageFilename %}
+                        <img src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre|default('Lot') }}" style="height:200px;object-fit:cover;border-radius:8px;">
+                      {% else %}
+                        <img src="{{ asset('images/demo/commo.png') }}" alt="Image par défaut" style="height:200px;object-fit:cover;opacity:.85;border-radius:8px;">
+                      {% endif %}
+                    </div>
+                    <div>
+                      <h2 class="h6 text-accent mb-1">{{ lot.titre|default('Lot #' ~ lot.id) }}</h2>
+                      <div class="text-muted small mb-1">Catégorie : {{ lot.categorie|default('—') }}</div>
+                      <div class="fw-bold mb-1">Prix actuel : {{ lot.prixActuel|number_format(2, ',', ' ') }} €</div>
+                      {% if lot.enchereOuverte %}
+                        <span class="badge bg-success">Enchères en cours</span>
+                      {% else %}
+                        <span class="badge bg-secondary">Article non disponible</span>
+                      {% endif %}
+                    </div>
+                  </a>
+                {% else %}
+                  <div class="flex-grow-1 d-flex flex-column">
+                    <div class="mb-3">
+                      <img src="{{ asset('images/demo/commo.png') }}" alt="Article non disponible" style="height:200px;object-fit:cover;opacity:.4;border-radius:8px;">
+                    </div>
+                    <div>
+                      <h2 class="h6 text-accent mb-1">Article indisponible</h2>
+                      <p class="text-muted small mb-1">Ce lot n'est plus accessible.</p>
+                      <span class="badge bg-secondary">Article non disponible</span>
+                    </div>
                   </div>
+                {% endif %}
+
+                <div class="mt-3 d-flex gap-2 align-items-center">
+                  {% if lot and lot.enchereOuverte %}
+                    <a class="btn btn-sm btn-outline-light" href="{{ path('app_lot_show', {id: lot.id}) }}">Voir le lot</a>
+                  {% endif %}
+                  <form action="{{ path('app_favori_remove', { id: lot ? lot.id : 0 }) }}" method="post" class="d-inline ms-auto">
+                    {% if lot %}
+                      <input type="hidden" name="_token" value="{{ csrf_token('fav_remove_' ~ lot.id) }}">
+                    {% endif %}
+                    <button class="btn btn-sm btn-outline-warning">★ Retirer</button>
+                  </form>
                 </div>
               </div>
             </div>

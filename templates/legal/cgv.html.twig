@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions générales de vente{% endblock %}
+
+{% block body %}
+  <section class="py-5 bg-black text-light">
+    <div class="container" style="max-width:900px;">
+      <h1 class="mb-4">Conditions générales de vente / Conditions d'enchères</h1>
+      <p class="text-muted mb-4">
+        Ce texte est un modèle générique pour une maison d'enchères opérant depuis la Belgique.
+        Merci de l'adapter à votre situation réelle (frais, délais, modalités, etc.).
+      </p>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">1. Champ d'application</h2>
+        <p>
+          Les présentes conditions générales de vente ("CGV") s'appliquent à l'ensemble des ventes aux enchères
+          organisées via le site, qu'elles soient entièrement en ligne ou associées à des ventes physiques.
+          En s'inscrivant sur le site et en enchérissant sur un lot, l'utilisateur reconnaît avoir pris connaissance
+          des présentes CGV et les accepter sans réserve.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">2. Inscription et compte utilisateur</h2>
+        <p>
+          Pour pouvoir enchérir, l'utilisateur doit créer un compte, fournir des informations exactes et à jour
+          et accepter les présentes CGV. L'éditeur se réserve le droit de refuser ou de suspendre un compte en cas
+          d'informations incomplètes, erronées ou en cas d'abus.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">3. Déroulement des enchères</h2>
+        <p>
+          Chaque lot est présenté avec une description, une ou plusieurs images, une estimation éventuelle et un prix
+          de départ. L'utilisateur place des enchères selon les paliers définis. La durée de chaque vente est limitée
+          dans le temps et indiquée sur la fiche du lot ou de l'événement.
+        </p>
+        <p>
+          À l'issue de la vente, l'enchérisseur ayant placé l'offre la plus élevée au-dessus ou égale au prix de réserve,
+          le cas échéant, est déclaré adjudicataire, sous réserve de validation par la maison d'enchères.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">4. Frais, commissions et taxes</h2>
+        <p>
+          Des frais acheteurs peuvent être ajoutés au montant de l'adjudication. Leur pourcentage et leur mode de calcul
+          sont indiqués dans les informations de la vente ou communiqués au préalable. Toutes les taxes applicables
+          (dont la TVA, le cas échéant) sont à la charge de l'adjudicataire.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">5. Paiement</h2>
+        <p>
+          Le paiement des lots adjugés doit intervenir dans le délai indiqué (par exemple, X jours après l'adjudication).
+          Les moyens de paiement acceptés (virement, carte bancaire, autres) sont précisés sur le site ou dans le
+          récapitulatif de commande. En cas de retard de paiement, des intérêts ou frais de rappel peuvent être appliqués.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">6. Retrait et livraison des lots</h2>
+        <p>
+          Les modalités de retrait (lieu, horaires, délai) et, le cas échéant, les possibilités de livraison ou d'envoi
+          sont précisées pour chaque vente ou communiquées à l'adjudicataire. Les frais de transport, d'assurance et de
+          manutention sont à la charge de l'adjudicataire, sauf mention contraire.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">7. État des lots et réclamations</h2>
+        <p>
+          Les lots sont vendus dans l'état où ils se trouvent au moment de la vente, avec leurs éventuels défauts,
+          restaurations ou usures. Les descriptions, rapports de condition et photographies sont fournis à titre indicatif.
+          L'absence de mention d'un défaut n'implique pas que le lot soit exempt de défauts.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">8. Droit de rétractation</h2>
+        <p>
+          Selon la nature des ventes (ventes publiques aux enchères, ventes en ligne, statut du consommateur, etc.),
+          le droit de rétractation peut ne pas s'appliquer. Il appartient à l'utilisateur de vérifier son éventuel droit
+          de rétractation en fonction de sa situation et du type de vente.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">9. Responsabilité</h2>
+        <p>
+          La responsabilité de la maison d'enchères ne peut être engagée qu'en cas de faute lourde ou intentionnelle.
+          En aucun cas, elle ne saurait être tenue responsable des dommages indirects, pertes de profit, ou préjudices
+          résultant de l'utilisation du site ou de l'impossibilité d'y accéder.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3">
+        <h2 class="h5 text-accent mb-2">10. Droit applicable et juridiction compétente</h2>
+        <p>
+          Les présentes CGV sont soumises au droit belge. En cas de litige et à défaut de résolution amiable, les tribunaux
+          de l'arrondissement judiciaire du siège social de la maison d'enchères seront seuls compétents.
+        </p>
+      </section>
+
+      <p class="text-muted small mb-0">
+        Dernière mise à jour&nbsp;: {{ "now"|date("d/m/Y") }}
+      </p>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales{% endblock %}
+
+{% block body %}
+  <section class="py-5 bg-black text-light">
+    <div class="container" style="max-width:900px;">
+      <h1 class="mb-4">Mentions légales</h1>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">1. Informations générales</h2>
+        <p class="mb-1">Dénomination commerciale&nbsp;: <strong>Vestige d’Or</strong></p>
+        <p class="mb-1">Raison sociale&nbsp;: <strong>Vestige d’Or SRL</strong></p>
+        <p class="mb-1">Forme juridique&nbsp;: <strong>Société à responsabilité limitée (SRL)</strong></p>
+        <p class="mb-1">Siège social&nbsp;: <strong>Rue du Sablon 42, 1000 Bruxelles, Belgique</strong></p>
+        <p class="mb-1">Numéro d’entreprise / TVA&nbsp;: <strong>BE0754.298.412</strong></p>
+        <p class="mb-1">Téléphone&nbsp;: <strong>+32 (0)2 123 45 67</strong></p>
+        <p class="mb-1">Adresse e-mail de contact&nbsp;: <strong>contact@vestigedor.be</strong></p>
+        <p class="mb-0">Directeur de la publication&nbsp;: <strong>Karima B. – Gérante du site</strong></p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">2. Hébergeur du site</h2>
+        <p class="mb-1">Hébergeur&nbsp;: <strong>OVH Belgium</strong></p>
+        <p class="mb-1">Adresse&nbsp;: <strong>Rue du Progrès 1, 1210 Bruxelles, Belgique</strong></p>
+        <p class="mb-1">Téléphone&nbsp;: <strong>+32 (0)2 808 70 09</strong></p>
+        <p class="mb-0">Site web&nbsp;: <strong>https://www.ovh.com</strong></p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">3. Objet du site</h2>
+        <p>
+          Le site <strong>Vestige d’Or</strong> (accessible à l’adresse <strong>https://www.vestigedor.be</strong>)
+          est une plateforme en ligne permettant la mise en vente et l’achat d’objets anciens, œuvres d’art et
+          antiquités par le biais de ventes aux enchères ou d’achats immédiats.
+        </p>
+        <p class="mb-0">
+          Le site s’adresse aux particuliers et aux collectionneurs souhaitant participer à des enchères dans un
+          cadre sécurisé et transparent.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">4. Propriété intellectuelle</h2>
+        <p>
+          L'ensemble des éléments présents sur le site (textes, images, logos, marques, vidéos, structure, design, etc.)
+          est protégé par le droit de la propriété intellectuelle. Toute reproduction, représentation, modification,
+          adaptation ou exploitation, totale ou partielle, sans l'autorisation écrite préalable de l'éditeur est interdite.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">5. Responsabilité</h2>
+        <p>
+          Vestige d’Or SRL met tout en œuvre pour assurer l’exactitude des informations présentées sur le site.
+          Toutefois, la société ne saurait être tenue responsable d’éventuelles erreurs ou omissions, d’une
+          interruption temporaire de service, ou de tout dommage direct ou indirect résultant de l’usage du site.
+        </p>
+        <p class="mb-0">
+          Les enchères en ligne sont réalisées sous la responsabilité des utilisateurs. Vestige d’Or agit en qualité
+          d’intermédiaire technique et ne peut être tenue responsable des litiges entre vendeurs et acheteurs.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <h2 class="h5 text-accent mb-2">6. Protection des données personnelles (RGPD)</h2>
+        <p>
+          Les informations collectées lors de l’inscription ou de la participation aux enchères sont traitées
+          conformément au Règlement Général sur la Protection des Données (RGPD – UE 2016/679) et à la législation
+          belge applicable.
+        </p>
+        <p class="mb-1">
+          Responsable du traitement&nbsp;: <strong>Vestige d’Or SRL</strong>
+        </p>
+        <p class="mb-1">
+          Email de contact pour toute demande RGPD&nbsp;: <strong>privacy@vestigedor.be</strong>
+        </p>
+        <p class="mb-0">
+          Les données ne sont en aucun cas transmises à des tiers à des fins commerciales. L’utilisateur peut demander
+          à tout moment l’accès à ses données personnelles, leur rectification ou suppression, ou exercer son droit
+          d’opposition conformément à la Politique de confidentialité du site.
+        </p>
+      </section>
+
+      <section class="mb-4 pb-3">
+        <h2 class="h5 text-accent mb-2">7. Droit applicable et juridiction compétente</h2>
+        <p>
+          Les présentes mentions légales sont soumises au droit belge. Tout litige relatif à leur interprétation ou à
+          leur exécution relève de la compétence exclusive des tribunaux francophones de Bruxelles.
+        </p>
+      </section>
+
+      <p class="text-muted small mb-0">
+        Dernière mise à jour&nbsp;: {{ "now"|date("d/m/Y") }}
+      </p>
+    </div>
+  </section>
+{% endblock %}

@@ -89,9 +89,28 @@ class LotController extends AbstractController
             $isFavorite = $favoriRepo->isFavorite($u, $lot);
         }
 
+        // Déterminer l'état simple de l'enchère pour ce lot
+        $etatEnchere = 'terminee';
+        $evenement = $lot->getEvenementEnchere();
+
+        if ($lot->isEnchereOuverte()) {
+            $etatEnchere = 'ouverte';
+        } elseif ($evenement && $evenement->getDebutAt() instanceof \DateTimeImmutable) {
+            $tz = new \DateTimeZone('Europe/Paris');
+            $maintenant = new \DateTimeImmutable('now', $tz);
+            if ($maintenant < $evenement->getDebutAt()) {
+                $etatEnchere = 'a_venir';
+            }
+        }
+
+        // Récupérer les enchères du lot (pour affichage des enchérisseurs)
+        $encheres = $lot->getEncheresUtilisateur();
+
         return $this->render('lot/show.html.twig', [
             'lot' => $lot,
             'is_favorite' => $isFavorite,
+            'etat_enchere' => $etatEnchere,
+            'encheres' => $encheres,
         ]);
     }
 

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos — Maison d’Enchères{% endblock %}
+
+{% block body %}
+  <main class="bg-black text-white py-5" style="min-height:100vh;">
+    <div class="container" style="max-width:900px;">
+      <h1 class="h3 text-accent mb-4">À propos de Vestige d'Or</h1>
+
+      <div class="card bg-dark border-light-subtle mb-4">
+        <div class="card-body">
+          <h2 class="h5 text-accent mb-3">Notre maison d’enchères</h2>
+          <p class="text-muted">
+            Vestige d'Or est une maison d’enchères en ligne dédiée aux objets d’exception&nbsp;: antiquités, montres,
+            bijoux, art et pièces de collection. Notre ambition est de proposer une expérience d’enchères simple,
+            sécurisée et accessible, tout en respectant les codes des ventes aux enchères traditionnelles.
+          </p>
+        </div>
+      </div>
+
+      <div class="card bg-dark border-light-subtle mb-4">
+        <div class="card-body">
+          <h2 class="h5 text-accent mb-3">Expertise & sélection</h2>
+          <p class="text-muted">
+            Chaque lot fait l’objet d’une sélection attentive. Les descriptions et photographies sont réalisées avec soin
+            afin de vous permettre de vous faire une idée la plus précise possible de l’objet proposé.
+          </p>
+        </div>
+      </div>
+
+      <div class="card bg-dark border-light-subtle mb-4">
+        <div class="card-body">
+          <h2 class="h5 text-accent mb-3">Une plateforme pensée pour les enchères</h2>
+          <p class="text-muted">
+            Le site a été conçu pour vous offrir un suivi clair de vos enchères, de vos lots remportés et de vos factures.
+            Depuis votre espace personnel, vous pouvez consulter vos enchères en cours, votre historique et vos informations
+            de facturation.
+          </p>
+        </div>
+      </div>
+
+      <div class="card bg-dark border-light-subtle">
+        <div class="card-body">
+          <h2 class="h5 text-accent mb-3">Nous contacter</h2>
+          <p class="text-muted mb-1">Pour toute question sur un lot, une vente ou votre compte, vous pouvez nous joindre via la page <a href="{{ path('app_contact') }}" class="link-light">Contact</a>.</p>
+          <p class="text-muted mb-0">Nous serons ravis de vous accompagner dans vos enchères.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

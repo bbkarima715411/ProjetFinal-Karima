@@ -39,6 +39,9 @@
             <a href="{{ path('app_lot_index') }}" class="nav-link p-0 text-muted">Enchères</a>
           </li>
           <li class="nav-item mb-2">
+            <a href="{{ path('app_about') }}" class="nav-link p-0 text-muted">À propos</a>
+          </li>
+          <li class="nav-item mb-2">
             <a href="{{ path('app_categorie_show', {slug: 'dernieres-acquisitions'}) }}" class="nav-link p-0 text-muted">Nouveautés</a>
           </li>
           <li class="nav-item mb-2">
@@ -125,9 +128,9 @@
         </p>
       </div>
       <div class="col-md-6 text-center text-md-end">
-        <a href="#" class="text-muted text-decoration-none small me-3">Mentions légales</a>
-        <a href="#" class="text-muted text-decoration-none small me-3">CGV</a>
-        <a href="#" class="text-muted text-decoration-none small">Politique de confidentialité</a>
+        <a href="{{ path('app_mentions_legales') }}" class="text-muted text-decoration-none small me-3">Mentions légales</a>
+        <a href="{{ path('app_cgv') }}" class="text-muted text-decoration-none small me-3">CGV</a>
+        <a href="{{ path('app_politique_confidentialite') }}" class="text-muted text-decoration-none small">Politique de confidentialité</a>
       </div>
     </div>
   </div>

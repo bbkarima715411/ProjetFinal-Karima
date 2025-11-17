@@ -71,6 +71,17 @@ class Lot
     #[ORM\Column(type: 'float')]
     private float $incrementMin = 1.0;
 
+    // Optionnel : prix d’achat immédiat
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $prixAchatImmediat = null;
+
+    // Optionnel : estimation basse / haute
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $estimationMin = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $estimationMax = null;
+
     /** Gagnant (une fois l'enchère terminée) */
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $gagnant = null;
@@ -146,6 +157,15 @@ class Lot
     public function getIncrementMin(): float { return $this->incrementMin; }
     public function setIncrementMin(float $i): self { $this->incrementMin = $i; return $this; }
 
+    public function getPrixAchatImmediat(): ?float { return $this->prixAchatImmediat; }
+    public function setPrixAchatImmediat(?float $p): self { $this->prixAchatImmediat = $p; return $this; }
+
+    public function getEstimationMin(): ?float { return $this->estimationMin; }
+    public function setEstimationMin(?float $v): self { $this->estimationMin = $v; return $this; }
+
+    public function getEstimationMax(): ?float { return $this->estimationMax; }
+    public function setEstimationMax(?float $v): self { $this->estimationMax = $v; return $this; }
+
     public function getGagnant(): ?User { return $this->gagnant; }
     public function setGagnant(?User $u): self { $this->gagnant = $u; return $this; }
 
@@ -162,5 +182,74 @@ class Lot
             if ($m > $max) $max = $m;
         }
         return $max;
+    }
+
+    /**
+     * Indique si l'enchère est actuellement ouverte pour ce lot.
+     *
+     * Un lot est ouvert si:
+     *   - il est rattaché à un événement,
+     *   - l'événement est ouvert,
+     *   - la dateFin du lot n'est pas dépassée (si définie).
+     */
+    public function isEnchereOuverte(): bool
+    {
+        $evenement = $this->getEvenementEnchere();
+        if (!$evenement) {
+            return false;
+        }
+
+        if (!$evenement->estOuvert()) {
+            return false;
+        }
+
+        if ($this->dateFin instanceof \DateTimeImmutable) {
+            $tz = new \DateTimeZone('Europe/Paris');
+            $maintenant = new \DateTimeImmutable('now', $tz);
+            if ($maintenant >= $this->dateFin) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Indique si l'enchère est terminée pour ce lot.
+     */
+    public function isEnchereTerminee(): bool
+    {
+        $evenement = $this->getEvenementEnchere();
+        $tz = new \DateTimeZone('Europe/Paris');
+        $maintenant = new \DateTimeImmutable('now', $tz);
+
+        if ($this->dateFin instanceof \DateTimeImmutable && $maintenant >= $this->dateFin) {
+            return true;
+        }
+
+        if ($evenement && $evenement->getFinAt() instanceof \DateTimeImmutable && $maintenant >= $evenement->getFinAt()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Statut final de l'enchère si elle est terminée.
+     * - 'remportee' si un gagnant est défini
+     * - 'annulee' si aucune enchère gagnante
+     * - null si l'enchère n'est pas encore terminée
+     */
+    public function getStatutFinal(): ?string
+    {
+        if (!$this->isEnchereTerminee()) {
+            return null;
+        }
+
+        if ($this->gagnant instanceof User) {
+            return 'remportee';
+        }
+
+        return 'annulee';
     }
 }
