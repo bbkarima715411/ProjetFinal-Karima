@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+// Je suis le contrôleur qui gère tout ce qui concerne le panier (affichage, ajout, modification, suppression)
 class CartController extends AbstractController
 {
     private $cartService;
@@ -18,6 +19,7 @@ class CartController extends AbstractController
 
     public function __construct(CartService $cartService, EntityManagerInterface $entityManager)
     {
+        // J'injecte mon service de panier et l'entity manager pour pouvoir manipuler les données
         $this->cartService = $cartService;
         $this->entityManager = $entityManager;
     }
@@ -27,8 +29,10 @@ class CartController extends AbstractController
      */
     public function show(): Response
     {
+        // Je récupère le panier associé à l'utilisateur connecté
         $cart = $this->cartService->getCart($this->getUser());
         
+        // J'affiche la page panier avec le contenu du panier et le total calculé par le service
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
             'total' => $this->cartService->getTotal($this->getUser())
@@ -40,16 +44,21 @@ class CartController extends AbstractController
      */
     public function add(Product $product, Request $request): Response
     {
+        // Je récupère la quantité à ajouter (par défaut 1 si rien n'est passé)
         $quantity = (int) $request->query->get('quantity', 1);
         
+        // J'ajoute le produit au panier de l'utilisateur connecté
         $this->cartService->add($product, $quantity, $this->getUser());
         
+        // J'affiche un message de confirmation
         $this->addFlash('success', 'Le produit a été ajouté au panier');
         
+        // Si l'utilisateur a cliqué sur "Acheter maintenant", je le redirige directement vers le panier
         if ($request->query->get('buy_now')) {
             return $this->redirectToRoute('cart_show');
         }
         
+        // Sinon, je le renvoie sur la page du produit
         return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
     }
 
@@ -58,14 +67,18 @@ class CartController extends AbstractController
      */
     public function update(CartItem $item, Request $request): Response
     {
+        // Je récupère la nouvelle quantité envoyée depuis le formulaire
         $quantity = (int) $request->request->get('quantity');
         
+        // Je vérifie que l'item appartient bien au panier de l'utilisateur connecté
         if ($item->getCart() !== $this->cartService->getCart($this->getUser())) {
             throw $this->createAccessDeniedException('Accès non autorisé');
         }
         
+        // Je mets à jour la quantité de cet article dans le panier
         $this->cartService->updateQuantity($item, $quantity, $this->getUser());
         
+        // Je renvoie l'utilisateur sur la page du panier
         return $this->redirectToRoute('cart_show');
     }
 
@@ -74,14 +87,18 @@ class CartController extends AbstractController
      */
     public function remove(CartItem $item): Response
     {
+        // Je vérifie que l'item appartient bien au panier de l'utilisateur connecté
         if ($item->getCart() !== $this->cartService->getCart($this->getUser())) {
             throw $this->createAccessDeniedException('Accès non autorisé');
         }
         
+        // Je supprime l'article du panier
         $this->cartService->remove($item, $this->getUser());
         
+        // J'informe l'utilisateur que le produit a bien été retiré
         $this->addFlash('success', 'Le produit a été retiré du panier');
         
+        // Je renvoie vers la page panier
         return $this->redirectToRoute('cart_show');
     }
 
@@ -90,10 +107,14 @@ class CartController extends AbstractController
      */
     public function clear(): Response
     {
+        // Je vide complètement le panier de l'utilisateur connecté
         $this->cartService->clear($this->getUser());
         
+        // J'affiche un message pour confirmer que le panier est vide
         $this->addFlash('success', 'Le panier a été vidé');
         
+        // Je renvoie l'utilisateur vers la page panier (vide)
         return $this->redirectToRoute('cart_show');
     }
 }
+

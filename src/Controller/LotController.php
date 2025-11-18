@@ -23,11 +23,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class LotController extends AbstractController
 {
-    // Redirection de /lot vers /lots pour éviter une 404 sur l'URL courte
+    // Je redirige l'URL courte /lot vers /lots pour éviter une 404 et garder une URL plus propre
     /** Redirige l'URL courte "/lot" vers l'index des lots. */
     #[Route('/lot', name: 'app_lot_redirect', methods: ['GET'])]
     public function redirectLotIndex(): Response
     {
+        // Je redirige de façon permanente vers la page liste des lots
         return $this->redirectToRoute('app_lot_index', [], 301);
     }
 
@@ -35,16 +36,18 @@ class LotController extends AbstractController
     #[Route('/lots', name: 'app_lot_index')]
     public function index(LotRepository $lotRepository): Response
     {
-        // Nettoyer les lots orphelins (sans événement)
+        // Je nettoie d'abord les lots orphelins (qui n'ont plus d'événement associé)
         $deleted = $lotRepository->removeOrphanedLots();
         
         if ($deleted > 0) {
+            // Si des lots ont été supprimés, j'affiche un message d'information
             $this->addFlash('info', sprintf('%d lots orphelins ont été supprimés.', $deleted));
         }
         
-        // Récupérer uniquement les lots qui ont un événement d'enchères valide
+        // Je récupère uniquement les lots dont l'événement d'enchères est encore valide
         $lots = $lotRepository->findAllWithValidEvent();
         
+        // J'affiche la page listant les lots disponibles
         return $this->render('lot/index.html.twig', [
             'lots' => $lots,
         ]);

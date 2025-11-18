@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{# Page de récapitulatif de commande avant le paiement PayPal #}
 {% block title %}Récapitulatif de la commande - {{ parent() }}{% endblock %}
 
 {% block body %}
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-8">
+                {# Bloc principal : je liste les lignes du panier (produits, quantité, sous-total) #}
                 <div class="card mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">Récapitulatif de la commande</h5>
@@ -83,6 +85,7 @@
                     </div>
                 </div>
 
+                {# Bloc informatif sur le mode de paiement et la sécurité #}
                 <div class="card">
                     <div class="card-body">
                         <h6 class="mb-3">Modes de paiement acceptés</h6>

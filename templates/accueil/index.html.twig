@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{# Je réutilise le layout de base et je personnalise le titre de la page d'accueil #}
 {% block title %}Maison d’Enchères — Accueil{% endblock %}
 {% block body %}
   <section class="hero position-relative overflow-hidden">
@@ -8,8 +9,10 @@
           <div class="mb-3" style="max-height:260px; overflow:hidden; border-radius:8px;">
             <img src="{{ asset('images/demo/old-imgA.jpg') }}" alt="Montre ancienne" class="w-100" style="object-fit:cover;">
           </div>
+          {# Bloc héro : je présente rapidement ma maison d'enchères avec une image et un texte d'accroche #}
           <h1 class="display-4 fw-bold text-white mb-4">Maison d'Enchères</h1>
           <p class="lead text-white-50 mb-5">Découvrez des pièces uniques et rares issues des plus grandes collections privées.</p>
+          {# Deux boutons d'action principaux : voir les enchères et contacter la maison #}
           <div class="d-flex flex-wrap gap-3">
             <a href="{{ path('app_lot_index') }}" class="btn btn-primary btn-lg px-4">Découvrir les enchères</a>
             <a href="{{ path('app_contact') }}" class="btn btn-outline-light btn-lg px-4">Nous contacter</a>
@@ -25,6 +28,7 @@
     </div>
   </section>
 
+  {# Section pédagogique : j'explique en 3 étapes comment fonctionne mon site d'enchères #}
   <section class="py-5 bg-black text-white border-top border-secondary">
     <div class="container">
       <h2 class="h4 text-accent mb-4 text-center">Comment ça marche ?</h2>

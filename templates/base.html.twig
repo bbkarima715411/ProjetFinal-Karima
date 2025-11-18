@@ -1,4 +1,5 @@
 {# templates/base.html.twig #}
+{# Je définis ici la structure HTML principale de mon site (layout global) #}
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -27,17 +28,20 @@
   </head>
 
   <body>
+    {# J'inclus mon header commun à toutes les pages #}
     {% include '_partials/header.html.twig' %}
       <main class="page-container">
+        {# C'est ici que chaque page viendra injecter son contenu #}
         {% block body %}{% endblock %}
       </main>
+    {# J'inclus mon footer commun #}
     {% include '_partials/footer.html.twig' %}
 
     {# Bootstrap 5 JS Bundle #}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    {# Bootstrap Toasts for flash messages #}
+    {# Zone d'affichage des messages flash (succès, erreur, info...) avec les toasts Bootstrap #}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       {% for label, messages in app.flashes %}
         {% for message in messages %}

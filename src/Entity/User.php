@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+// Je suis l'entité qui représente un utilisateur de mon site (compte client avec profil et commandes)
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -19,43 +20,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    // Je stocke l'email de l'utilisateur, qui sert aussi d'identifiant de connexion
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    // Je stocke les rôles attribués à l'utilisateur (ex: ROLE_USER, ROLE_ADMIN)
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
+    // Je garde ici le mot de passe hashé de l'utilisateur (jamais en clair)
     #[ORM\Column]
     private ?string $password = null;
 
-    // Profil étendu
+    // Profil étendu : je rajoute des informations personnelles pour mieux identifier l'utilisateur
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $lastName = null;
 
+    // Adresse postale principale de l'utilisateur
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address1 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address2 = null;
 
+    // Code postal et ville pour l'adresse
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 120, nullable: true)]
     private ?string $city = null;
 
+    // Relation 1-1 : un utilisateur possède un panier (Cart)
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Cart::class, cascade: ['persist', 'remove'])]
     private ?Cart $cart = null;
 
+    // Relation 1-N : un utilisateur peut avoir plusieurs commandes
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private $orders;
 
+    // Pays, téléphone et date de naissance pour compléter le profil client
     #[ORM\Column(length: 120, nullable: true)]
     private ?string $country = null;
 
@@ -65,14 +74,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthDate = null;
 
+    // Date de création du compte utilisateur
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $createdAt;
 
     public function __construct()
     {
+        // À la création d'un utilisateur, j'initialise sa collection de commandes
         $this->orders = new ArrayCollection();
+        // Je crée automatiquement un panier associé à l'utilisateur
         $this->cart = new Cart();
         $this->cart->setUser($this);
+        // Je stocke la date de création du compte
         $this->createdAt = new \DateTimeImmutable();
     }
 

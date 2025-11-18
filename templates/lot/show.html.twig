@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{# Page de détail d'un lot : je montre la description, l'état de l'enchère et le formulaire pour enchérir #}
 {% block title %}{{ lot.titre|default('Détails du lot') }} — Détails du lot{% endblock %}
 
 {% block body %}
@@ -12,6 +13,7 @@
         {% if lot.imageFilename %}
           <img src="{{ asset('uploads/' ~ lot.imageFilename) }}" alt="{{ lot.titre|default('Lot') }}">
         {% else %}
+          {# Sinon, je montre un message informatif en fonction du cas (non connecté, à venir, terminé) #}
           <img src="{{ asset('images/demo/commo.png') }}" alt="Aucune image">
         {% endif %}
       </div>
@@ -20,6 +22,7 @@
         <div class="mb-2 text-secondary">Catégorie : {{ lot.categorie|default('Non spécifiée') }}</div>
 
         {# Badge d'état de l'enchère #}
+        {# J'affiche un badge visuel en fonction de l'état de l'enchère #}
         {% if etat_enchere is defined %}
           {% if etat_enchere == 'ouverte' %}
             <span class="badge bg-success mb-2">Enchères ouvertes</span>
@@ -44,6 +47,7 @@
           <div class="small text-muted mt-2">Incrément minimum : {{ lot.incrementMin|number_format(2, ',', ' ') }} €</div>
         </div>
 
+        {# Si l'utilisateur est connecté et que l'enchère est ouverte, j'affiche le formulaire pour placer une offre #}
         {% if app.user and etat_enchere == 'ouverte' %}
           <form action="{{ path('app_lot_bid', { id: lot.id }) }}" method="post" class="row gy-2 gx-2 align-items-end">
             <input type="hidden" name="_token" value="{{ csrf_token('bid_lot_' ~ lot.id) }}">
@@ -60,7 +64,7 @@
 
           <div class="mt-2 d-flex">
             <div class="ms-auto">
-              {# Bouton Favori / Retirer des favoris (formulaires séparés pour éviter les formulaires imbriqués) #}
+              {# Boutons pour ajouter/retirer ce lot des favoris de l'utilisateur #}
               {% if is_favorite %}
                 <form action="{{ path('app_favori_remove', { id: lot.id }) }}" method="post" class="d-inline">
                   <input type="hidden" name="_token" value="{{ csrf_token('fav_remove_' ~ lot.id) }}">
@@ -89,7 +93,7 @@
       </div>
     </div>
 
-    {# Historique des enchères pour ce lot #}
+    {# Historique des enchères pour ce lot : je liste les offres classées de la plus récente à la plus ancienne #}
     {% if encheres is defined and encheres|length > 0 %}
       <div class="mt-4">
         <h2 class="h5 text-accent mb-3">Historique des enchères</h2>
@@ -131,6 +135,7 @@
 
   </div>
 </main>
+{# Si l'événement du lot se termine bientôt, j'affiche un bandeau d'alerte avec un compte à rebours dédié #}
 {% set ev = lot.evenementEnchere %}
 {% if ev and ev.fermeDansMoinsDuneHeure %}
   <div class="container mt-3">
