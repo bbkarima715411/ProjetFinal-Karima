@@ -56,6 +56,7 @@
                                            class="btn btn-sm btn-primary" 
                                            title="Modifier">
                                             <i class="fas fa-edit"></i>
+                                            <span class="ms-1">Modifier</span>
                                         </a>
                                         {% if user != app.user %}
                                             <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" 
@@ -63,11 +64,13 @@
                                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                                                 <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">
                                                     <i class="fas fa-trash"></i>
+                                                    <span class="ms-1">Supprimer</span>
                                                 </button>
                                             </form>
                                         {% else %}
                                             <button class="btn btn-sm btn-secondary" disabled title="Vous ne pouvez pas supprimer votre propre compte">
                                                 <i class="fas fa-trash"></i>
+                                                <span class="ms-1">Supprimer</span>
                                             </button>
                                         {% endif %}
                                     </div>
