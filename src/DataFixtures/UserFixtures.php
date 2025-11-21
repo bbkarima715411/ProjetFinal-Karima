@@ -19,19 +19,20 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $users = [
-            ['email' => 'admin1@enchere.be', 'password' => '123', 'roles' => ['ROLE_ADMIN']],
-            ['email' => 'admin@enchères.fr', 'password' => 'admin123', 'roles' => ['ROLE_ADMIN']],
-            ['email' => 'user1@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
-            ['email' => 'user2@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
-            ['email' => 'user3@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
-            ['email' => 'user4@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
+            ['firstName' => 'Dora', 'email' => 'admin1@enchere.be', 'password' => '123', 'roles' => ['ROLE_ADMIN']],
+            ['firstName' => 'Karima','email' => 'admin@enchères.fr', 'password' => 'admin123', 'roles' => ['ROLE_ADMIN']],
+            ['firstName' => 'Jeanne','email' => 'user1@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
+            ['firstName' => 'Ahmed','email' => 'user2@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
+            ['firstName' => 'George','email' => 'user3@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
+            ['firstName' => 'Nanami', 'email' => 'user4@enchères.fr', 'password' => 'user123', 'roles' => ['ROLE_USER']],
         ];
 
         foreach ($users as $index => $userData) {
             $user = new User();
             $user->setEmail($userData['email'])
                 ->setRoles($userData['roles'])
-                ->setPassword($this->passwordHasher->hashPassword($user, $userData['password']));
+                ->setPassword($this->passwordHasher->hashPassword($user, $userData['password']))
+                ->setFirstName($userData['firstName']);
 
             $manager->persist($user);
             $this->addReference(self::REF_PREFIX.$index, $user);

@@ -75,6 +75,35 @@
         {% endif %}
       </div>
     </div>
+
+
+    {# Liste d'encheres pour ce lot  #}
+    {% for enchereUtilisateur in lot.encheresUtilisateur %}
+
+
+      {# {{ dump (enchereUtilisateur)}}
+      {{ enchereUtilisateur.montant}}
+      {{ enchereUtilisateur.user.firstName}} #}
+
+
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <div class="small text-muted">Enchère de {{ enchereUtilisateur.user.firstName }} {{ enchereUtilisateur.user.lastName }}</div>
+              <div class="fw-semibold">{{ enchereUtilisateur.montant|number_format(2, ',', ' ') }} €</div>
+            </div>
+            {# <div class="text-end">
+              <div class="small text-muted">{{ enchereUtilisateur.createdAt|date('d/m/Y H\hi') }}</div>
+            </div> #}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+
+
+
   </div>
 </main>
 {% set ev = lot.evenementEnchere %}
